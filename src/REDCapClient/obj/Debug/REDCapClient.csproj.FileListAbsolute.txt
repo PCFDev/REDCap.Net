@@ -1,0 +1,16 @@
+D:\Code\Spike\REDCapExporter\REDCapClient\bin\Debug\REDCapClient.dll
+D:\Code\Spike\REDCapExporter\REDCapClient\bin\Debug\REDCapClient.pdb
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\REDCapClient.dll
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\REDCapClient.pdb
+D:\Code\Spike\REDCapExporter\REDCapClient\bin\Debug\REDCapClient.pri
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\priconfig.xml
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\priconfig.xml.intermediate
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\layout.resfiles
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\layout.resfiles.intermediate
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\resources.resfiles
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\resources.resfiles.intermediate
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\pri.resfiles
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\pri.resfiles.intermediate
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\qualifiers.txt
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\qualifiers.txt.intermediate
+D:\Code\Spike\REDCapExporter\REDCapClient\obj\Debug\MultipleQualifiersPerDimensionFound.txt
