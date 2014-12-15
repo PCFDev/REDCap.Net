@@ -17,6 +17,7 @@ namespace REDCapClient
         private string _token = "";
 
         private const string PARAMS_GETFORMDATA = "token={0}&content=record&format={1}&type=eav&returnFormat=label&forms={2}";
+        private const string PARAMS_GETFORMS = "token={0}&content=instrument&format={1}";
 
         public REDCapClient(string apiUrl, string token)
         {
@@ -24,6 +25,34 @@ namespace REDCapClient
             this._token = token;
         }
 
+        public async Task<XDocument> GetFormsAsXmlAsync()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = this._baseUri;
+
+                var req = new StringContent(String.Format(PARAMS_GETFORMS, this._token, "xml"));
+
+                req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+
+                var response = await client.PostAsync("", req);
+
+                var data = await response.Content.ReadAsStringAsync();
+
+                var xDoc = XDocument.Parse(data);
+
+                return xDoc;
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetFormNamesAsync()
+        {
+            var xDoc =await  this.GetFormsAsXmlAsync();
+
+            var names = xDoc.Descendants("instrument_name").Select(e => e.Value);
+
+            return names;
+        }
 
         public async Task<XDocument> GetFormDataAsXmlAsync(string formName)
         {

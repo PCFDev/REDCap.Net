@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<records>
+  <item>
+    <record>2</record>
+    <redcap_event_name>first_pregnancy_arm_1</redcap_event_name>
+    <field_name>therapy_appointment_form_complete</field_name>
+    <value><![CDATA[0]]></value>
+  </item>
+</records>
