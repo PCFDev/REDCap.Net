@@ -23,8 +23,8 @@ namespace REDCapExporter
             
             this._redCapClient = new REDCapClient.REDCapClient(apiUrl, token);
 
-            var allDataXml = await this._redCapClient.GetReportAsXmlAsync("419");
-            allDataXml.Save("output\\Patient Tracking Export.xml");
+            //var allDataXml = await this._redCapClient.GetReportAsXmlAsync("419");
+            //allDataXml.Save("output\\Patient Tracking Export.xml");
 
             var names = await this._redCapClient.GetFormNamesAsync();
 

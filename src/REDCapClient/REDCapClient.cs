@@ -23,7 +23,7 @@ namespace REDCapClient
             "&rawOrLabel=label&rawOrLabelHeader=label&exportCheckboxLabel=true&exportSurveyFields=true&exportDataAccessGroups=true" +
             "&returnFormat=xml&forms={2}";
 
-        private const string PARAMS_GETFORMS = "token={0}&content=instrument&format={1}";
+        private const string PARAMS_GETFORMS = "token={0}&content=instrument&format={1}&rawOrLabel=label&rawOrLabelHeader=label&exportCheckboxLabel=true";
 
         private const string PARAMS_GETREPORT = "token={0}&content=report&report_id={1}&rawOrLabel=label&rawOrLabelHeader=label&exportCheckboxLabel=true&format={2}";
 
