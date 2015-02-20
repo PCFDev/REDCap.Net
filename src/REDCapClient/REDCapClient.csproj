@@ -39,7 +39,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RCModel\Event.cs" />
     <Compile Include="RCModel\Metadata.cs" />
-    <Compile Include="RCModel\MultipleChoiceMetadata.cs" />
     <Compile Include="RCModel\REDCapStudy.cs" />
     <Compile Include="REDCapClient.cs" />
     <Compile Include="SqlConvertor.cs" />
