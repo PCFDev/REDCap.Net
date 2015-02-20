@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace REDCapExporter
 {
@@ -27,6 +21,7 @@ namespace REDCapExporter
             //allDataXml.Save("output\\Patient Tracking Export.xml");
 
             var names = await this._redCapClient.GetFormNamesAsync();
+            var events = await this._redCapClient.GetEventsAsync();
 
             foreach (var form in names)
             {
