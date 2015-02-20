@@ -22,6 +22,7 @@ namespace REDCapExporter
 
             var names = await this._redCapClient.GetFormNamesAsync();
             var events = await this._redCapClient.GetEventsAsync();
+            var fieldNames = await this._redCapClient.GetMetadataAsync();
 
             foreach (var form in names)
             {

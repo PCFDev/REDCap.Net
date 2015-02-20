@@ -14,21 +14,25 @@ namespace REDCapClient
         private List<string> _formNames = new List<string>();
         private HttpClient client = new HttpClient();
         private Uri _baseUri;
+        private REDCapStudy _study;
         private string _token = string.Empty;
         private const string PARAMS_GETFORMDATA = "token={0}&content=record&format={1}&type=eav&returnFormat=label&forms={2}";
-        private const string PARAMS_GETFLATFORMDATA = 
+        private const string PARAMS_GETFLATFORMDATA =
             "token={0}&content=record&format={1}&type=eav" +
             "&rawOrLabel=label&rawOrLabelHeader=label&exportCheckboxLabel=true&exportSurveyFields=true&exportDataAccessGroups=true" +
             "&returnFormat=xml&forms={2}";
 
         private const string PARAMS_GETFORMS = "token={0}&content=instrument&format={1}&rawOrLabel=label&rawOrLabelHeader=label&exportCheckboxLabel=true";
         private const string PARAMS_GETREPORT = "token={0}&content=report&report_id={1}&rawOrLabel=label&rawOrLabelHeader=label&exportCheckboxLabel=true&format={2}";
-        private const string PARAMS_GETEVENT = "token={0}&content=event&format={1}&rawOrLabel=raw";
+        private const string PARAMS_GETEVENT = "token={0}&content=event&format={1}";
+        private const string PARAMS_GETMETADATAPERFORM = "token={0}&content=metadata&format={1}&forms={2}";
+        private const string PARAMS_GETMETADATA = "token={0}&content=metadata&format={1}";
 
         public REDCapClient(string apiUrl, string token)
         {
             this._baseUri = new Uri(apiUrl);
             this._token = token;
+            this._study = new REDCapStudy();
         }
 
         public async Task<XDocument> GetEventsAsXmlAsync()
@@ -48,9 +52,96 @@ namespace REDCapClient
         public async Task<IEnumerable<string>> GetEventsAsync()
         {
             var xDoc = await this.GetEventsAsXmlAsync();
+
             var events = xDoc.Descendants("unique_event_name").Select(e => e.Value);
+            foreach (var item in xDoc.Descendants("item"))
+            {
+                this._study.Events.Add(new Event
+                {
+                    UniqueEventName = item.Element("unique_event_name").Value.ToString(),
+                    EventName = item.Element("event_name").Value.ToString(),
+                    ArmNumber = item.Element("arm_num").Value.ToString()
+                });
+            }
 
             return events;
+        }
+
+        public async Task<XDocument> GetMetadataAsXmlAsync()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = this._baseUri;
+                var req = new StringContent(string.Format(PARAMS_GETMETADATA, this._token, "xml"));
+                req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+                var response = await client.PostAsync("", req);
+                var data = await response.Content.ReadAsStringAsync();
+                var xDoc = XDocument.Parse(data);
+                return xDoc;
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetMetadataAsync()
+        {
+            var xDoc = await this.GetMetadataAsXmlAsync();
+            var fieldNames = xDoc.Descendants("field_name").Select(e => e.Value);
+
+            foreach (var item in xDoc.Descendants("item"))
+            {
+                Metadata dataDictionary = new Metadata
+                    {
+                        FieldName = (item.Element("field_name").IsEmpty ? "" : item.Element("field_name").Value.ToString()),
+                        FormName = (item.Element("form_name").IsEmpty ? "" : item.Element("form_name").Value.ToString()),
+                        FieldType = (item.Element("field_type").IsEmpty ? "" : item.Element("field_type").Value.ToString()),
+                        FieldLabel = (item.Element("field_label").IsEmpty ? "" : item.Element("field_label").Value.ToString()),
+                        // FieldChoices = "",
+                        //FieldSlider = "",
+                        FieldNote = (item.Element("field_note").IsEmpty ? "" : item.Element("field_note").Value.ToString()),
+                        TextValidation = (item.Element("text_validation_type_or_show_slider_number").IsEmpty ? "" : item.Element("text_validation_type_or_show_slider_number").Value.ToString()),
+                        TextValidationMax = (item.Element("text_validation_max").IsEmpty ? "" : item.Element("text_validation_max").Value.ToString()),
+                        TextValidationMin = (item.Element("text_validation_min").IsEmpty ? "" : item.Element("text_validation_min").Value.ToString()),
+                        IsIdentifier = (item.Element("identifier").IsEmpty ? false : item.Element("identifier").Value.ToString().ToLower() == "y" ? true : false),
+                        BranchingLogic = (item.Element("branching_logic").IsEmpty ? "" : item.Element("branching_logic").Value.ToString()),
+                        IsRequired = (item.Element("required_field").IsEmpty ? false : item.Element("required_field").Value.ToString().ToLower() == "y" ? true : false),
+                        CustomAlignment = (item.Element("custom_alignment").IsEmpty ? "" : item.Element("custom_alignment").Value.ToString()),
+                        QuestionNumber = (item.Element("question_number").IsEmpty ? "" : item.Element("question_number").Value.ToString()),
+                        MatrixGroupName = (item.Element("matrix_group_name").IsEmpty ? "" : item.Element("matrix_group_name").Value.ToString()),
+                        IsMatrixRanking = (item.Element("matrix_ranking").IsEmpty ? false : item.Element("matrix_ranking").Value.ToString().ToLower() == "y" ? true : false)
+                    };
+
+                if(!String.IsNullOrEmpty(item.Element("select_choices_or_calculations").Value.ToString()))
+                {
+                    string element = item.Element("select_choices_or_calculations").Value.ToString();
+                    if (dataDictionary.FieldType == "calc")
+                    {
+                        dataDictionary.FieldCalculation = item.Element("select_choices_or_calculations").Value.ToString();
+                    }
+                    else
+                    {
+                        dataDictionary.FieldChoices = ParseFieldChoices(element);
+                    }
+                }
+            }
+
+            return fieldNames;
+        }
+ 
+        private Dictionary<string, string> ParseFieldChoices(string element)
+        {
+            Dictionary<string, string> choices = new Dictionary<string, string>();
+            string [] split = element.Split('|');
+
+            foreach (string group in split)
+            {
+                int pos = group.IndexOf(',');
+                string key = group.Substring(0, pos);
+                string value = group.Substring(key.Length +2, group.Length - (key.Length + 2));
+
+                choices.Add(key, value.Trim());
+            }
+
+
+            return choices;
         }
 
         public async Task<XDocument> GetFormsAsXmlAsync()
@@ -58,15 +149,10 @@ namespace REDCapClient
             using (var client = new HttpClient())
             {
                 client.BaseAddress = this._baseUri;
-
                 var req = new StringContent(String.Format(PARAMS_GETFORMS, this._token, "xml"));
-
                 req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
-
                 var response = await client.PostAsync("", req);
-
                 var data = await response.Content.ReadAsStringAsync();
-
                 var xDoc = XDocument.Parse(data);
 
                 return xDoc;
@@ -121,6 +207,12 @@ namespace REDCapClient
                 return formDoc;
 
             }
+        }
+
+        public REDCapStudy Study
+        {
+            get { return this._study; }
+            set { this._study = value; }
         }
 
     }
