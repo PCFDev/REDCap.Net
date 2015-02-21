@@ -88,12 +88,6 @@ namespace REDCapClient
             set { _fieldNote = value; }
         }
 
-        public Dictionary<string,string> FieldSlider
-        {
-            get { return _filedSlider; }
-            set { _filedSlider = value; }
-        }
-
         public string FieldCalculation
         {
             get { return _filedCalculation; }
@@ -128,6 +122,11 @@ namespace REDCapClient
         {
             get { return _fieldName; }
             set { _fieldName = value; }
+        }
+
+        public override string ToString()
+        {
+            return this.FieldName;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using REDCapClient;
 
 namespace REDCapExporter
 {
@@ -13,8 +14,6 @@ namespace REDCapExporter
 
         public async Task ProcessProject(string apiUrl, string token)
         {
-
-            
             this._redCapClient = new REDCapClient.REDCapClient(apiUrl, token);
 
             //var allDataXml = await this._redCapClient.GetReportAsXmlAsync("419");
@@ -23,13 +22,14 @@ namespace REDCapExporter
             var names = await this._redCapClient.GetFormNamesAsync();
             var events = await this._redCapClient.GetEventsAsync();
             var fieldNames = await this._redCapClient.GetMetadataAsync();
+            var records = await this._redCapClient.GetRecordsAsync();
 
             foreach (var form in names)
             {
                 await ProcessForm(form);
             }
         }
-
+ 
         private async Task ProcessForm(string form)
         {
 

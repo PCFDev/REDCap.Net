@@ -27,12 +27,42 @@ namespace REDCapClient
         private const string PARAMS_GETEVENT = "token={0}&content=event&format={1}";
         private const string PARAMS_GETMETADATAPERFORM = "token={0}&content=metadata&format={1}&forms={2}";
         private const string PARAMS_GETMETADATA = "token={0}&content=metadata&format={1}";
+        private const string PARAMS_GETRECORD = "token={0}&content=record&format={1}&type={2}&forms={3}&events={4}";
 
         public REDCapClient(string apiUrl, string token)
         {
             this._baseUri = new Uri(apiUrl);
             this._token = token;
             this._study = new REDCapStudy();
+        }
+
+        public async Task<XDocument> GetRecordsAsXmlAsync()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = this._baseUri;
+                var xDoc = new XDocument();
+
+                foreach (var item in this._study.Events)
+                {
+                    item.FormName = "month_data";
+                    //var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", item.FormName, item.UniqueEventName));
+                    var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", item.FormName, "month_1_arm_1"));
+                    req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+                    var response = await client.PostAsync("", req);
+                    var data = await response.Content.ReadAsStringAsync();
+                    xDoc = XDocument.Parse(data);
+                }
+
+                return xDoc;
+            }
+        }
+
+        public async Task<string> GetRecordsAsync()
+        {
+            var xDoc = await this.GetRecordsAsXmlAsync();
+
+            return "help";
         }
 
         public async Task<XDocument> GetEventsAsXmlAsync()
@@ -45,11 +75,12 @@ namespace REDCapClient
                 var response = await client.PostAsync("", req);
                 var data = await response.Content.ReadAsStringAsync();
                 var xDoc = XDocument.Parse(data);
+
                 return xDoc;
             }
         }
 
-        public async Task<IEnumerable<string>> GetEventsAsync()
+        public async Task<IEnumerable<Event>> GetEventsAsync()
         {
             var xDoc = await this.GetEventsAsXmlAsync();
 
@@ -64,7 +95,7 @@ namespace REDCapClient
                 });
             }
 
-            return events;
+            return this._study.Events;
         }
 
         public async Task<XDocument> GetMetadataAsXmlAsync()
@@ -81,7 +112,7 @@ namespace REDCapClient
             }
         }
 
-        public async Task<IEnumerable<string>> GetMetadataAsync()
+        public async Task<IEnumerable<Metadata>> GetMetadataAsync()
         {
             var xDoc = await this.GetMetadataAsXmlAsync();
             var fieldNames = xDoc.Descendants("field_name").Select(e => e.Value);
@@ -107,12 +138,16 @@ namespace REDCapClient
                         IsMatrixRanking = (item.Element("matrix_ranking").IsEmpty ? false : item.Element("matrix_ranking").Value.ToString().ToLower() == "y" ? true : false)
                     };
 
-                if(!String.IsNullOrEmpty(item.Element("select_choices_or_calculations").Value.ToString()))
+                if (!String.IsNullOrEmpty(item.Element("select_choices_or_calculations").Value.ToString()))
                 {
                     string element = item.Element("select_choices_or_calculations").Value.ToString();
                     if (dataDictionary.FieldType == "calc")
                     {
                         dataDictionary.FieldCalculation = item.Element("select_choices_or_calculations").Value.ToString();
+                    }
+                    else if (dataDictionary.FieldType == "slider")
+                    {
+                        dataDictionary.FieldChoices = ParseFieldChoicesSliderType(element);
                     }
                     else
                     {
@@ -121,19 +156,35 @@ namespace REDCapClient
                 }
             }
 
-            return fieldNames;
+            return this._study.Metadata;
         }
- 
+
+        private Dictionary<string, string> ParseFieldChoicesSliderType(string element)
+        {
+            Dictionary<string, string> choices = new Dictionary<string, string>();
+            string[] split = element.Split('|');
+            int count = 0;
+
+            foreach (string value in split)
+            {
+                choices.Add(count.ToString(), value);
+
+                count += 1;
+            }
+
+            return choices;
+        }
+
         private Dictionary<string, string> ParseFieldChoices(string element)
         {
             Dictionary<string, string> choices = new Dictionary<string, string>();
-            string [] split = element.Split('|');
+            string[] split = element.Split('|');
 
             foreach (string group in split)
             {
                 int pos = group.IndexOf(',');
                 string key = group.Substring(0, pos);
-                string value = group.Substring(key.Length +2, group.Length - (key.Length + 2));
+                string value = group.Substring(key.Length + 2, group.Length - (key.Length + 2));
 
                 choices.Add(key, value.Trim());
             }
@@ -162,15 +213,10 @@ namespace REDCapClient
             using (var client = new HttpClient())
             {
                 client.BaseAddress = this._baseUri;
-
                 var req = new StringContent(String.Format(PARAMS_GETREPORT, this._token, reportId, "xml"));
-
                 req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
-
                 var response = await client.PostAsync("", req);
-
                 var data = await response.Content.ReadAsStringAsync();
-
                 var xDoc = XDocument.Parse(data);
 
                 return xDoc;
