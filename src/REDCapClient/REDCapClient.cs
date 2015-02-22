@@ -45,9 +45,25 @@ namespace REDCapClient
 
                 foreach (var item in this._study.Events)
                 {
-                    item.FormName = "month_data";
+                    // HACK!
+                    if(item.UniqueEventName == "bl_arm_1")
+                    {
+                        item.FormName = "baseline_data, demographics";
+                    }
+                    else if(item.UniqueEventName.StartsWith("month_1")
+                        || item.UniqueEventName.StartsWith("month_2")
+                        || item.UniqueEventName.StartsWith("month_3"))
+                    {
+                        item.FormName = "month_data, demographics";
+                    }
+                    else
+                    {
+                        item.FormName = "completion_data, demographics";
+                    }
+                    // END HACK!
+
                     //var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", item.FormName, item.UniqueEventName));
-                    var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", item.FormName, "month_1_arm_1"));
+                    var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", item.FormName, item.UniqueEventName));
                     req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
                     var response = await client.PostAsync("", req);
                     var data = await response.Content.ReadAsStringAsync();
@@ -80,22 +96,24 @@ namespace REDCapClient
             }
         }
 
-        public async Task<IEnumerable<Event>> GetEventsAsync()
+        public async Task<List<Event>> GetEventsAsync()
         {
             var xDoc = await this.GetEventsAsXmlAsync();
 
-            var events = xDoc.Descendants("unique_event_name").Select(e => e.Value);
             foreach (var item in xDoc.Descendants("item"))
             {
                 this._study.Events.Add(new Event
                 {
                     UniqueEventName = item.Element("unique_event_name").Value.ToString(),
                     EventName = item.Element("event_name").Value.ToString(),
-                    ArmNumber = item.Element("arm_num").Value.ToString()
+                    ArmNumber = item.Element("arm_num").Value.ToString(),
+                    DayOffset = item.Element("day_offset").Value.ToString(),
+                    OffsetMax = item.Element("offset_max").Value.ToString(),
+                    OffsetMin = item.Element("offset_min").Value.ToString()
                 });
             }
 
-            return this._study.Events;
+            return this._study.Events.ToList();
         }
 
         public async Task<XDocument> GetMetadataAsXmlAsync()
@@ -112,7 +130,7 @@ namespace REDCapClient
             }
         }
 
-        public async Task<IEnumerable<Metadata>> GetMetadataAsync()
+        public async Task<List<Metadata>> GetMetadataAsync()
         {
             var xDoc = await this.GetMetadataAsXmlAsync();
             var fieldNames = xDoc.Descendants("field_name").Select(e => e.Value);
@@ -156,7 +174,7 @@ namespace REDCapClient
                 }
             }
 
-            return this._study.Metadata;
+            return this._study.Metadata.ToList();
         }
 
         private Dictionary<string, string> ParseFieldChoicesSliderType(string element)

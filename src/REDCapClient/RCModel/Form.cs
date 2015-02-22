@@ -1,22 +1,10 @@
-﻿namespace REDCapClient.RCModel
+﻿namespace REDCapClient
 {
     public class Form
     {
-        private string _formName;
-        private string _formLabel;
-
-        public string FormLabel
-        {
-            get { return _formLabel; }
-            set { _formLabel = value; }
-        }
-
-        public string FormName
-        {
-            get { return _formName; }
-            set { _formName = value; }
-        }
-
+        public string FormName { get; set; }
+        public string FormLabel { get; set; } // Key
+        
         public override string ToString()
         {
             return this.FormName;

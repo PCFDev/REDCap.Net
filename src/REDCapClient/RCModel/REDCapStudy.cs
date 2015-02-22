@@ -4,41 +4,28 @@ namespace REDCapClient
 {
     public class REDCapStudy
     {
-        private List<Event> _events;
-        private List<Metadata> _metadata;
-        private string _studyName;
-
-        public string StudyName
+        public REDCapStudy()
         {
-            get { return _studyName; }
-            set { _studyName = value; }
+            this._events = new List<Event>();
+            this._metadata = new List<Metadata>();
         }
 
-        public List<Event> Events
-        {
-            get
-            {
-                if (this._events == null)
-                {
-                    this._events = new List<Event>();
-                }
+        private ICollection<Event> _events;
+        private ICollection<Metadata> _metadata;
 
-                return _events;
-            }
-            set { _events = value; }
+        public string ApiKey { get; set; } // Key
+        public string StudyName { get; set; }
+
+        public virtual ICollection<Event> Events
+        {
+            get { return this._events; }
+            set { this._events = value; }
         }
 
-        public List<Metadata> Metadata
+        public virtual ICollection<Metadata> Metadata
         {
-            get
-            {
-                if (this._metadata == null)
-                {
-                    this._metadata = new List<Metadata>();
-                }
-                return _metadata;
-            }
-            set { _metadata = value; }
+            get { return this._metadata; }
+            set { this._metadata = value; }
         }
     }
 }
