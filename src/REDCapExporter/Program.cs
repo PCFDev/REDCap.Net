@@ -1,11 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System;
 
 namespace REDCapExporter
 {
@@ -16,9 +9,15 @@ namespace REDCapExporter
             //var apiUrl = args[0];
             //var token = args[1]; 
             
-            var apiUrl = "https://redcap.wustl.edu/redcap/srvrs/dev_v3_1_0_001/redcap/api/";
-            var token = "820E65DD2D930A0859BB3F727989D29E"; // Ryan's Sample 2
+            //----DEMO ENVIRONMENT----
+            //var apiUrl = "https://redcap.wustl.edu/redcap/srvrs/dev_v3_1_0_001/redcap/api/";
+            //var token = "820E65DD2D930A0859BB3F727989D29E"; // Ryan's Sample 2
+            //var token = "065C7F9FE54C3D2793304136DD7991B3"; // Ryan's Sample 1
 
+
+            //----LIVE ENVIRONMENT----
+            var apiUrl = "https://redcap.wustl.edu/redcap/srvrs/prod_v3_1_0_001/redcap/api/";
+            var token = "DEC10B186D64B4B5577D333055B85AE8"; // Fructose study
 
             var manager = new DataManager();
 
@@ -32,7 +31,6 @@ namespace REDCapExporter
             });
 
             Console.ReadLine();
-
         }
     }
 }

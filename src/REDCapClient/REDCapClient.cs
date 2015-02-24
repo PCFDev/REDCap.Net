@@ -28,12 +28,35 @@ namespace REDCapClient
         private const string PARAMS_GETMETADATAPERFORM = "token={0}&content=metadata&format={1}&forms={2}";
         private const string PARAMS_GETMETADATA = "token={0}&content=metadata&format={1}";
         private const string PARAMS_GETRECORD = "token={0}&content=record&format={1}&type={2}&forms={3}&events={4}";
+        private const string PARAMS_GETFORMEVENTMAP = "token={0}&content=formEventMapping&format={1}";
 
         public REDCapClient(string apiUrl, string token)
         {
             this._baseUri = new Uri(apiUrl);
             this._token = token;
             this._study = new REDCapStudy();
+        }
+
+        public async Task<XDocument> GetFormEventMapAsXmlAsync()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = this._baseUri;
+                var req = new StringContent(string.Format(PARAMS_GETFORMEVENTMAP, this._token, "xml"));
+                req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+                var response = await client.PostAsync("", req);
+                var data = await response.Content.ReadAsStringAsync();
+                var xDoc = XDocument.Parse(data);
+
+                return xDoc;
+            }
+        }
+
+        public async Task<string> GetFormEventMapAsync()
+        {
+            var xDoc = await this.GetFormEventMapAsXmlAsync();
+
+            return "help";
         }
 
         public async Task<XDocument> GetRecordsAsXmlAsync()
@@ -46,11 +69,11 @@ namespace REDCapClient
                 foreach (var item in this._study.Events)
                 {
                     // HACK!
-                    if(item.UniqueEventName == "bl_arm_1")
+                    if (item.UniqueEventName == "bl_arm_1")
                     {
                         item.FormName = "baseline_data, demographics";
                     }
-                    else if(item.UniqueEventName.StartsWith("month_1")
+                    else if (item.UniqueEventName.StartsWith("month_1")
                         || item.UniqueEventName.StartsWith("month_2")
                         || item.UniqueEventName.StartsWith("month_3"))
                     {
