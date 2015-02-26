@@ -19,17 +19,14 @@ namespace REDCapExporter
             //var allDataXml = await this._redCapClient.GetReportAsXmlAsync("419");
             //allDataXml.Save("output\\Patient Tracking Export.xml");
 
-            var names = await this._redCapClient.GetFormNamesAsync();
-            
+            this._study.Arms = await this._redCapClient.GetArmsAsync();
+            this._study.Forms = await this._redCapClient.GerFormsAsync();            
             this._study.Events = await this._redCapClient.GetEventsAsync();
-            // this._study.Metadata = await this._redCapClient.GetMetadataAsync();
-            // var records = await this._redCapClient.GetRecordsAsync();
-            var mappings = await this._redCapClient.GetFormEventMapAsync();
+            this._study.Metadata = await this._redCapClient.GetMetadataAsync();
+            // var mappings = await this._redCapClient.GetFormEventMapAsync();
+            var records = await this._redCapClient.GetRecordsAsync();
 
-            foreach (var form in names)
-            {
-                await ProcessForm(form);
-            }
+            int x = 10;
         }
  
         private async Task ProcessForm(string form)
