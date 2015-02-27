@@ -28,12 +28,74 @@ namespace REDCapClient
         private const string PARAMS_GETMETADATAPERFORM = "token={0}&content=metadata&format={1}&forms={2}";
         private const string PARAMS_GETMETADATA = "token={0}&content=metadata&format={1}";
         private const string PARAMS_GETRECORD = "token={0}&content=record&format={1}&type={2}&forms={3}&events={4}";
+        private const string PARAMS_GETFORMEVENTMAP = "token={0}&content=formEventMapping&format={1}";
+        private const string PARAMS_GETARMS = "token={0}&content=arm&format={1}";
 
         public REDCapClient(string apiUrl, string token)
         {
             this._baseUri = new Uri(apiUrl);
             this._token = token;
             this._study = new REDCapStudy();
+        }
+
+        public async Task<XDocument> GetArmsAsXmlAsync()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = this._baseUri;
+                var req = new StringContent(string.Format(PARAMS_GETARMS, this._token, "xml"));
+                req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+                var response = await client.PostAsync("", req);
+                var data = await response.Content.ReadAsStringAsync();
+                var xDoc = XDocument.Parse(data);
+
+                return xDoc;
+            }
+        }
+
+        public async Task<Dictionary<string, string>> GetArmsAsync()
+        {
+            var xDoc = await this.GetArmsAsXmlAsync();
+            Dictionary<string, string> arms = new Dictionary<string, string>();
+
+            foreach (var item in xDoc.Descendants("item"))
+            {
+                arms.Add(item.Element("arm_num").Value.ToString(), item.Element("name").Value.ToString());
+            }
+            
+            return arms;
+        }
+
+        public async Task<XDocument> GetFormEventMapAsXmlAsync()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = this._baseUri;
+                var req = new StringContent(string.Format(PARAMS_GETFORMEVENTMAP, this._token, "xml"));
+                req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+                var response = await client.PostAsync("", req);
+                var data = await response.Content.ReadAsStringAsync();
+                var xDoc = XDocument.Parse(data);
+
+                return xDoc;
+            }
+        }
+
+        public async Task<List<Form>> GetFormEventMapAsync()
+        {
+            var xDoc = await this.GetFormEventMapAsXmlAsync();
+            List<Form> forms = new List<Form>();
+
+            foreach (var item in xDoc.Descendants("item"))
+            {
+                forms.Add(new Form
+                {
+                    FormLabel = item.Element("form_label").Value.ToString(),
+                    FormName = item.Element("form_name").Value.ToString()
+                });
+            }
+
+            return forms;
         }
 
         public async Task<XDocument> GetRecordsAsXmlAsync()
@@ -46,24 +108,25 @@ namespace REDCapClient
                 foreach (var item in this._study.Events)
                 {
                     // HACK!
-                    if(item.UniqueEventName == "bl_arm_1")
-                    {
-                        item.FormName = "baseline_data, demographics";
-                    }
-                    else if(item.UniqueEventName.StartsWith("month_1")
-                        || item.UniqueEventName.StartsWith("month_2")
-                        || item.UniqueEventName.StartsWith("month_3"))
-                    {
-                        item.FormName = "month_data, demographics";
-                    }
-                    else
-                    {
-                        item.FormName = "completion_data, demographics";
-                    }
+                    //if (item.UniqueEventName == "bl_arm_1")
+                    //{
+                    //    item.FormName = "baseline_data, demographics";
+                    //}
+                    //else if (item.UniqueEventName.StartsWith("month_1")
+                    //    || item.UniqueEventName.StartsWith("month_2")
+                    //    || item.UniqueEventName.StartsWith("month_3"))
+                    //{
+                    //    item.FormName = "month_data, demographics";
+                    //}
+                    //else
+                    //{
+                    //    item.FormName = "completion_data, demographics";
+                    //}
                     // END HACK!
 
                     //var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", item.FormName, item.UniqueEventName));
-                    var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", item.FormName, item.UniqueEventName));
+                    // var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", item.FormName, item.UniqueEventName));
+                    var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", "", item.UniqueEventName));
                     req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
                     var response = await client.PostAsync("", req);
                     var data = await response.Content.ReadAsStringAsync();
@@ -91,6 +154,11 @@ namespace REDCapClient
                 var response = await client.PostAsync("", req);
                 var data = await response.Content.ReadAsStringAsync();
                 var xDoc = XDocument.Parse(data);
+
+                foreach (var item in xDoc.Descendants("item"))
+                {
+                    int x = 10;
+                }
 
                 return xDoc;
             }
@@ -133,7 +201,7 @@ namespace REDCapClient
         public async Task<List<Metadata>> GetMetadataAsync()
         {
             var xDoc = await this.GetMetadataAsXmlAsync();
-            var fieldNames = xDoc.Descendants("field_name").Select(e => e.Value);
+            List<Metadata> metadata = new List<Metadata>();
 
             foreach (var item in xDoc.Descendants("item"))
             {
@@ -172,43 +240,11 @@ namespace REDCapClient
                         dataDictionary.FieldChoices = ParseFieldChoices(element);
                     }
                 }
+
+                metadata.Add(dataDictionary);
             }
 
-            return this._study.Metadata.ToList();
-        }
-
-        private Dictionary<string, string> ParseFieldChoicesSliderType(string element)
-        {
-            Dictionary<string, string> choices = new Dictionary<string, string>();
-            string[] split = element.Split('|');
-            int count = 0;
-
-            foreach (string value in split)
-            {
-                choices.Add(count.ToString(), value);
-
-                count += 1;
-            }
-
-            return choices;
-        }
-
-        private Dictionary<string, string> ParseFieldChoices(string element)
-        {
-            Dictionary<string, string> choices = new Dictionary<string, string>();
-            string[] split = element.Split('|');
-
-            foreach (string group in split)
-            {
-                int pos = group.IndexOf(',');
-                string key = group.Substring(0, pos);
-                string value = group.Substring(key.Length + 2, group.Length - (key.Length + 2));
-
-                choices.Add(key, value.Trim());
-            }
-
-
-            return choices;
+            return metadata.ToList();
         }
 
         public async Task<XDocument> GetFormsAsXmlAsync()
@@ -241,13 +277,23 @@ namespace REDCapClient
             }
         }
 
-        public async Task<IEnumerable<string>> GetFormNamesAsync()
+        public async Task<List<Form>> GerFormsAsync()
         {
             var xDoc = await this.GetFormsAsXmlAsync();
+            List<Form> forms = new List<Form>();
+            
+            foreach (var item in xDoc.Descendants("item"))
+            {
+                Form form = new Form
+                {
+                    FormName = item.Element("instrument_name").Value.ToString(),
+                    FormLabel = item.Element("instrument_label").Value.ToString()
+                };
 
-            var names = xDoc.Descendants("instrument_name").Select(e => e.Value);
+                forms.Add(form);
+            }
 
-            return names;
+            return forms.ToList();
         }
 
         public async Task<XDocument> GetFormDataAsXmlAsync(string formName)
@@ -276,6 +322,52 @@ namespace REDCapClient
             get { return this._study; }
             set { this._study = value; }
         }
+
+        #region Private helper functions
+        private Dictionary<string, string> ParseFieldChoicesSliderType(string element)
+        {
+            Dictionary<string, string> choices = new Dictionary<string, string>();
+            string[] split = element.Split('|');
+            int count = 0;
+
+            foreach (string value in split)
+            {
+                choices.Add(count.ToString(), value);
+
+                count += 1;
+            }
+
+            return choices;
+        }
+
+        private Dictionary<string, string> ParseFieldChoices(string element)
+        {
+            Dictionary<string, string> choices = new Dictionary<string, string>();
+            string[] split = element.Split('|');
+
+            foreach (string group in split)
+            {
+                int pos = group.IndexOf(',');
+                string key = string.Empty;
+                string value = string.Empty;
+
+                if (pos > 0)
+                {
+                    key = group.Substring(0, pos);
+                    value = group.Substring(key.Length + 2, group.Length - (key.Length + 2));
+                }
+                else
+                {
+                    key = group.Trim();
+                    value = group.Trim();
+                }
+
+                choices.Add(key.Trim(), value.Trim());
+            }
+
+            return choices;
+        }
+        #endregion
 
     }
 }
