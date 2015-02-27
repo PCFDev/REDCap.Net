@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using REDCapClient;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace REDCapExporter
 {
@@ -20,12 +23,22 @@ namespace REDCapExporter
             //allDataXml.Save("output\\Patient Tracking Export.xml");
 
             this._study.Arms = await this._redCapClient.GetArmsAsync();
-            this._study.Forms = await this._redCapClient.GerFormsAsync();            
             this._study.Events = await this._redCapClient.GetEventsAsync();
             this._study.Metadata = await this._redCapClient.GetMetadataAsync();
-            // var mappings = await this._redCapClient.GetFormEventMapAsync();
-            var records = await this._redCapClient.GetRecordsAsync();
+            
+            foreach (Event eventSub in this._study.Events)
+            {
+                foreach (Form formSub in eventSub.Forms)
+                {
+                    XDocument records = await this._redCapClient.GetRecordsAsync(eventSub.UniqueEventName, formSub.FormName);
+                    ProcessRecord(records, formSub.FormName);
+                }
+            }            
+        }
 
+        private async Task ProcessRecord(XDocument xDoc, string form)
+        {
+            List<Metadata> test2 = this._study.Metadata.Where(f => f.FormName == form).ToList();
             int x = 10;
         }
  

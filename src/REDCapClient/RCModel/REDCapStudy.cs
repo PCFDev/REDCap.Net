@@ -13,7 +13,7 @@ namespace REDCapClient
         }
 
         private ICollection<Event> _events;
-        private ICollection<Metadata> _metadata;
+        private List<Metadata> _metadata;
         private ICollection<Form> _forms;
         private Dictionary<string, string> _arms;
 
@@ -26,7 +26,7 @@ namespace REDCapClient
             set { this._events = value; }
         }
 
-        public virtual ICollection<Metadata> Metadata
+        public virtual List<Metadata> Metadata
         {
             get { return this._metadata; }
             set { this._metadata = value; }
