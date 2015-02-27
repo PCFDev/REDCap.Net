@@ -39,7 +39,29 @@ namespace REDCapExporter
         private async Task ProcessRecord(XDocument xDoc, string form)
         {
             List<Metadata> test2 = this._study.Metadata.Where(f => f.FormName == form).ToList();
-            int x = 10;
+            string line = string.Empty;
+
+            foreach (var field in test2)
+            {
+                line = line + field.FieldName + ",";
+            }
+
+            line = line.Substring(0, line.Length - 1);
+            line = line + "\\r\\n";
+
+            foreach (var item in xDoc.Descendants("item"))
+            {
+                foreach (var field in test2)
+                {
+                    var test = item.Element(field.FieldName).Value.ToString();
+                    line = line + item.Element(field.FieldName).Value.ToString() + ",";
+                }
+
+                line = line.Substring(0, line.Length - 1);
+                line = line + "\\r\\n";
+
+                int x = 10;
+            }
         }
  
         private async Task ProcessForm(string form)
