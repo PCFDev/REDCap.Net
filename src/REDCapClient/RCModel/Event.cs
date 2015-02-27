@@ -4,7 +4,12 @@ namespace REDCapClient
 {
     public class Event
     {
-        private ICollection<Form> _form;
+        public  Event()
+        {
+            this._forms = new List<Form>();
+        }
+
+        private ICollection<Form> _forms;
 
         public string UniqueEventName { get; set; } // Key
         public string EventName { get; set; }
@@ -15,8 +20,8 @@ namespace REDCapClient
         
         public virtual ICollection<Form> Forms
         {
-            get { return this._form; }
-            set { this._form = value; }
+            get { return this._forms; }
+            set { this._forms = value; }
         }
 
         public override string ToString()

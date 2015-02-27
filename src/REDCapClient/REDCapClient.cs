@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -62,7 +60,7 @@ namespace REDCapClient
             {
                 arms.Add(item.Element("arm_num").Value.ToString(), item.Element("name").Value.ToString());
             }
-            
+
             return arms;
         }
 
@@ -98,50 +96,28 @@ namespace REDCapClient
             return forms;
         }
 
-        public async Task<XDocument> GetRecordsAsXmlAsync()
+        public async Task<XDocument> GetRecordsAsXmlAsync(string eventName, string formName)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = this._baseUri;
                 var xDoc = new XDocument();
 
-                foreach (var item in this._study.Events)
-                {
-                    // HACK!
-                    //if (item.UniqueEventName == "bl_arm_1")
-                    //{
-                    //    item.FormName = "baseline_data, demographics";
-                    //}
-                    //else if (item.UniqueEventName.StartsWith("month_1")
-                    //    || item.UniqueEventName.StartsWith("month_2")
-                    //    || item.UniqueEventName.StartsWith("month_3"))
-                    //{
-                    //    item.FormName = "month_data, demographics";
-                    //}
-                    //else
-                    //{
-                    //    item.FormName = "completion_data, demographics";
-                    //}
-                    // END HACK!
-
-                    //var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", item.FormName, item.UniqueEventName));
-                    // var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", item.FormName, item.UniqueEventName));
-                    var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", "", item.UniqueEventName));
-                    req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
-                    var response = await client.PostAsync("", req);
-                    var data = await response.Content.ReadAsStringAsync();
-                    xDoc = XDocument.Parse(data);
-                }
+                var req = new StringContent(string.Format(PARAMS_GETRECORD, this._token, "xml", "flat", formName, eventName));
+                req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+                var response = await client.PostAsync("", req);
+                var data = await response.Content.ReadAsStringAsync();
+                xDoc = XDocument.Parse(data);
 
                 return xDoc;
             }
         }
 
-        public async Task<string> GetRecordsAsync()
+        public async Task<XDocument> GetRecordsAsync(string eventName, string formName)
         {
-            var xDoc = await this.GetRecordsAsXmlAsync();
+            XDocument xDoc = await this.GetRecordsAsXmlAsync(eventName, formName);
 
-            return "help";
+            return xDoc;
         }
 
         public async Task<XDocument> GetEventsAsXmlAsync()
@@ -155,22 +131,20 @@ namespace REDCapClient
                 var data = await response.Content.ReadAsStringAsync();
                 var xDoc = XDocument.Parse(data);
 
-                foreach (var item in xDoc.Descendants("item"))
-                {
-                    int x = 10;
-                }
-
                 return xDoc;
             }
         }
 
         public async Task<List<Event>> GetEventsAsync()
         {
-            var xDoc = await this.GetEventsAsXmlAsync();
+            var xDocEvents = await this.GetEventsAsXmlAsync();
+            var xDocMapping = await this.GetFormEventMapAsXmlAsync();
+            List<Form> forms = await this.GerFormsAsync();
+            List<Event> events = new List<Event>();
 
-            foreach (var item in xDoc.Descendants("item"))
+            foreach (var item in xDocEvents.Descendants("item"))
             {
-                this._study.Events.Add(new Event
+                Event thisEvent = new Event
                 {
                     UniqueEventName = item.Element("unique_event_name").Value.ToString(),
                     EventName = item.Element("event_name").Value.ToString(),
@@ -178,10 +152,19 @@ namespace REDCapClient
                     DayOffset = item.Element("day_offset").Value.ToString(),
                     OffsetMax = item.Element("offset_max").Value.ToString(),
                     OffsetMin = item.Element("offset_min").Value.ToString()
-                });
+                };
+
+                var mappings = xDocMapping.Descendants("event").Where(e => e.Element("unique_event_name").Value.ToString() == item.Element("unique_event_name").Value.ToString());
+
+                foreach (var form in mappings.Descendants("form"))
+                {
+                    thisEvent.Forms.Add(forms.Where(f => f.FormName == form.Value.ToString()).FirstOrDefault());
+                }
+
+                events.Add(thisEvent);
             }
 
-            return this._study.Events.ToList();
+            return events.ToList();
         }
 
         public async Task<XDocument> GetMetadataAsXmlAsync()
@@ -281,7 +264,7 @@ namespace REDCapClient
         {
             var xDoc = await this.GetFormsAsXmlAsync();
             List<Form> forms = new List<Form>();
-            
+
             foreach (var item in xDoc.Descendants("item"))
             {
                 Form form = new Form
