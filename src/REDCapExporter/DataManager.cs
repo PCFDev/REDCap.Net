@@ -31,17 +31,17 @@ namespace REDCapExporter
                 foreach (Form formSub in eventSub.Forms)
                 {
                     XDocument records = await this._redCapClient.GetRecordsAsync(eventSub.UniqueEventName, formSub.FormName);
-                    ProcessRecord(records, formSub.FormName);
+                    await ProcessRecord(records, formSub.FormName);
                 }
             }            
         }
 
         private async Task ProcessRecord(XDocument xDoc, string form)
         {
-            List<Metadata> test2 = this._study.Metadata.Where(f => f.FormName == form).ToList();
+            List<Metadata> fieldList = this._study.Metadata.Where(f => f.FormName == form).ToList();
             string line = string.Empty;
 
-            foreach (var field in test2)
+            foreach (var field in fieldList)
             {
                 line = line + field.FieldName + ",";
             }
@@ -51,16 +51,17 @@ namespace REDCapExporter
 
             foreach (var item in xDoc.Descendants("item"))
             {
-                foreach (var field in test2)
+                foreach (var field in fieldList)
                 {
-                    var test = item.Element(field.FieldName).Value.ToString();
-                    line = line + item.Element(field.FieldName).Value.ToString() + ",";
+                    line = line + item.Element(field.FieldName).GetValue() + ",";
+
+                    int x = 10;
                 }
 
                 line = line.Substring(0, line.Length - 1);
                 line = line + "\\r\\n";
 
-                int x = 10;
+                
             }
         }
  

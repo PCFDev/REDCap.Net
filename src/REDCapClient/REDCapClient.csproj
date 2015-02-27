@@ -43,6 +43,7 @@
     <Compile Include="RCModel\REDCapStudy.cs" />
     <Compile Include="REDCapClient.cs" />
     <Compile Include="SqlConvertor.cs" />
+    <Compile Include="XmlExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
