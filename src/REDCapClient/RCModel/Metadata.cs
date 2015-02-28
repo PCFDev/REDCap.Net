@@ -4,6 +4,15 @@ namespace REDCapClient
 {
     public class Metadata
     {
+        public Metadata()
+        {
+            this._fieldChoices = new Dictionary<string, string>();
+            this._exportFieldNames = new Dictionary<string, string>();
+        }
+
+        private Dictionary<string, string> _fieldChoices;
+        private Dictionary<string, string> _exportFieldNames;
+
         public bool IsMatrixRanking { get; set; }
         public string MatrixGroupName { get; set; }
         public string QuestionNumber { get; set; }
@@ -16,11 +25,22 @@ namespace REDCapClient
         public string TextValidation { get; set; }
         public string FieldNote { get; set; }
         public string FieldCalculation { get; set; }
-        public Dictionary<string, string> FieldChoices { get; set; }
         public string FieldLabel { get; set; } // Key
         public string FieldType { get; set; }
         public string FormName { get; set; }
         public string FieldName { get; set; }
+
+        public virtual Dictionary<string, string> FieldChoices
+        {
+            get { return this._fieldChoices; }
+            set { this._fieldChoices = value; }
+        }
+
+        public virtual Dictionary<string, string> ExportFieldNames
+        {
+            get { return this._exportFieldNames; }
+            set { this._exportFieldNames = value; }
+        }
 
         public override string ToString()
         {

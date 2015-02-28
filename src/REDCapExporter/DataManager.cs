@@ -53,6 +53,18 @@ namespace REDCapExporter
             {
                 foreach (var field in fieldList)
                 {
+                    if(field.FieldChoices.Count > 0)
+                    {
+                        foreach (var fieldChoice in field.FieldChoices)
+                        {
+                            // if field.FieldName exists...it's good to go, just one possible value
+
+                            // if field.FieldName doesn't exist...we need to see which of the possible choices have a true value
+                            int y = 10;
+                        }
+                    }
+
+                    
                     line = line + item.Element(field.FieldName).GetValue() + ",";
 
                     int x = 10;

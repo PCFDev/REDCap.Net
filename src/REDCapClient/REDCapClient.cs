@@ -28,6 +28,8 @@ namespace REDCapClient
         private const string PARAMS_GETRECORD = "token={0}&content=record&format={1}&type={2}&forms={3}&events={4}";
         private const string PARAMS_GETFORMEVENTMAP = "token={0}&content=formEventMapping&format={1}";
         private const string PARAMS_GETARMS = "token={0}&content=arm&format={1}";
+        //private const string PARAMS_GETEXPORTFIELDNAMES = "token={0}&content=exportFieldNames&format={1}&field={2}";
+        private const string PARAMS_GETEXPORTFIELDNAMES = "token={0}&content=exportFieldNames&format={1}";
 
         public REDCapClient(string apiUrl, string token)
         {
@@ -221,13 +223,45 @@ namespace REDCapClient
                     else
                     {
                         dataDictionary.FieldChoices = ParseFieldChoices(element);
+                        dataDictionary.ExportFieldNames = await GetExportFieldNamesAsync(item.Element("field_name").Value.ToString());
                     }
+
+                    
                 }
 
                 metadata.Add(dataDictionary);
             }
 
             return metadata.ToList();
+        }
+
+        public async Task<Dictionary<string, string>> GetExportFieldNamesAsync(string baseFieldName)
+        {
+            Dictionary<string, string> fieldNames = new Dictionary<string, string>();
+            var xDoc = await GetExportFieldNamesXmlAsync(baseFieldName);
+
+            return fieldNames;
+        }
+
+        public async Task<XDocument> GetExportFieldNamesXmlAsync(string baseFieldName)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = this._baseUri;
+                //var req = new StringContent(string.Format(PARAMS_GETEXPORTFIELDNAMES, this._token, "xml", baseFieldName));
+                var req = new StringContent(string.Format(PARAMS_GETEXPORTFIELDNAMES, this._token, "xml"));
+                req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+                var response = await client.PostAsync("", req);
+                var data = await response.Content.ReadAsStringAsync();
+
+                if (string.IsNullOrEmpty(data))
+                    return new XDocument();
+                else
+                {
+                    var xDoc = XDocument.Parse(data);
+                    return xDoc;
+                }
+            }
         }
 
         public async Task<XDocument> GetFormsAsXmlAsync()
