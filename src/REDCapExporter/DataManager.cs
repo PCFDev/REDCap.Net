@@ -31,15 +31,50 @@ namespace REDCapExporter
                 foreach (Form formSub in eventSub.Forms)
                 {
                     XDocument records = await this._redCapClient.GetRecordsAsync(eventSub.UniqueEventName, formSub.FormName);
-                    ProcessRecord(records, formSub.FormName);
+                    await ProcessRecord(records, formSub.FormName);
                 }
             }            
         }
 
         private async Task ProcessRecord(XDocument xDoc, string form)
         {
-            List<Metadata> test2 = this._study.Metadata.Where(f => f.FormName == form).ToList();
-            int x = 10;
+            List<Metadata> fieldList = this._study.Metadata.Where(f => f.FormName == form).ToList();
+            string line = string.Empty;
+
+            foreach (var field in fieldList)
+            {
+                line = line + field.FieldName + ",";
+            }
+
+            line = line.Substring(0, line.Length - 1);
+            line = line + "\\r\\n";
+
+            foreach (var item in xDoc.Descendants("item"))
+            {
+                foreach (var field in fieldList)
+                {
+                    if(field.FieldChoices.Count > 0)
+                    {
+                        foreach (var fieldChoice in field.FieldChoices)
+                        {
+                            // if field.FieldName exists...it's good to go, just one possible value
+
+                            // if field.FieldName doesn't exist...we need to see which of the possible choices have a true value
+                            int y = 10;
+                        }
+                    }
+
+                    
+                    line = line + item.Element(field.FieldName).GetValue() + ",";
+
+                    int x = 10;
+                }
+
+                line = line.Substring(0, line.Length - 1);
+                line = line + "\\r\\n";
+
+                
+            }
         }
  
         private async Task ProcessForm(string form)
