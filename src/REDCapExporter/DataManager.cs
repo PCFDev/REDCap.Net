@@ -15,25 +15,52 @@ namespace REDCapExporter
         private REDCapClient.SqlConvertor _sqlConvertor = new REDCapClient.SqlConvertor();
         private REDCapClient.REDCapStudy _study = new REDCapStudy();
 
+        // FILE WRITING
+        FileStream ostream;
+        StreamWriter writer;
+        TextWriter oldOut = Console.Out;
+
         public async Task ProcessProject(string apiUrl, string token)
         {
             this._redCapClient = new REDCapClient.REDCapClient(apiUrl, token);
-            
+
+            // --- OLD ---
             //var allDataXml = await this._redCapClient.GetReportAsXmlAsync("419");
             //allDataXml.Save("output\\Patient Tracking Export.xml");
+            // --- OLD ---
 
             this._study.Arms = await this._redCapClient.GetArmsAsync();
             this._study.Events = await this._redCapClient.GetEventsAsync();
             this._study.Metadata = await this._redCapClient.GetMetadataAsync();
-            
+
             foreach (Event eventSub in this._study.Events)
             {
                 foreach (Form formSub in eventSub.Forms)
                 {
+                    try
+                    {
+                        ostream = new FileStream("./" + eventSub.UniqueEventName + "_" + formSub.FormName + ".csv", FileMode.OpenOrCreate, FileAccess.Write);
+                        writer = new StreamWriter(ostream);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Cannot open text file for writing.");
+                        Console.WriteLine(ex.Message);
+
+                        return;
+                    }
+                    
+                    Console.SetOut(writer);
+
                     XDocument records = await this._redCapClient.GetRecordsAsync(eventSub.UniqueEventName, formSub.FormName);
                     await ProcessRecord(records, formSub.FormName);
+
+                    Console.SetOut(oldOut);
+                    writer.Close();
+                    ostream.Close();
+                    Console.WriteLine("Done");
                 }
-            }            
+            }
         }
 
         private async Task ProcessRecord(XDocument xDoc, string form)
@@ -53,30 +80,36 @@ namespace REDCapExporter
             {
                 foreach (var field in fieldList)
                 {
-                    if(field.FieldChoices.Count > 0)
+                    //if(field.FieldChoices.Count > 0)
+                    //{
+                    //    foreach (var fieldChoice in field.FieldChoices)
+                    //    {
+                    //        // if field.FieldName exists...it's good to go, just one possible value
+
+                    //        // if field.FieldName doesn't exist...we need to see which of the possible choices have a true value
+                    //        int y = 10;
+                    //    }
+                    //}
+
+                    if (field.FieldType != "checkbox")
                     {
-                        foreach (var fieldChoice in field.FieldChoices)
-                        {
-                            // if field.FieldName exists...it's good to go, just one possible value
-
-                            // if field.FieldName doesn't exist...we need to see which of the possible choices have a true value
-                            int y = 10;
-                        }
+                        line = line + item.Element(field.FieldName).GetValue() + ",";
                     }
-
-                    
-                    line = line + item.Element(field.FieldName).GetValue() + ",";
+                    else
+                    {
+                        line = line + ",";
+                    }
 
                     int x = 10;
                 }
 
                 line = line.Substring(0, line.Length - 1);
                 line = line + "\\r\\n";
-
-                
             }
+
+            Console.WriteLine(line);
         }
- 
+
         private async Task ProcessForm(string form)
         {
 

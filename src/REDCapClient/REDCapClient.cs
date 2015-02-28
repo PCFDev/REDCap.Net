@@ -28,7 +28,6 @@ namespace REDCapClient
         private const string PARAMS_GETRECORD = "token={0}&content=record&format={1}&type={2}&forms={3}&events={4}";
         private const string PARAMS_GETFORMEVENTMAP = "token={0}&content=formEventMapping&format={1}";
         private const string PARAMS_GETARMS = "token={0}&content=arm&format={1}";
-        //private const string PARAMS_GETEXPORTFIELDNAMES = "token={0}&content=exportFieldNames&format={1}&field={2}";
         private const string PARAMS_GETEXPORTFIELDNAMES = "token={0}&content=exportFieldNames&format={1}";
 
         public REDCapClient(string apiUrl, string token)
@@ -187,6 +186,9 @@ namespace REDCapClient
         {
             var xDoc = await this.GetMetadataAsXmlAsync();
             List<Metadata> metadata = new List<Metadata>();
+            List<ExportFieldNames> exportFieldNames = new List<ExportFieldNames>();
+
+            exportFieldNames = await this.GetExportFieldNamesAsync();
 
             foreach (var item in xDoc.Descendants("item"))
             {
@@ -220,13 +222,18 @@ namespace REDCapClient
                     {
                         dataDictionary.FieldChoices = ParseFieldChoicesSliderType(element);
                     }
+                    else if (dataDictionary.FieldType == "checkbox")
+                    {
+                        if (exportFieldNames != null)
+                        {
+                            int x = 10;
+                            // dataDictionary.ExportFieldNames = await GetExportFieldNamesAsync(item.Element("field_name").Value.ToString());
+                        }
+                    }
                     else
                     {
                         dataDictionary.FieldChoices = ParseFieldChoices(element);
-                        dataDictionary.ExportFieldNames = await GetExportFieldNamesAsync(item.Element("field_name").Value.ToString());
                     }
-
-                    
                 }
 
                 metadata.Add(dataDictionary);
@@ -235,27 +242,34 @@ namespace REDCapClient
             return metadata.ToList();
         }
 
-        public async Task<Dictionary<string, string>> GetExportFieldNamesAsync(string baseFieldName)
+        public async Task<List<ExportFieldNames>> GetExportFieldNamesAsync()
         {
-            Dictionary<string, string> fieldNames = new Dictionary<string, string>();
-            var xDoc = await GetExportFieldNamesXmlAsync(baseFieldName);
+            XDocument xDoc = await GetExportFieldNamesXmlAsync();
 
-            return fieldNames;
+            if (xDoc == null)
+            {
+                return null;
+            }
+            else
+            {
+                List<ExportFieldNames> fieldNames = new List<ExportFieldNames>();
+
+                return fieldNames;
+            }
         }
 
-        public async Task<XDocument> GetExportFieldNamesXmlAsync(string baseFieldName)
+        public async Task<XDocument> GetExportFieldNamesXmlAsync()
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = this._baseUri;
-                //var req = new StringContent(string.Format(PARAMS_GETEXPORTFIELDNAMES, this._token, "xml", baseFieldName));
-                var req = new StringContent(string.Format(PARAMS_GETEXPORTFIELDNAMES, this._token, "xml"));
+                var req = BuildRequest(PARAMS_GETEXPORTFIELDNAMES);
                 req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
                 var response = await client.PostAsync("", req);
                 var data = await response.Content.ReadAsStringAsync();
 
                 if (string.IsNullOrEmpty(data))
-                    return new XDocument();
+                    return null;
                 else
                 {
                     var xDoc = XDocument.Parse(data);
@@ -264,12 +278,18 @@ namespace REDCapClient
             }
         }
 
+        private StringContent BuildRequest(string parameter)
+        {
+            var req = new StringContent(string.Format(parameter, this._token, "xml"));
+            return req;
+        }
+
         public async Task<XDocument> GetFormsAsXmlAsync()
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = this._baseUri;
-                var req = new StringContent(String.Format(PARAMS_GETFORMS, this._token, "xml"));
+                var req = BuildRequest(PARAMS_GETFORMS); //new StringContent(String.Format(PARAMS_GETFORMS, this._token, "xml"));
                 req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
                 var response = await client.PostAsync("", req);
                 var data = await response.Content.ReadAsStringAsync();
