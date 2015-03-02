@@ -7,11 +7,11 @@ namespace REDCapClient
         public Metadata()
         {
             this._fieldChoices = new Dictionary<string, string>();
-            this._exportFieldNames = new Dictionary<string, string>();
+            this._exportFieldNames = new List<ExportFieldNames>();
         }
 
         private Dictionary<string, string> _fieldChoices;
-        private Dictionary<string, string> _exportFieldNames;
+        private ICollection<ExportFieldNames> _exportFieldNames;
 
         public bool IsMatrixRanking { get; set; }
         public string MatrixGroupName { get; set; }
@@ -36,7 +36,7 @@ namespace REDCapClient
             set { this._fieldChoices = value; }
         }
 
-        public virtual Dictionary<string, string> ExportFieldNames
+        public virtual ICollection<ExportFieldNames> ExportFieldNames
         {
             get { return this._exportFieldNames; }
             set { this._exportFieldNames = value; }
