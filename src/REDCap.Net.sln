@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{61D4BF
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REDCapWeb", "REDCapWeb\REDCapWeb.csproj", "{2ECD01DC-C52B-41D7-BC36-B43C61352944}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REDCapWeb.Tests", "REDCapWeb.Tests\REDCapWeb.Tests.csproj", "{8AC6B285-EE7B-4AB0-BA36-0F74BC2B02F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +32,14 @@ Global
 		{F57F03F4-56B9-4007-933D-1524DDAEA26F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F57F03F4-56B9-4007-933D-1524DDAEA26F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F57F03F4-56B9-4007-933D-1524DDAEA26F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ECD01DC-C52B-41D7-BC36-B43C61352944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ECD01DC-C52B-41D7-BC36-B43C61352944}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ECD01DC-C52B-41D7-BC36-B43C61352944}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ECD01DC-C52B-41D7-BC36-B43C61352944}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AC6B285-EE7B-4AB0-BA36-0F74BC2B02F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AC6B285-EE7B-4AB0-BA36-0F74BC2B02F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AC6B285-EE7B-4AB0-BA36-0F74BC2B02F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AC6B285-EE7B-4AB0-BA36-0F74BC2B02F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

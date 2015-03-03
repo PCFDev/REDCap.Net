@@ -40,6 +40,7 @@
     <Compile Include="RCModel\Event.cs" />
     <Compile Include="RCModel\ExportFieldNames.cs" />
     <Compile Include="RCModel\Form.cs" />
+    <Compile Include="RCModel\FormMetadata.cs" />
     <Compile Include="RCModel\Metadata.cs" />
     <Compile Include="RCModel\REDCapStudy.cs" />
     <Compile Include="REDCapClient.cs" />

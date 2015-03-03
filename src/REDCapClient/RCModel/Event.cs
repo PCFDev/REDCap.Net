@@ -9,7 +9,7 @@ namespace REDCapClient
             this._forms = new List<Form>();
         }
 
-        private ICollection<Form> _forms;
+        private List<Form> _forms;
 
         public string UniqueEventName { get; set; } // Key
         public string EventName { get; set; }
@@ -18,7 +18,7 @@ namespace REDCapClient
         public string OffsetMin { get; set; }
         public string OffsetMax { get; set; }
         
-        public virtual ICollection<Form> Forms
+        public virtual List<Form> Forms
         {
             get { return this._forms; }
             set { this._forms = value; }
