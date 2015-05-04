@@ -38,38 +38,40 @@ namespace REDCapExporter
         public async Task ProcessProject(string apiUrl, string token)
         {
             this._redCapClient = new REDCapClient.REDCapClient(apiUrl, token);
-            this._study.Arms = await this._redCapClient.GetArmsAsync();
-            this._study.Events = await this._redCapClient.GetEventsAsync();
-            this._study.Metadata = await this._redCapClient.GetMetadataAsync();
+            var result = await this._redCapClient.TestRecords();
+
+            //this._study.Arms = await this._redCapClient.GetArmsAsync();
+            //this._study.Events = await this._redCapClient.GetEventsAsync();
+            //this._study.Metadata = await this._redCapClient.GetMetadataAsync();
 
             //----HACK----
-            List<string> events = new List<string> { "month_1_arm_1", "month_2_arm_1", "month_3_arm_1" };
-            string[] formNames = { "demographics", "month_data" };
-            try
-            {
-                ostream = new FileStream("./month_data.csv", FileMode.OpenOrCreate, FileAccess.Write);
-                writer = new StreamWriter(ostream);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Cannot open text file for writing.");
-                Console.WriteLine(ex.Message);
+            //List<string> events = new List<string> { "month_1_arm_1", "month_2_arm_1", "month_3_arm_1" };
+            //string[] formNames = { "demographics", "month_data" };
+            //try
+            //{
+            //    ostream = new FileStream("./month_data.csv", FileMode.OpenOrCreate, FileAccess.Write);
+            //    writer = new StreamWriter(ostream);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("Cannot open text file for writing.");
+            //    Console.WriteLine(ex.Message);
 
-                return;
-            }
+            //    return;
+            //}
 
-            Console.SetOut(writer);
+            //Console.SetOut(writer);
 
-            foreach (string item in events)
-            {    
-                XDocument recordArray = await this._redCapClient.GetRecordsAsync(item, formNames);
-                await ProcessRecord(recordArray, formNames);
-            }
+            //foreach (string item in events)
+            //{    
+            //    XDocument recordArray = await this._redCapClient.GetRecordsAsync(item, formNames);
+            //    await ProcessRecord(recordArray, formNames);
+            //}
 
-            Console.SetOut(oldOut);
-            writer.Close();
-            ostream.Close();
-            Console.WriteLine("Done");
+            //Console.SetOut(oldOut);
+            //writer.Close();
+            //ostream.Close();
+            //Console.WriteLine("Done");
             //----HACK----
 
             foreach (Event eventSub in this._study.Events)

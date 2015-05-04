@@ -30,6 +30,34 @@ namespace REDCapClient
         private const string PARAMS_GETARMS = "token={0}&content=arm&format={1}";
         private const string PARAMS_GETEXPORTFIELDNAMES = "token={0}&content=exportFieldNames&format={1}";
 
+        private const string PARAMS_GETRECORDTEST = "token={0}&content=record&format={1}&type={2}&fields={3}";
+
+        public async Task<string> TestRecords()
+        {
+            //string[] fieldNames = { "study_id", "date_visit", "alb"};
+            //string[] forms = { "month_data" };
+            XDocument xDoc = new XDocument();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = this._baseUri;
+                var req = new StringContent(string.Format(PARAMS_GETRECORDTEST, this._token, "xml", "flat", "study_id, date_visit, alb"));
+                req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+                var response = await client.PostAsync("", req);
+                var data = await response.Content.ReadAsStringAsync();
+                xDoc = XDocument.Parse(data);
+            }
+
+            string results;
+
+            //foreach (var item in xDoc.Descendants("item"))
+            //{
+            //    /arms.Add(item.Element("arm_num").Value.ToString(), item.Element("name").Value.ToString());
+            //}
+
+            return xDoc.ToString();
+        }
+
         public REDCapClient(string apiUrl, string token)
         {
             this._baseUri = new Uri(apiUrl);
