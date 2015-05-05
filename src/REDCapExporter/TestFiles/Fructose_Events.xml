@@ -1,0 +1,66 @@
+<events>
+  <item>
+    <event_name><![CDATA[Participant Screen]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[0]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[participant_screen_arm_1]]></unique_event_name>
+  </item>
+  <item>
+    <event_name><![CDATA[Study Design]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[0]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[study_design_arm_1]]></unique_event_name>
+  </item>
+  <item>
+    <event_name><![CDATA[Study Screening]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[0]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[study_screening_arm_1]]></unique_event_name>
+  </item>
+  <item>
+    <event_name><![CDATA[Update Medications, AE]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[0]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[update_medications_arm_1]]></unique_event_name>
+  </item>
+  <item>
+    <event_name><![CDATA[Baseline Testing]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[7]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[baseline_testing_arm_1]]></unique_event_name>
+  </item>
+  <item>
+    <event_name><![CDATA[Diet Intervention]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[7]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[diet_intervention_arm_1]]></unique_event_name>
+  </item>
+  <item>
+    <event_name><![CDATA[End of Study Testing]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[28]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[end_of_study_testi_arm_1]]></unique_event_name>
+  </item>
+  <item>
+    <event_name><![CDATA[Post Testing]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[30]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[post_testing_arm_1]]></unique_event_name>
+  </item>
+</events>

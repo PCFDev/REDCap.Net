@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace REDCapClient
 {
+    [Obsolete]
     public class FormMetadata
     {
         public FormMetadata()
@@ -17,13 +19,13 @@ namespace REDCapClient
 
         public virtual List<Metadata> FieldData
         {
-            get { return this._fieldData; }
-            set { this._fieldData = value; }
+            get { return _fieldData; }
+            set { _fieldData = value; }
         }
         
         public override string ToString()
         {
-            return this.FormName;
+            return FormName;
         }
     }
 }

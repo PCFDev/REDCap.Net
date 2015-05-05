@@ -21,6 +21,26 @@ namespace REDCapExporter
         TextWriter oldOut = Console.Out;
         // FILE WRITING
 
+        public async Task<REDCapStudy> ProcessProject(ProjectConfiguration item)
+        {
+            // Using File System: ApiKey = Events; ApiUrl = Instruments
+            REDCapFileSource _rcClient = new REDCapFileSource();
+            await _rcClient.Initialize(item.ApiKey, item.ApiUrl);
+            _study.Events = await _rcClient.GetEventsAsync();
+
+            int x = 10;
+            //--
+
+            // Working code...
+
+            //_redCapClient = new REDCapClient.REDCapClient(item.ApiKey, item.ApiUrl); // Start the API client
+            //_study.Events = await _redCapClient.GetEventsAsync(); // Gets all the events available in the study
+            //_study.Metadata = await _redCapClient.GetMetadataAsync(); // Gets study metadata
+
+            //...end working code
+
+            return null;
+        }
 
         public async Task ProcessProject(string apiUrl, string token)
         {
@@ -39,11 +59,11 @@ namespace REDCapExporter
 
             foreach (Event eventSub in _study.Events)
             {
-                foreach (Form formSub in eventSub.Forms)
+                foreach (Instrument formSub in eventSub.Instruments)
                 {
                     try
                     {
-                        ostream = new FileStream("./" + eventSub.UniqueEventName + "_" + formSub.FormName + ".csv", FileMode.OpenOrCreate, FileAccess.Write);
+                        ostream = new FileStream("./" + eventSub.UniqueEventName + "_" + formSub.InstrumentName + ".csv", FileMode.OpenOrCreate, FileAccess.Write);
                         writer = new StreamWriter(ostream);
                     }
                     catch (Exception ex)
@@ -60,8 +80,8 @@ namespace REDCapExporter
                     //XDocument recordArray = await this._redCapClient.GetRecordsAsync("month_1_arm_1", formNames);
                     //await ProcessRecord(recordArray, formNames);
 
-                    XDocument records = await this._redCapClient.GetRecordsAsync(eventSub.UniqueEventName, formSub.FormName);
-                    await ProcessRecord(records, formSub.FormName);
+                    XDocument records = await this._redCapClient.GetRecordsAsync(eventSub.UniqueEventName, formSub.InstrumentName);
+                    await ProcessRecord(records, formSub.InstrumentName);
 
                     Console.SetOut(oldOut);
                     writer.Close();
@@ -71,19 +91,7 @@ namespace REDCapExporter
             }
         }
 
-        public async Task<REDCapStudy> ProcessProject(ProjectConfiguration item)
-        {
-            // Working code...
 
-            _redCapClient = new REDCapClient.REDCapClient(item.ApiKey, item.ApiUrl); // Start the API client
-
-            _study.Events = await _redCapClient.GetEventsAsync(); // Gets all the events available in the study
-            _study.Metadata = await _redCapClient.GetMetadataAsync(); // Gets study metadata
-
-            //...end working code
-
-            return null;
-        }
 
         public async Task<List<REDCapClient.FormMetadata>> GetStudyFormData(string apiUrl, string apiToken)
         {

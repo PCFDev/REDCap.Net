@@ -27,7 +27,7 @@ namespace REDCapExporter
                      ApiKey = "https://redcap.wustl.edu/redcap/srvrs/dev_v3_1_0_001/redcap/api/",
                       ApiUrl = "820E65DD2D930A0859BB3F727989D29E"
                 }
-        };
+            };
         }
     }
 }

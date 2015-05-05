@@ -6,8 +6,8 @@ namespace REDCapClient
     {
         public Metadata()
         {
-            this._fieldChoices = new Dictionary<string, string>();
-            this._exportFieldNames = new List<ExportFieldNames>();
+            _fieldChoices = new Dictionary<string, string>();
+            _exportFieldNames = new List<ExportFieldNames>();
         }
 
         private Dictionary<string, string> _fieldChoices;
@@ -32,19 +32,19 @@ namespace REDCapClient
 
         public virtual Dictionary<string, string> FieldChoices
         {
-            get { return this._fieldChoices; }
-            set { this._fieldChoices = value; }
+            get { return _fieldChoices; }
+            set { _fieldChoices = value; }
         }
 
         public virtual ICollection<ExportFieldNames> ExportFieldNames
         {
-            get { return this._exportFieldNames; }
-            set { this._exportFieldNames = value; }
+            get { return _exportFieldNames; }
+            set { _exportFieldNames = value; }
         }
 
         public override string ToString()
         {
-            return this.FieldName;
+            return FieldName;
         }
     }
 }

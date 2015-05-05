@@ -11,5 +11,10 @@ namespace REDCapClient
         public string OriginalFieldName { get; set; }
         public string ChoiceValue { get; set; }
         public string ExportFieldName { get; set; }
+
+        public override string ToString()
+        {
+            return ExportFieldName;
+        }
     }
 }

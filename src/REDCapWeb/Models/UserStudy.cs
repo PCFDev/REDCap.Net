@@ -12,7 +12,7 @@ namespace REDCapWeb
         [Display(Name="Identifier Field Name")]
         public string KeyFieldName { get; set; }
         
-        [Display(Name="Identifier Form Name")]
+        [Display(Name="Identifier Instrument Name")]
         public string KeyFormName { get; set; }
         
         [Display(Name="User Name")]
