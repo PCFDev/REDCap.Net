@@ -71,6 +71,20 @@ namespace REDCapExporter
             }
         }
 
+        public async Task<REDCapStudy> ProcessProject(ProjectConfiguration item)
+        {
+            // Working code...
+
+            _redCapClient = new REDCapClient.REDCapClient(item.ApiKey, item.ApiUrl); // Start the API client
+
+            _study.Events = await _redCapClient.GetEventsAsync(); // Gets all the events available in the study
+            _study.Metadata = await _redCapClient.GetMetadataAsync(); // Gets study metadata
+
+            //...end working code
+
+            return null;
+        }
+
         public async Task<List<REDCapClient.FormMetadata>> GetStudyFormData(string apiUrl, string apiToken)
         {
             this._redCapClient = new REDCapClient.REDCapClient(apiUrl, apiToken);

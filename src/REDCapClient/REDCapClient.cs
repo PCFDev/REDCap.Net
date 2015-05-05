@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace REDCapClient
 {
-    public class REDCapClient
+    public class REDCapClient : IREDCapClient
     {
         private List<string> _formNames = new List<string>();
         private HttpClient client = new HttpClient();
@@ -19,7 +19,6 @@ namespace REDCapClient
             "token={0}&content=record&format={1}&type=eav" +
             "&rawOrLabel=label&rawOrLabelHeader=label&exportCheckboxLabel=true&exportSurveyFields=true&exportDataAccessGroups=true" +
             "&returnFormat=xml&forms={2}";
-
         private const string PARAMS_GETFORMS = "token={0}&content=instrument&format={1}&rawOrLabel=label&rawOrLabelHeader=label&exportCheckboxLabel=true";
         private const string PARAMS_GETREPORT = "token={0}&content=report&report_id={1}&rawOrLabel=label&rawOrLabelHeader=label&exportCheckboxLabel=true&format={2}";
         private const string PARAMS_GETEVENT = "token={0}&content=event&format={1}";
@@ -32,8 +31,8 @@ namespace REDCapClient
         private const string PARAMS_GETRECORDTEST = "token={0}&content=record&format={1}&type={2}&fields={3}";
 
 
-#region Good Working Code
-        
+        #region Good Working Code
+
         public async Task<List<Event>> GetEventsAsync()
         {
             // WEB API
@@ -194,9 +193,35 @@ namespace REDCapClient
             return arms;
         }
 
+        public async Task<string> TestRecords()
+        {
+            //string[] fieldNames = { "study_id", "date_visit", "alb"};
+            //string[] forms = { "month_data" };
+            XDocument xDoc = new XDocument();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = _baseUri;
+                var req = new StringContent(string.Format(PARAMS_GETRECORDTEST, this._token, "xml", "flat", "study_id, date_visit, alb"));
+                req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+                var response = await client.PostAsync("", req);
+                var data = await response.Content.ReadAsStringAsync();
+                xDoc = XDocument.Parse(data);
+            }
+
+            string results;
+
+            //foreach (var item in xDoc.Descendants("item"))
+            //{
+            //    /arms.Add(item.Element("arm_num").Value.ToString(), item.Element("name").Value.ToString());
+            //}
+
+            return xDoc.ToString();
+        }
+
         #endregion
 
-#region Old Code
+        #region Old Code
         public async Task<List<ExportFieldNames>> GetExportFieldNamesAsync()
         {
             XDocument xDoc = await GetExportFieldNamesXmlAsync();
@@ -280,31 +305,7 @@ namespace REDCapClient
             set { this._study = value; }
         }
 
-        public async Task<string> TestRecords()
-        {
-            //string[] fieldNames = { "study_id", "date_visit", "alb"};
-            //string[] forms = { "month_data" };
-            XDocument xDoc = new XDocument();
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = _baseUri;
-                var req = new StringContent(string.Format(PARAMS_GETRECORDTEST, this._token, "xml", "flat", "study_id, date_visit, alb"));
-                req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
-                var response = await client.PostAsync("", req);
-                var data = await response.Content.ReadAsStringAsync();
-                xDoc = XDocument.Parse(data);
-            }
-
-            string results;
-
-            //foreach (var item in xDoc.Descendants("item"))
-            //{
-            //    /arms.Add(item.Element("arm_num").Value.ToString(), item.Element("name").Value.ToString());
-            //}
-
-            return xDoc.ToString();
-        }
 
         public REDCapClient(string apiUrl, string token)
         {
@@ -399,7 +400,7 @@ namespace REDCapClient
         }
         #endregion
 
-#region Private helper functions
+        #region Private helper functions
 
         private async Task<Metadata> HydrateMetadataFields(XElement item)
         {
