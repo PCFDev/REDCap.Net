@@ -1,0 +1,26 @@
+<items>
+  <arm>
+    <number>1</number>
+    <event>
+      <unique_event_name>bl_arm_1</unique_event_name>
+      <form>demographics</form>
+      <form>baseline_data</form>
+    </event>
+    <event>
+      <unique_event_name>month_1_arm_1</unique_event_name>
+      <form>month_data</form>
+    </event>
+    <event>
+      <unique_event_name>month_2_arm_1</unique_event_name>
+      <form>month_data</form>
+    </event>
+    <event>
+      <unique_event_name>month_3_arm_1</unique_event_name>
+      <form>month_data</form>
+    </event>
+    <event>
+      <unique_event_name>complete_arm_1</unique_event_name>
+      <form>completion_data</form>
+    </event>
+  </arm>
+</items>

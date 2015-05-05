@@ -1,0 +1,74 @@
+<instruments>
+  <item>
+    <instrument_name><![CDATA[demographics]]></instrument_name>
+    <instrument_label><![CDATA[Demographics]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[medical_history]]></instrument_name>
+    <instrument_label><![CDATA[Medical History]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[study_design]]></instrument_name>
+    <instrument_label><![CDATA[Study Design]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[screening_bloodwork]]></instrument_name>
+    <instrument_label><![CDATA[Screening Bloodwork]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[nursing_flowchart]]></instrument_name>
+    <instrument_label><![CDATA[Nursing Flowchart]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[physical_exam]]></instrument_name>
+    <instrument_label><![CDATA[Physical Exam]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[past_medical_history]]></instrument_name>
+    <instrument_label><![CDATA[Past Medical History]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[medications]]></instrument_name>
+    <instrument_label><![CDATA[Medications]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[labs]]></instrument_name>
+    <instrument_label><![CDATA[Labs]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[dexa]]></instrument_name>
+    <instrument_label><![CDATA[Dexa]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[inclusion_exclusion_criteria]]></instrument_name>
+    <instrument_label><![CDATA[Inclusion Exclusion Criteria]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[mri_mrs]]></instrument_name>
+    <instrument_label><![CDATA[MRI MRS]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[vldl]]></instrument_name>
+    <instrument_label><![CDATA[Vldl]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[vldl_loading]]></instrument_name>
+    <instrument_label><![CDATA[Vldl Loading]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[clamp]]></instrument_name>
+    <instrument_label><![CDATA[Clamp]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[clamp_infusate]]></instrument_name>
+    <instrument_label><![CDATA[Clamp Infusate]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[dietitian]]></instrument_name>
+    <instrument_label><![CDATA[Dietitian]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[adverse_event]]></instrument_name>
+    <instrument_label><![CDATA[Adverse Event]]></instrument_label>
+  </item>
+</instruments>

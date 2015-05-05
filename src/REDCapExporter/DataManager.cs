@@ -21,60 +21,23 @@ namespace REDCapExporter
         TextWriter oldOut = Console.Out;
         // FILE WRITING
 
-        public async Task<List<REDCapClient.FormMetadata>> GetStudyFormData(string apiUrl, string apiToken)
-        {
-            this._redCapClient = new REDCapClient.REDCapClient(apiUrl, apiToken);
-            List<FormMetadata> results = new List<FormMetadata>();
-
-            results = await this._redCapClient.GetFormMetadataAsync();
-
-            return results.ToList();
-            //this._study.Events = await this._redCapClient.GetEventsAsync();
-            //this._study.Metadata = await this._redCapClient.GetMetadataAsync();
-
-            //return this._study;
-        }
 
         public async Task ProcessProject(string apiUrl, string token)
         {
-            this._redCapClient = new REDCapClient.REDCapClient(apiUrl, token);
-            var result = await this._redCapClient.TestRecords();
+            // Working code...
 
-            //this._study.Arms = await this._redCapClient.GetArmsAsync();
-            //this._study.Events = await this._redCapClient.GetEventsAsync();
-            //this._study.Metadata = await this._redCapClient.GetMetadataAsync();
+            _redCapClient = new REDCapClient.REDCapClient(apiUrl, token); // Start the API client
 
-            //----HACK----
-            //List<string> events = new List<string> { "month_1_arm_1", "month_2_arm_1", "month_3_arm_1" };
-            //string[] formNames = { "demographics", "month_data" };
-            //try
-            //{
-            //    ostream = new FileStream("./month_data.csv", FileMode.OpenOrCreate, FileAccess.Write);
-            //    writer = new StreamWriter(ostream);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("Cannot open text file for writing.");
-            //    Console.WriteLine(ex.Message);
+            _study.Events = await _redCapClient.GetEventsAsync(); // Gets all the events available in the study
+            _study.Metadata = await _redCapClient.GetMetadataAsync(); // Gets study metadata
 
-            //    return;
-            //}
+            //...end working code
 
-            //Console.SetOut(writer);
 
-            //foreach (string item in events)
-            //{    
-            //    XDocument recordArray = await this._redCapClient.GetRecordsAsync(item, formNames);
-            //    await ProcessRecord(recordArray, formNames);
-            //}
+            // _study.Arms = await _redCapClient.GetArmsAsync();
+            // var result = await _redCapClient.TestRecords();
 
-            //Console.SetOut(oldOut);
-            //writer.Close();
-            //ostream.Close();
-            //Console.WriteLine("Done");
-            //----HACK----
-
-            foreach (Event eventSub in this._study.Events)
+            foreach (Event eventSub in _study.Events)
             {
                 foreach (Form formSub in eventSub.Forms)
                 {
@@ -106,6 +69,20 @@ namespace REDCapExporter
                     Console.WriteLine("Done");
                 }
             }
+        }
+
+        public async Task<List<REDCapClient.FormMetadata>> GetStudyFormData(string apiUrl, string apiToken)
+        {
+            this._redCapClient = new REDCapClient.REDCapClient(apiUrl, apiToken);
+            List<FormMetadata> results = new List<FormMetadata>();
+
+            results = await this._redCapClient.GetFormMetadataAsync();
+
+            return results.ToList();
+            //this._study.Events = await this._redCapClient.GetEventsAsync();
+            //this._study.Metadata = await this._redCapClient.GetMetadataAsync();
+
+            //return this._study;
         }
 
         private async Task ProcessRecord(XDocument xDoc, string[] forms)
