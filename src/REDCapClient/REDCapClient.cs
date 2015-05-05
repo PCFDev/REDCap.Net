@@ -30,6 +30,21 @@ namespace REDCapClient
         private const string PARAMS_GETEXPORTFIELDNAMES = "token={0}&content=exportFieldNames&format={1}";
         private const string PARAMS_GETRECORDTEST = "token={0}&content=record&format={1}&type={2}&fields={3}";
 
+        private static string _eventFileName;
+        private static string _instrumentFileName;
+
+        public async Task Initialize(string apiKey, string apiUri)
+        {
+            _eventFileName = apiKey;
+            _instrumentFileName = apiUri;
+        }
+
+        public REDCapClient(string apiUrl, string token)
+        {
+            this._baseUri = new Uri(apiUrl);
+            this._token = token;
+            this._study = new REDCapStudy();
+        }
 
         #region Good Working Code
 
@@ -38,7 +53,7 @@ namespace REDCapClient
             // WEB API
             var xDocEvents = await GetEventsAsXmlAsync();
             var xDocMapping = await GetFormEventMapAsXmlAsync();
-            List<Form> forms = await GetFormsAsync();
+            List<Instrument> forms = await GetFormsAsync();
             // WEB API
 
             // FILE READER
@@ -65,7 +80,7 @@ namespace REDCapClient
 
                 foreach (var form in mappings.Descendants("form"))
                 {
-                    thisEvent.Forms.Add(forms.Where(f => f.FormName == form.Value.ToString()).FirstOrDefault());
+                    thisEvent.Instruments.Add(forms.Where(f => f.InstrumentName == form.Value.ToString()).FirstOrDefault());
                 }
 
                 events.Add(thisEvent);
@@ -119,17 +134,17 @@ namespace REDCapClient
             }
         }
 
-        public async Task<List<Form>> GetFormsAsync()
+        public async Task<List<Instrument>> GetFormsAsync()
         {
             var xDoc = await GetFormsAsXmlAsync();
-            List<Form> forms = new List<Form>();
+            List<Instrument> forms = new List<Instrument>();
 
             foreach (var item in xDoc.Descendants("item"))
             {
-                Form form = new Form
+                Instrument form = new Instrument
                 {
-                    FormName = item.Element("instrument_name").Value.ToString(),
-                    FormLabel = item.Element("instrument_label").Value.ToString()
+                    InstrumentName = item.Element("instrument_name").Value.ToString(),
+                    InstrumentLabel = item.Element("instrument_label").Value.ToString()
                 };
 
                 forms.Add(form);
@@ -307,26 +322,19 @@ namespace REDCapClient
 
 
 
-        public REDCapClient(string apiUrl, string token)
-        {
-            this._baseUri = new Uri(apiUrl);
-            this._token = token;
-            this._study = new REDCapStudy();
-        }
-
         public async Task<List<FormMetadata>> GetFormMetadataAsync()
         {
             List<FormMetadata> result = new List<FormMetadata>();
-            List<Form> forms = await GetFormsAsync();
+            List<Instrument> forms = await GetFormsAsync();
             List<Metadata> fieldData = await GetMetadataAsync();
 
-            foreach (Form form in forms)
+            foreach (Instrument form in forms)
             {
                 FormMetadata fm = new FormMetadata();
 
-                fm.FormLabel = form.FormLabel;
-                fm.FormName = form.FormName;
-                fm.FieldData.AddRange(fieldData.Where(p => p.FormName == form.FormName));
+                fm.FormLabel = form.InstrumentLabel;
+                fm.FormName = form.InstrumentName;
+                fm.FieldData.AddRange(fieldData.Where(p => p.FormName == form.InstrumentName));
 
                 result.Add(fm);
             }
@@ -334,17 +342,17 @@ namespace REDCapClient
             return result;
         }
 
-        public async Task<List<Form>> GetFormEventMapAsync()
+        public async Task<List<Instrument>> GetFormEventMapAsync()
         {
             var xDoc = await this.GetFormEventMapAsXmlAsync();
-            List<Form> forms = new List<Form>();
+            List<Instrument> forms = new List<Instrument>();
 
             foreach (var item in xDoc.Descendants("item"))
             {
-                forms.Add(new Form
+                forms.Add(new Instrument
                 {
-                    FormLabel = item.Element("form_label").Value.ToString(),
-                    FormName = item.Element("form_name").Value.ToString()
+                    InstrumentLabel = item.Element("form_label").Value.ToString(),
+                    InstrumentName = item.Element("form_name").Value.ToString()
                 });
             }
 
@@ -498,6 +506,11 @@ namespace REDCapClient
             }
 
             return choices;
+        }
+
+        public Task<XDocument> GetFormDataAsXmlAsync()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

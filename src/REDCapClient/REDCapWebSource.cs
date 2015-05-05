@@ -22,6 +22,15 @@ namespace REDCapClient
             }
         }
 
+        private static string _eventFileName;
+        private static string _instrumentFileName;
+
+        public async Task Initialize(string apiKey, string apiUri)
+        {
+            _eventFileName = apiKey;
+            _instrumentFileName = apiUri;
+        }
+
         public Task<XDocument> GetArmsAsXmlAsync()
         {
             throw new NotImplementedException();
@@ -62,7 +71,7 @@ namespace REDCapClient
             throw new NotImplementedException();
         }
 
-        public Task<List<Form>> GetFormEventMapAsync()
+        public Task<List<Instrument>> GetFormEventMapAsync()
         {
             throw new NotImplementedException();
         }
@@ -77,7 +86,7 @@ namespace REDCapClient
             throw new NotImplementedException();
         }
 
-        public Task<List<Form>> GetFormsAsync()
+        public Task<List<Instrument>> GetFormsAsync()
         {
             throw new NotImplementedException();
         }
@@ -118,6 +127,11 @@ namespace REDCapClient
         }
 
         public Task<string> TestRecords()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<XDocument> GetFormDataAsXmlAsync()
         {
             throw new NotImplementedException();
         }

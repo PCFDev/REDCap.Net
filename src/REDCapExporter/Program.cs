@@ -7,7 +7,8 @@ namespace REDCapExporter
         static void Main(string[] args)
         {
             // Get Configuration
-            IConfigController controller = new TestConfigController();
+            // IConfigController controller = new TestConfigController();
+            IConfigController controller = new FileConfigController();
             var configs = controller.GetConfigurations();
 
             IStudyWriter studyWriter = new TestStudyWriter();

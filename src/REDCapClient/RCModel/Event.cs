@@ -6,10 +6,10 @@ namespace REDCapClient
     {
         public  Event()
         {
-            this._forms = new List<Form>();
+            _instruments = new List<Instrument>();
         }
 
-        private List<Form> _forms;
+        private List<Instrument> _instruments;
 
         public string UniqueEventName { get; set; } // Key
         public string EventName { get; set; }
@@ -18,15 +18,15 @@ namespace REDCapClient
         public string OffsetMin { get; set; }
         public string OffsetMax { get; set; }
         
-        public virtual List<Form> Forms
+        public virtual List<Instrument> Instruments
         {
-            get { return this._forms; }
-            set { this._forms = value; }
+            get { return _instruments; }
+            set { _instruments = value; }
         }
 
         public override string ToString()
         {
-            return this.EventName;
+            return EventName;
         }
     }
 }

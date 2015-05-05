@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="DataContext.cs" />
     <Compile Include="DataManager.cs" />
+    <Compile Include="FileConfigController.cs" />
     <Compile Include="IConfigController.cs" />
     <Compile Include="IStudyWriter.cs" />
     <Compile Include="Program.cs" />
@@ -97,6 +98,18 @@
     <Content Include="ExampleDatabase_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>ExampleDatabase.mdf</DependentUpon>
+    </Content>
+    <Content Include="TestFiles\Fructose_Events.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Fructose_Forms.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Fructose_Mapping.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Fructose_Metadata.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
