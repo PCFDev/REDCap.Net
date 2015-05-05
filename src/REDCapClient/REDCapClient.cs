@@ -36,9 +36,15 @@ namespace REDCapClient
         
         public async Task<List<Event>> GetEventsAsync()
         {
+            // WEB API
             var xDocEvents = await GetEventsAsXmlAsync();
             var xDocMapping = await GetFormEventMapAsXmlAsync();
-            List<Form> forms = await GetFormsAsync();            
+            List<Form> forms = await GetFormsAsync();
+            // WEB API
+
+            // FILE READER
+            // FILE READER
+
             List<Event> events = new List<Event>();
 
             foreach (var item in xDocEvents.Descendants("item"))
