@@ -49,6 +49,7 @@
     <Compile Include="REDCapWebSource.cs" />
     <Compile Include="SqlConvertor.cs" />
     <Compile Include="XmlExtensions.cs" />
+    <Compile Include="XMLParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
