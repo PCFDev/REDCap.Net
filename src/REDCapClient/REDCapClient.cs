@@ -40,6 +40,11 @@ namespace REDCapClient
             _instrumentFileName = apiUri;
         }
 
+        public Task Initialize(string armFileName, string eventFileName, string exportFiledNamesFileName, string instrumentFileName, string instrumentEventMappingFileName, string metadataFileName)
+        {
+            throw new NotImplementedException();
+        }
+
         public REDCapClient(string apiUrl, string token)
         {
             this._baseUri = new Uri(apiUrl);
@@ -513,6 +518,8 @@ namespace REDCapClient
         {
             throw new NotImplementedException();
         }
+
+
 
         #endregion
     }

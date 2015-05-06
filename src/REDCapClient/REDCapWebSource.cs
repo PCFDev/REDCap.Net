@@ -136,5 +136,10 @@ namespace REDCapClient
         {
             throw new NotImplementedException();
         }
+
+        public Task Initialize(string armFileName, string eventFileName, string exportFiledNamesFileName, string instrumentFileName, string instrumentEventMappingFileName, string metadataFileName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

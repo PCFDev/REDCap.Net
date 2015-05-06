@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace REDCapExporter
 {
@@ -17,8 +13,8 @@ namespace REDCapExporter
                     ArmFileName = "",
                     ExportFieldNamesFileName = "",
                     InstrumentFileName = @"TestFiles\Fructose_Forms.xml",
-                    InstrumentEventMappingFileName = "",
-                    MetadataFileName = ""
+                    InstrumentEventMappingFileName = @"TestFiles\Fructose_Mapping.xml",
+                    MetadataFileName = @"TestFiles\Fructose_Metadata.xml"
                 }
             };
         }

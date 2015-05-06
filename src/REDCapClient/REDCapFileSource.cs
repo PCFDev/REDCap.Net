@@ -11,13 +11,31 @@ namespace REDCapClient
 {
     public class REDCapFileSource : IREDCapClient
     {
-        private static string _eventFileName;
-        private static string _instrumentFileName;
+        private static string _armFile = string.Empty;
+        private static string _eventFile = string.Empty;
+        private static string _exportFiledNamesFile = string.Empty;
+        private static string _instrumentFile = string.Empty;
+        private static string _instrumentEventMappingFile = string.Empty;
+        private static string _metadataFile = string.Empty;
 
         public async Task Initialize(string apiKey, string apiUri)
         {
-            _eventFileName = apiKey;
-            _instrumentFileName = apiUri;
+            throw new NotImplementedException();
+        }
+
+        public async Task Initialize(string armFileName,
+            string eventFileName,
+            string exportFiledNamesFileName,
+            string instrumentFileName,
+            string instrumentEventMappingFileName, 
+            string metadataFileName)
+        {
+            _armFile = armFileName;
+            _eventFile = eventFileName;
+            _exportFiledNamesFile = exportFiledNamesFileName;
+            _instrumentFile = instrumentFileName;
+            _instrumentEventMappingFile = instrumentFileName;
+            _metadataFile = metadataFileName;
         }
 
         public REDCapStudy Study
@@ -51,7 +69,7 @@ namespace REDCapClient
         public Task<List<Event>> GetEventsAsync()
         {
             //throw new NotImplementedException();
-            var xDoc = XDocument.Load(_eventFileName);
+            var xDoc = XDocument.Load(_eventFile);
             List<Event> events = new List<Event>();
 
             foreach (var item in xDoc.Descendants("item"))
@@ -101,7 +119,7 @@ namespace REDCapClient
 
         public Task<XDocument> GetFormEventMapAsXmlAsync()
         {
-            throw new NotImplementedException();            
+            throw new NotImplementedException();
         }
 
         public Task<List<Instrument>> GetFormEventMapAsync()
@@ -122,7 +140,7 @@ namespace REDCapClient
         public async Task<List<Instrument>> GetFormsAsync()
         {
             // throw new NotImplementedException();
-            var xDoc = XDocument.Load(_instrumentFileName);
+            var xDoc = XDocument.Load(_instrumentFile);
             List<Instrument> forms = new List<Instrument>();
 
             foreach (var item in xDoc.Descendants("item"))
@@ -146,7 +164,7 @@ namespace REDCapClient
 
         public async Task<List<Metadata>> GetMetadataAsync()
         {
-            throw new NotImplementedException();            
+            throw new NotImplementedException();
         }
 
         public Task<XDocument> GetRecordsAsXmlAsync(string eventName, string formName)
@@ -276,5 +294,7 @@ namespace REDCapClient
 
             return choices;
         }
+
+
     }
 }
