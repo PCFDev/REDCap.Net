@@ -13,7 +13,8 @@ namespace REDCapExporter
         private DataContext _context = new DataContext();
         private REDCapClient.REDCapClient _redCapClient;
         private REDCapClient.SqlConvertor _sqlConvertor = new REDCapClient.SqlConvertor();
-        private REDCapClient.REDCapStudy _study = new REDCapStudy();
+        // private REDCapClient.REDCapStudy _study = new REDCapStudy();
+        private REDCapClient.REDCapFileSource _rcFileSource = new REDCapFileSource();
 
         // FILE WRITING
         FileStream ostream;
@@ -22,7 +23,7 @@ namespace REDCapExporter
         // FILE WRITING
 
         public async Task<REDCapStudy> ProcessProject(ProjectConfiguration item)
-        {
+        {            
             // Using File System: ApiKey = Events; ApiUrl = Instruments
             REDCapFileSource _rcClient = new REDCapFileSource();
             await _rcClient.Initialize(item.ApiKey, item.ApiUrl);

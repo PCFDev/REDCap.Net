@@ -1,4 +1,4 @@
-﻿namespace REDCapClient
+﻿namespace PCF.REDCap.Model
 {
     public class Instrument
     {
@@ -7,7 +7,7 @@
 
         public override string ToString()
         {
-            return this.InstrumentName;
+            return InstrumentName;
         }
     }
 }

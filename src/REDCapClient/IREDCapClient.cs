@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using PCF.REDCap.Model;
 
 namespace REDCapClient
 {

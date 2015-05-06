@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace REDCapClient
+namespace PCF.REDCap.Model
 {
     [Obsolete]
     public class FormMetadata
     {
         public FormMetadata()
         {
-            this._fieldData = new List<Metadata>();
+            _fieldData = new List<Metadata>();
         }
 
         private List<Metadata> _fieldData;

@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="DataContext.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="FileConfigController.cs" />

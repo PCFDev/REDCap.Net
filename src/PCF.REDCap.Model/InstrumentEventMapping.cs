@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace REDCapClient.RCModel
+namespace REDCapClient
 {
     public class InstrumentEventMapping
     {

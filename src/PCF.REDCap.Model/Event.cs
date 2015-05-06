@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace REDCapClient
+namespace PCF.REDCap.Model
 {
     public class Event
     {
