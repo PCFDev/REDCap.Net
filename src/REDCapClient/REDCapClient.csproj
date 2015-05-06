@@ -68,8 +68,15 @@
   <ItemGroup>
     <Content Include="TestFiles\Fructose_Events.xml" />
     <Content Include="TestFiles\Fructose_Forms.xml" />
+    <Content Include="TestFiles\Fructose_Labs_BaselineTestingArm1.xml" />
+    <Content Include="TestFiles\Fructose_Labs_EndOfStudyTestingArm1.xml" />
+    <Content Include="TestFiles\Fructose_Labs_PostTestingArm1.xml" />
     <Content Include="TestFiles\Fructose_Mapping.xml" />
     <Content Include="TestFiles\Fructose_Metadata.xml" />
+    <Content Include="TestFiles\Fructose_Record_Demographics.xml" />
+    <Content Include="TestFiles\Fructose_Record_EAV - Copy.xml" />
+    <Content Include="TestFiles\Fructose_Labs_StudyScreeningArm1.xml" />
+    <Content Include="TestFiles\Sample1_Demographics.xml" />
     <Content Include="TestFiles\Sample1_Events.xml" />
     <Content Include="TestFiles\Sample1_Forms.xml" />
     <Content Include="TestFiles\Sample1_Mapping.xml" />

@@ -13,9 +13,7 @@ namespace REDCapExporter
         private DataContext _context = new DataContext();
         private REDCapClient.REDCapClient _redCapClient;
         private REDCapClient.SqlConvertor _sqlConvertor = new REDCapClient.SqlConvertor();
-        // private REDCapClient.REDCapStudy _study = new REDCapStudy();
-        private REDCapClient.REDCapFileSource _rcFileSource = new REDCapFileSource();
-
+        
         // FILE WRITING
         FileStream ostream;
         StreamWriter writer;
@@ -23,22 +21,29 @@ namespace REDCapExporter
         // FILE WRITING
 
         public async Task ProcessProject(ProjectConfiguration cfgItem)
-        {            
-            // Using File System
+        {
+            // Using file system source
             REDCapFileSource _rcClient = new REDCapFileSource();
             await _rcClient.Initialize(cfgItem.ArmFileName, cfgItem.EventFileName, cfgItem.ExportFieldNamesFileName, cfgItem.InstrumentFileName, cfgItem.InstrumentEventMappingFileName, cfgItem.MetadataFileName);
 
-            // Annnnnddd GO!
+            // Each instrument is a "table"
+            XDocument xInstrument = await _rcClient.GetInstrumentsAsXmlAsync();
+
+            // Each item in metadata will be assigned to an instrument
+            // Each item will contain data about that item (radio selection, checkbox values, etc.)
+            XDocument xMetadata = await _rcClient.GetMetadataAsXmlAsync();
+
+            // Multi-value fields have different names than the parent field, those are in this file
+            XDocument xExportFieldNames = await _rcClient.GetExportFieldNamesAsXmlAsync();
+
+            // A study may have multiple arms, arm information is in this file
             XDocument xArms = await _rcClient.GetArmsAsXmlAsync();
 
-            XDocument xMetadata = await _rcClient.GetMetadataAsXmlAsync();
-            
-            XDocument xExportFieldNames = await _rcClient.GetExportFieldNamesAsXmlAsync();
-            
-            XDocument xInstrument = await _rcClient.GetInstrumentsAsXmlAsync();
-            
+            // An event has a particular arm and can have multiple instruments used and
+            // A particular instrument can be listed in multiple events
             XDocument xEvents = await _rcClient.GetEventsAsXmlAsync();
             
+            // This file lists each event in the study and the list of instruments used in that event
             XDocument xMaping = await _rcClient.GetInstrumentEventMappingAsXmlAsync();            
         }
 
