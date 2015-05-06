@@ -27,12 +27,13 @@ namespace REDCapClient
         Task<List<ExportFieldNames>> GetExportFieldNamesAsync();
         Task<XDocument> GetExportFieldNamesXmlAsync();
         Task<XDocument> GetFormDataAsXmlAsync();
-        Task<XDocument> GetFormEventMapAsXmlAsync();
+        Task<XDocument> GetInstrumentEventMappingAsXmlAsync();
         Task<List<Instrument>> GetFormEventMapAsync();
         Task<List<FormMetadata>> GetFormMetadataAsync();
-        Task<XDocument> GetFormsAsXmlAsync();
+        Task<XDocument> GetInstrumentsAsXmlAsync();
         Task<List<Instrument>> GetFormsAsync();
         Task<XDocument> GetMetadataAsXmlAsync();
+        Task<XDocument> GetExportFieldNamesAsXmlAsync();
         Task<List<Metadata>> GetMetadataAsync();
         Task<XDocument> GetRecordsAsXmlAsync(string eventName, string[] formNames);
         Task<XDocument> GetRecordsAsXmlAsync(string eventName, string formName);

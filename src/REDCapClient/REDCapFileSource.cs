@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using System.IO;
 using PCF.REDCap.Model;
 
 namespace REDCapClient
@@ -35,8 +32,36 @@ namespace REDCapClient
             _eventFile = eventFileName;
             _exportFiledNamesFile = exportFiledNamesFileName;
             _instrumentFile = instrumentFileName;
-            _instrumentEventMappingFile = instrumentFileName;
+            _instrumentEventMappingFile = instrumentEventMappingFileName;
             _metadataFile = metadataFileName;
+        }
+
+        public Task<XDocument> GetMetadataAsXmlAsync()
+        {
+            return Task.FromResult(XDocument.Load(_metadataFile));
+        }
+        public Task<XDocument> GetEventsAsXmlAsync()
+        {
+            return Task.FromResult(XDocument.Load(_eventFile));
+        }
+
+        public Task<XDocument> GetInstrumentsAsXmlAsync()
+        {
+            return Task.FromResult(XDocument.Load(_instrumentFile));
+        }
+
+        public Task<XDocument> GetInstrumentEventMappingAsXmlAsync()
+        {
+            return Task.FromResult(XDocument.Load(_instrumentEventMappingFile));
+        }
+        public Task<XDocument> GetArmsAsXmlAsync()
+        {
+            return Task.FromResult(XDocument.Load(_armFile));
+        }
+
+        public Task<XDocument> GetExportFieldNamesAsXmlAsync()
+        {
+            return Task.FromResult(XDocument.Load(_exportFiledNamesFile));
         }
 
         public REDCapStudy Study
@@ -51,22 +76,14 @@ namespace REDCapClient
                 throw new NotImplementedException();
             }
         }
-
-        public Task<XDocument> GetArmsAsXmlAsync()
-        {
-            throw new NotImplementedException();
-        }
-
+        
+        [Obsolete]
         public Task<Dictionary<string, string>> GetArmsAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<XDocument> GetEventsAsXmlAsync()
-        {
-            throw new NotImplementedException();
-        }
-
+        [Obsolete]
         public Task<List<Event>> GetEventsAsync()
         {
             //throw new NotImplementedException();
@@ -103,11 +120,13 @@ namespace REDCapClient
             return Task.FromResult(events.ToList());
         }
 
+        [Obsolete]
         public Task<List<ExportFieldNames>> GetExportFieldNamesAsync()
         {
             throw new NotImplementedException();
         }
 
+        [Obsolete]
         public Task<XDocument> GetExportFieldNamesXmlAsync()
         {
             throw new NotImplementedException();
@@ -117,12 +136,7 @@ namespace REDCapClient
         {
             throw new NotImplementedException();
         }
-
-        public Task<XDocument> GetFormEventMapAsXmlAsync()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public Task<List<Instrument>> GetFormEventMapAsync()
         {
             throw new NotImplementedException();
@@ -133,11 +147,7 @@ namespace REDCapClient
             throw new NotImplementedException();
         }
 
-        public Task<XDocument> GetFormsAsXmlAsync()
-        {
-            throw new NotImplementedException();
-        }
-
+        [Obsolete]
         public async Task<List<Instrument>> GetFormsAsync()
         {
             // throw new NotImplementedException();
@@ -156,11 +166,6 @@ namespace REDCapClient
             }
 
             return forms.ToList();
-        }
-
-        public Task<XDocument> GetMetadataAsXmlAsync()
-        {
-            return Task.FromResult(XDocument.Load(_metadataFile));
         }
 
         [Obsolete]
@@ -296,7 +301,6 @@ namespace REDCapClient
 
             return choices;
         }
-
 
     }
 }

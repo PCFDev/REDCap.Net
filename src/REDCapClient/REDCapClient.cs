@@ -58,7 +58,7 @@ namespace REDCapClient
         {
             // WEB API
             var xDocEvents = await GetEventsAsXmlAsync();
-            var xDocMapping = await GetFormEventMapAsXmlAsync();
+            var xDocMapping = await GetInstrumentEventMappingAsXmlAsync();
             List<Instrument> forms = await GetFormsAsync();
             // WEB API
 
@@ -110,7 +110,7 @@ namespace REDCapClient
             }
         }
 
-        public async Task<XDocument> GetFormEventMapAsXmlAsync()
+        public async Task<XDocument> GetInstrumentEventMappingAsXmlAsync()
         {
             using (var client = new HttpClient())
             {
@@ -125,7 +125,7 @@ namespace REDCapClient
             }
         }
 
-        public async Task<XDocument> GetFormsAsXmlAsync()
+        public async Task<XDocument> GetInstrumentsAsXmlAsync()
         {
             using (var client = new HttpClient())
             {
@@ -142,7 +142,7 @@ namespace REDCapClient
 
         public async Task<List<Instrument>> GetFormsAsync()
         {
-            var xDoc = await GetFormsAsXmlAsync();
+            var xDoc = await GetInstrumentsAsXmlAsync();
             List<Instrument> forms = new List<Instrument>();
 
             foreach (var item in xDoc.Descendants("item"))
@@ -350,7 +350,7 @@ namespace REDCapClient
 
         public async Task<List<Instrument>> GetFormEventMapAsync()
         {
-            var xDoc = await this.GetFormEventMapAsXmlAsync();
+            var xDoc = await this.GetInstrumentEventMappingAsXmlAsync();
             List<Instrument> forms = new List<Instrument>();
 
             foreach (var item in xDoc.Descendants("item"))
@@ -515,6 +515,11 @@ namespace REDCapClient
         }
 
         public Task<XDocument> GetFormDataAsXmlAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<XDocument> GetExportFieldNamesAsXmlAsync()
         {
             throw new NotImplementedException();
         }

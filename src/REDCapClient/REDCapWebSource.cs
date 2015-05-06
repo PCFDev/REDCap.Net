@@ -67,7 +67,7 @@ namespace REDCapClient
             throw new NotImplementedException();
         }
 
-        public Task<XDocument> GetFormEventMapAsXmlAsync()
+        public Task<XDocument> GetInstrumentEventMappingAsXmlAsync()
         {
             throw new NotImplementedException();
         }
@@ -82,7 +82,7 @@ namespace REDCapClient
             throw new NotImplementedException();
         }
 
-        public Task<XDocument> GetFormsAsXmlAsync()
+        public Task<XDocument> GetInstrumentsAsXmlAsync()
         {
             throw new NotImplementedException();
         }
@@ -138,6 +138,11 @@ namespace REDCapClient
         }
 
         public Task Initialize(string armFileName, string eventFileName, string exportFiledNamesFileName, string instrumentFileName, string instrumentEventMappingFileName, string metadataFileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<XDocument> GetExportFieldNamesAsXmlAsync()
         {
             throw new NotImplementedException();
         }

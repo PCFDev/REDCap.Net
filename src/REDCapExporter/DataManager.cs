@@ -22,14 +22,24 @@ namespace REDCapExporter
         TextWriter oldOut = Console.Out;
         // FILE WRITING
 
-        public async Task ProcessProject(ProjectConfiguration item)
+        public async Task ProcessProject(ProjectConfiguration cfgItem)
         {            
             // Using File System
             REDCapFileSource _rcClient = new REDCapFileSource();
-            await _rcClient.Initialize(item.ArmFileName, item.EventFileName, item.ExportFieldNamesFileName, item.InstrumentFileName, item.InstrumentEventMappingFileName, item.MetadataFileName);
+            await _rcClient.Initialize(cfgItem.ArmFileName, cfgItem.EventFileName, cfgItem.ExportFieldNamesFileName, cfgItem.InstrumentFileName, cfgItem.InstrumentEventMappingFileName, cfgItem.MetadataFileName);
 
             // Annnnnddd GO!
-            XDocument xDoc = await _rcClient.GetMetadataAsXmlAsync();            
+            XDocument xArms = await _rcClient.GetArmsAsXmlAsync();
+
+            XDocument xMetadata = await _rcClient.GetMetadataAsXmlAsync();
+            
+            XDocument xExportFieldNames = await _rcClient.GetExportFieldNamesAsXmlAsync();
+            
+            XDocument xInstrument = await _rcClient.GetInstrumentsAsXmlAsync();
+            
+            XDocument xEvents = await _rcClient.GetEventsAsXmlAsync();
+            
+            XDocument xMaping = await _rcClient.GetInstrumentEventMappingAsXmlAsync();            
         }
 
         //public async Task ProcessProject(string apiUrl, string token)
