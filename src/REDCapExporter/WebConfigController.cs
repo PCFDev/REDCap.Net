@@ -3,11 +3,8 @@ using System.Collections.Generic;
 
 namespace REDCapExporter
 {
-    internal class TestConfigController : IConfigController
+    internal class WebConfigController : IConfigController
     {
-        //var apiUrl = args[0];
-        //var token = args[1]; 
-
         //----DEMO ENVIRONMENT----
         //var apiUrl = "https://redcap.wustl.edu/redcap/srvrs/dev_v3_1_0_001/redcap/api/";
         //var token = "820E65DD2D930A0859BB3F727989D29E"; // Ryan's Sample 2

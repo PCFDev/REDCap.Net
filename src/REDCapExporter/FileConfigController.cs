@@ -13,8 +13,12 @@ namespace REDCapExporter
             return new List<ProjectConfiguration>()
             {
                 new ProjectConfiguration() {
-                     ApiKey = @"TestFiles\Fructose_Events.xml",
-                      ApiUrl = @"TestFiles\Fructose_Forms.xml"
+                    EventFileName = @"TestFiles\Fructose_Events.xml",
+                    ArmFileName = "",
+                    ExportFieldNamesFileName = "",
+                    InstrumentFileName = @"TestFiles\Fructose_Forms.xml",
+                    InstrumentEventMappingFileName = "",
+                    MetadataFileName = ""
                 }
             };
         }

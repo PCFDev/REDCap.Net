@@ -14,6 +14,12 @@ namespace REDCapClient
         }
 
         Task Initialize(string apiKey, string apiUri);
+        Task Initialize(string armFileName,
+            string eventFileName,
+            string exportFiledNamesFileName,
+            string instrumentFileName,
+            string instrumentEventMappingFileName,
+            string metadataFileName);
         Task<XDocument> GetArmsAsXmlAsync();
         Task<Dictionary<string, string>> GetArmsAsync();
         Task<XDocument> GetEventsAsXmlAsync();

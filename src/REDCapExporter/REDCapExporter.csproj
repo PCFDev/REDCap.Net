@@ -76,7 +76,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="DataContext.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="FileConfigController.cs" />
@@ -85,7 +84,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="ProjectConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestConfigController.cs" />
+    <Compile Include="WebConfigController.cs" />
     <Compile Include="TestStudyWriter.cs" />
   </ItemGroup>
   <ItemGroup>
