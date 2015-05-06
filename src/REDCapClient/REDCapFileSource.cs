@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.IO;
@@ -27,7 +28,7 @@ namespace REDCapClient
             string eventFileName,
             string exportFiledNamesFileName,
             string instrumentFileName,
-            string instrumentEventMappingFileName, 
+            string instrumentEventMappingFileName,
             string metadataFileName)
         {
             _armFile = armFileName;
@@ -159,9 +160,10 @@ namespace REDCapClient
 
         public Task<XDocument> GetMetadataAsXmlAsync()
         {
-            throw new NotImplementedException();
+            return Task.FromResult(XDocument.Load(_metadataFile));
         }
 
+        [Obsolete]
         public async Task<List<Metadata>> GetMetadataAsync()
         {
             throw new NotImplementedException();

@@ -26,7 +26,8 @@ namespace REDCapExporter
                     else
                     {
                         // Output study data to something
-                        studyWriter.Write(t.Result);
+                        studyWriter.Write("");
+                        //studyWriter.Write(t.Result);
 
                         Console.WriteLine("Done");
                     }

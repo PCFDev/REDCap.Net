@@ -8,6 +8,6 @@ namespace REDCapExporter
 {
     public interface IStudyWriter
     {
-        Task Write(REDCapStudy study);
+        Task Write(string study);
     }
 }
