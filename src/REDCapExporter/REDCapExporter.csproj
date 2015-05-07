@@ -59,6 +59,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PCF.OdmXml">
+      <HintPath>..\..\lib\PCF.OdmXml.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -81,6 +84,7 @@
     <Compile Include="FileConfigController.cs" />
     <Compile Include="IConfigController.cs" />
     <Compile Include="IStudyWriter.cs" />
+    <Compile Include="OdmXmlConverter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -139,6 +143,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PCF.REDCap.Model\PCF.REDCap.Model.csproj">
+      <Project>{b4c4b540-4ca1-43c3-a732-38613d4b9c59}</Project>
+      <Name>PCF.REDCap.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\REDCapClient\REDCapClient.csproj">
       <Project>{48baa86c-4432-4b4c-90fc-d573f04e64c4}</Project>
       <Name>REDCapClient</Name>

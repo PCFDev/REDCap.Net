@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{61D4BF
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
+		..\lib\PCF.OdmXml.dll = ..\lib\PCF.OdmXml.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REDCapWeb", "REDCapWeb\REDCapWeb.csproj", "{2ECD01DC-C52B-41D7-BC36-B43C61352944}"
@@ -21,8 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.Model", "PCF.REDCap.Model\PCF.REDCap.Model.csproj", "{B4C4B540-4CA1-43C3-A732-38613D4B9C59}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{BD1A8538-C3D5-4FA0-9BDB-A7892E994A20}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.OdmXml", "PCF.REDCap.OdmXml\PCF.REDCap.OdmXml.csproj", "{F4A15501-4120-4F30-9E38-89B634C995B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,10 +49,6 @@ Global
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4A15501-4120-4F30-9E38-89B634C995B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4A15501-4120-4F30-9E38-89B634C995B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4A15501-4120-4F30-9E38-89B634C995B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4A15501-4120-4F30-9E38-89B634C995B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
