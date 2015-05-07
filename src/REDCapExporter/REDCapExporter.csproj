@@ -59,6 +59,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PCF.OdmXml">
+      <HintPath>..\..\lib\PCF.OdmXml.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -81,6 +84,7 @@
     <Compile Include="FileConfigController.cs" />
     <Compile Include="IConfigController.cs" />
     <Compile Include="IStudyWriter.cs" />
+    <Compile Include="OdmXmlConverter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

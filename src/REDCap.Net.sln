@@ -12,17 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{61D4BF
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
+		..\lib\PCF.OdmXml.dll = ..\lib\PCF.OdmXml.dll
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REDCapWeb", "REDCapWeb\REDCapWeb.csproj", "{2ECD01DC-C52B-41D7-BC36-B43C61352944}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REDCapWeb.Tests", "REDCapWeb.Tests\REDCapWeb.Tests.csproj", "{8AC6B285-EE7B-4AB0-BA36-0F74BC2B02F1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.Model", "PCF.REDCap.Model\PCF.REDCap.Model.csproj", "{B4C4B540-4CA1-43C3-A732-38613D4B9C59}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{BD1A8538-C3D5-4FA0-9BDB-A7892E994A20}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.OdmXml", "PCF.REDCap.OdmXml\PCF.REDCap.OdmXml.csproj", "{F4A15501-4120-4F30-9E38-89B634C995B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,28 +31,12 @@ Global
 		{F57F03F4-56B9-4007-933D-1524DDAEA26F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F57F03F4-56B9-4007-933D-1524DDAEA26F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F57F03F4-56B9-4007-933D-1524DDAEA26F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2ECD01DC-C52B-41D7-BC36-B43C61352944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2ECD01DC-C52B-41D7-BC36-B43C61352944}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2ECD01DC-C52B-41D7-BC36-B43C61352944}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2ECD01DC-C52B-41D7-BC36-B43C61352944}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AC6B285-EE7B-4AB0-BA36-0F74BC2B02F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AC6B285-EE7B-4AB0-BA36-0F74BC2B02F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AC6B285-EE7B-4AB0-BA36-0F74BC2B02F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AC6B285-EE7B-4AB0-BA36-0F74BC2B02F1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4A15501-4120-4F30-9E38-89B634C995B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4A15501-4120-4F30-9E38-89B634C995B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4A15501-4120-4F30-9E38-89B634C995B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4A15501-4120-4F30-9E38-89B634C995B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{2ECD01DC-C52B-41D7-BC36-B43C61352944} = {BD1A8538-C3D5-4FA0-9BDB-A7892E994A20}
-		{8AC6B285-EE7B-4AB0-BA36-0F74BC2B02F1} = {BD1A8538-C3D5-4FA0-9BDB-A7892E994A20}
 	EndGlobalSection
 EndGlobal
