@@ -2,9 +2,9 @@
 
 namespace PCF.REDCap
 {
-    public class REDCapStudy
+    public class Study
     {
-        public REDCapStudy()
+        public Study()
         {
             this._events = new List<Event>();
             this._metadata = new List<Metadata>();

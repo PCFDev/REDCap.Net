@@ -8,7 +8,7 @@ namespace PCF.REDCap.OdmXml
 {
     public class Converter
     {
-        public async Task<ODM> ConvertStudy(REDCapStudy rcStudy)
+        public async Task<ODM> ConvertStudy(Study rcStudy)
         {
 
             var odm = new ODM();

@@ -31,7 +31,7 @@ namespace PCF.REDCap
             _baseUri = new Uri(apiUri);
         }
 
-        public REDCapStudy Study
+        public Study Study
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }

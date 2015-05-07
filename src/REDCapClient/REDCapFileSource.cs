@@ -72,7 +72,7 @@ namespace PCF.REDCap
             return Task.FromResult(XDocument.Load(_userFile));
         }
 
-        public REDCapStudy Study
+        public Study Study
         {
             get
             {

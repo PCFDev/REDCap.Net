@@ -7,7 +7,7 @@ namespace PCF.REDCap
 {
     public interface IREDCapClient
     {
-        REDCapStudy Study
+        Study Study
         {
             get;
             set;

@@ -13,7 +13,7 @@ namespace PCF.REDCap
         private List<string> _formNames = new List<string>();
         private HttpClient client = new HttpClient();
         private Uri _baseUri;
-        private REDCapStudy _study;
+        private Study _study;
         private string _token = string.Empty;
         private const string PARAMS_GETFORMDATA = "token={0}&content=record&format={1}&type=eav&returnFormat=label&forms={2}";
         private const string PARAMS_GETFLATFORMDATA =
@@ -49,7 +49,7 @@ namespace PCF.REDCap
         {
             this._baseUri = new Uri(apiUrl);
             this._token = token;
-            this._study = new REDCapStudy();
+            this._study = new Study();
         }
 
         #region Good Working Code
@@ -285,7 +285,7 @@ namespace PCF.REDCap
             }
         }
 
-        public REDCapStudy Study
+        public Study Study
         {
             get { return this._study; }
             set { this._study = value; }
