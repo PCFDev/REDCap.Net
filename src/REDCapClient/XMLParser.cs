@@ -10,18 +10,96 @@ namespace REDCapClient
 {
     public class XMLParser
     {
-
-        public async Task<Event> HydrateEvent(XElement item)
+        /// <summary>
+        /// Parse event xml <see cref="REDCapClient.GetEventsAsync"/>
+        /// </summary>
+        /// <param name="xDocEvents"></param>
+        /// <returns name = "events"></param></returns>
+        public async Task<List<Event>> HydrateEvent(XElement xDocEvents)
         {
 
+            List<Event> events = new List<Event>();
+
+            foreach (var item in xDocEvents.Descendants("item"))
+            {
+                Event thisEvent = new Event
+                {
+                    UniqueEventName = item.Element("unique_event_name").Value.ToString(),
+                    EventName = item.Element("event_name").Value.ToString(),
+                    ArmNumber = item.Element("arm_num").Value.ToString(),
+                    DayOffset = item.Element("day_offset").Value.ToString(),
+                    OffsetMax = item.Element("offset_max").Value.ToString(),
+                    OffsetMin = item.Element("offset_min").Value.ToString()
+                };
+
+                //TODO: Need arm information here?
+                //Dictionary<string, string> arms = await GetArmsAsync();
+                // Actual data is <items><arm><event></event>...</arm></itmes>
+
+                events.Add(thisEvent);
+            }
+
+            return events;
 
         }
 
         /// <summary>
-        /// Parse metadata xml <see cref="REDCapClient.GetFormMetadataAsync"/>
+        /// Parse form xml <see cref="REDCapClient.GetFormsAsync"/>
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
+        /// <param name="xDocForms"></param>
+        /// <returns name = "forms"></returns>
+        public async Task<List<Instrument>> HydrateForms(XElement xDocForms)
+        {
+            List<Instrument> forms = new List<Instrument>();
+
+            foreach (var item in xDocForms.Descendants("item"))
+            {
+                Instrument form = new Instrument
+                {
+                    InstrumentName = item.Element("instrument_name").Value.ToString(),
+                    InstrumentLabel = item.Element("instrument_label").Value.ToString()
+                };
+
+                forms.Add(form);
+            }
+
+            return forms;
+        }
+
+        /// <summary>
+        /// Parse metadata xml <see cref="REDCapClient.GetMetadataAsync"/>
+        /// </summary>
+        /// <param name="xDocMetadata"></param>
+        /// <returns name = "metadata"></returns>
+        public async Task<List<Metadata>> HydrateMetadata(XElement xDocMetadata)
+        {
+            List<Metadata> metadata = new List<Metadata>();
+
+            foreach (XElement item in xDocMetadata.Descendants("item"))
+            {
+                metadata.Add(await HydrateMetadataFields(item));
+            }
+
+            return metadata;
+        }
+
+        /// <summary>
+        /// Parse arms xml <see cref="REDCapClient.GetArmsAsync"/>
+        /// </summary>
+        /// <param name="xDocArms"></param>
+        /// <returns name = "arms"></returns>
+        public async Task<Dictionary<string, string>> GetArmsAsync(XElement xDocArms)
+        {
+            Dictionary<string, string> arms = new Dictionary<string, string>();
+
+            foreach (var item in xDocArms.Descendants("item"))
+            {
+                arms.Add(item.Element("arm_num").Value.ToString(), item.Element("name").Value.ToString());
+            }
+
+            return arms;
+        }
+
         public async Task<Metadata> HydrateMetadataFields(XElement item)
         {
             List<ExportFieldNames> exportFieldNames = new List<ExportFieldNames>();
