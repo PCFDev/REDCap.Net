@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -16,6 +17,9 @@ namespace PCF.REDCap
         //StreamWriter writer;
         //TextWriter oldOut = Console.Out;
         // FILE WRITING
+
+        private XMLParser _parser = new XMLParser();
+        private REDCap.Study _study = new Study();
 
         public async Task ProcessProject(ProjectConfiguration cfgItem)
         {
@@ -73,28 +77,33 @@ namespace PCF.REDCap
                 cfgItem.MetadataFileName,
                 cfgItem.UserFileName);
 
-            // Each instrument is a "table"
-            XDocument xInstrument = await rcClient.GetInstrumentsAsXmlAsync();
-
             // Each item in metadata will be assigned to an instrument
             // Each item will contain data about that item (radio selection, checkbox values, etc.)
             XDocument xMetadata = await rcClient.GetMetadataAsXmlAsync();
-
-            // Multi-value fields have different names than the parent field, those are in this file
-            XDocument xExportFieldNames = await rcClient.GetExportFieldNamesAsXmlAsync();
-
+            _study.Metadata = await _parser.HydrateMetadata(xMetadata.Element("records"));
+            
             // A study may have multiple arms, arm information is in this file
             XDocument xArms = await rcClient.GetArmsAsXmlAsync();
+            _study.Arms = await _parser.HydrateArms(xArms.Element("arms"));
 
             // An event has a particular arm and can have multiple instruments used and
             // A particular instrument can be listed in multiple events
             XDocument xEvents = await rcClient.GetEventsAsXmlAsync();
+            _study.Events = await _parser.HydrateEvent(xEvents.Element("events"));
 
+            // Each instrument is a "table"
+            XDocument xInstrument = await rcClient.GetInstrumentsAsXmlAsync();
+            List<Instrument> instruments = await _parser.HydrateForms(xInstrument.Element("instruments"));
+            
+            // The user list for this study
+            XDocument xUsers = await rcClient.GetUsersAsXmlAsync();
+            List<User> users = await _parser.HydrateUsers(xUsers.Element("records"));
+            
             // This file lists each event in the study and the list of instruments used in that event
             XDocument xMaping = await rcClient.GetInstrumentEventMappingAsXmlAsync();
 
-            // The user list for this study
-            XDocument xUsers = await rcClient.GetUsersAsXmlAsync();
+            // Multi-value fields have different names than the parent field, those are in this file
+            XDocument xExportFieldNames = await rcClient.GetExportFieldNamesAsXmlAsync();
         }
 
         //public async Task ProcessProject(string apiUrl, string token)

@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -217,10 +218,6 @@
     <ProjectReference Include="..\REDCapClient\REDCapClient.csproj">
       <Project>{48baa86c-4432-4b4c-90fc-d573f04e64c4}</Project>
       <Name>REDCapClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\REDCapExporter\REDCapExporter.csproj">
-      <Project>{f57f03f4-56b9-4007-933d-1524ddaea26f}</Project>
-      <Name>REDCapExporter</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

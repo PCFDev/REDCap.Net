@@ -7,10 +7,10 @@ namespace PCF.REDCap
         static void Main(string[] args)
         {
             // File Controller:
-            //IConfigController controller = new FileConfigController();
+            IConfigController controller = new FileConfigController();
 
             // Web Controller:
-            IConfigController controller = new WebConfigController();
+            //IConfigController controller = new WebConfigController();
 
             var configs = controller.GetConfigurations();
             IStudyWriter studyWriter = new TestStudyWriter();

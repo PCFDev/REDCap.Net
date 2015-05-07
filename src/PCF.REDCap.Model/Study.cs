@@ -6,9 +6,9 @@ namespace PCF.REDCap
     {
         public Study()
         {
-            this._events = new List<Event>();
-            this._metadata = new List<Metadata>();
-            this._arms = new Dictionary<string, string>();
+            _events = new List<Event>();
+            _metadata = new List<Metadata>();
+            _arms = new Dictionary<string, string>();
         }
 
         private ICollection<Event> _events;
@@ -20,20 +20,20 @@ namespace PCF.REDCap
 
         public virtual ICollection<Event> Events
         {
-            get { return this._events; }
-            set { this._events = value; }
+            get { return _events; }
+            set { _events = value; }
         }
 
         public virtual List<Metadata> Metadata
         {
-            get { return this._metadata; }
-            set { this._metadata = value; }
+            get { return _metadata; }
+            set { _metadata = value; }
         }
 
         public virtual Dictionary<string,string> Arms
         {
-            get { return this._arms; }
-            set { this._arms = value; }
+            get { return _arms; }
+            set { _arms = value; }
         }
     }
 }

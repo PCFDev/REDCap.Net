@@ -139,6 +139,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PCF.REDCap.Model\PCF.REDCap.Model.csproj">
+      <Project>{b4c4b540-4ca1-43c3-a732-38613d4b9c59}</Project>
+      <Name>PCF.REDCap.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\REDCapClient\REDCapClient.csproj">
       <Project>{48baa86c-4432-4b4c-90fc-d573f04e64c4}</Project>
       <Name>REDCapClient</Name>

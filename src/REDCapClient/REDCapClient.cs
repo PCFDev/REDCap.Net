@@ -8,6 +8,7 @@ using System.Xml.Linq;
 
 namespace PCF.REDCap
 {
+    [Obsolete]
     public class REDCapClient : IREDCapClient
     {
         private List<string> _formNames = new List<string>();
