@@ -23,12 +23,12 @@ namespace PCF.REDCap
             {
                 Event thisEvent = new Event
                 {
-                    UniqueEventName = item.Element("unique_event_name").Value.ToString(),
-                    EventName = item.Element("event_name").Value.ToString(),
-                    ArmNumber = item.Element("arm_num").Value.ToString(),
-                    DayOffset = item.Element("day_offset").Value.ToString(),
-                    OffsetMax = item.Element("offset_max").Value.ToString(),
-                    OffsetMin = item.Element("offset_min").Value.ToString()
+                    UniqueEventName = item.Element("unique_event_name").GetValue(),
+                    EventName = item.Element("event_name").GetValue(),
+                    ArmNumber = item.Element("arm_num").GetValue(),
+                    DayOffset = item.Element("day_offset").GetValue(),
+                    OffsetMax = item.Element("offset_max").GetValue(),
+                    OffsetMin = item.Element("offset_min").GetValue()
                 };
 
                 //TODO: Need arm information here?
@@ -55,8 +55,8 @@ namespace PCF.REDCap
             {
                 Instrument form = new Instrument
                 {
-                    InstrumentName = item.Element("instrument_name").Value.ToString(),
-                    InstrumentLabel = item.Element("instrument_label").Value.ToString()
+                    InstrumentName = item.Element("instrument_name").GetValue(),
+                    InstrumentLabel = item.Element("instrument_label").GetValue()
                 };
 
                 forms.Add(form);
@@ -87,13 +87,13 @@ namespace PCF.REDCap
         /// </summary>
         /// <param name="xDocArms"></param>
         /// <returns name = "arms"></returns>
-        public async Task<Dictionary<string, string>> GetArmsAsync(XElement xDocArms)
+        public async Task<Dictionary<string, string>> HydrateArms(XElement xDocArms)
         {
             Dictionary<string, string> arms = new Dictionary<string, string>();
 
             foreach (var item in xDocArms.Descendants("item"))
             {
-                arms.Add(item.Element("arm_num").Value.ToString(), item.Element("name").Value.ToString());
+                arms.Add(item.Element("arm_num").GetValue(), item.Element("name").GetValue());
             }
 
             return arms;
@@ -108,29 +108,29 @@ namespace PCF.REDCap
 
             Metadata dataDictionary = new Metadata
             {
-                FieldName = (item.Element("field_name").IsEmpty ? "" : item.Element("field_name").Value.ToString()),
-                FormName = (item.Element("form_name").IsEmpty ? "" : item.Element("form_name").Value.ToString()),
-                FieldType = (item.Element("field_type").IsEmpty ? "" : item.Element("field_type").Value.ToString()),
-                FieldLabel = (item.Element("field_label").IsEmpty ? "" : item.Element("field_label").Value.ToString()),
-                FieldNote = (item.Element("field_note").IsEmpty ? "" : item.Element("field_note").Value.ToString()),
-                TextValidation = (item.Element("text_validation_type_or_show_slider_number").IsEmpty ? "" : item.Element("text_validation_type_or_show_slider_number").Value.ToString()),
-                TextValidationMax = (item.Element("text_validation_max").IsEmpty ? "" : item.Element("text_validation_max").Value.ToString()),
-                TextValidationMin = (item.Element("text_validation_min").IsEmpty ? "" : item.Element("text_validation_min").Value.ToString()),
-                IsIdentifier = (item.Element("identifier").IsEmpty ? false : item.Element("identifier").Value.ToString().ToLower() == "y" ? true : false),
-                BranchingLogic = (item.Element("branching_logic").IsEmpty ? "" : item.Element("branching_logic").Value.ToString()),
-                IsRequired = (item.Element("required_field").IsEmpty ? false : item.Element("required_field").Value.ToString().ToLower() == "y" ? true : false),
-                CustomAlignment = (item.Element("custom_alignment").IsEmpty ? "" : item.Element("custom_alignment").Value.ToString()),
-                QuestionNumber = (item.Element("question_number").IsEmpty ? "" : item.Element("question_number").Value.ToString()),
-                MatrixGroupName = (item.Element("matrix_group_name").IsEmpty ? "" : item.Element("matrix_group_name").Value.ToString()),
-                IsMatrixRanking = (item.Element("matrix_ranking").IsEmpty ? false : item.Element("matrix_ranking").Value.ToString().ToLower() == "y" ? true : false)
+                FieldName = (item.Element("field_name").GetValue()),
+                FormName = (item.Element("form_name").GetValue()),
+                FieldType = (item.Element("field_type").GetValue()),
+                FieldLabel = (item.Element("field_label").GetValue()),
+                FieldNote = (item.Element("field_note").GetValue()),
+                TextValidation = (item.Element("text_validation_type_or_show_slider_number").GetValue()),
+                TextValidationMax = (item.Element("text_validation_max").GetValue()),
+                TextValidationMin = (item.Element("text_validation_min").GetValue()),
+                IsIdentifier = (item.Element("identifier").GetValue().ToLower() == "y" ? true : false),
+                BranchingLogic = (item.Element("branching_logic").GetValue()),
+                IsRequired = (item.Element("required_field").GetValue().ToLower() == "y" ? true : false),
+                CustomAlignment = (item.Element("custom_alignment").GetValue()),
+                QuestionNumber = (item.Element("question_number").GetValue()),
+                MatrixGroupName = (item.Element("matrix_group_name").GetValue()),
+                IsMatrixRanking = (item.Element("matrix_ranking").GetValue().ToLower() == "y" ? true : false)
             };
 
-            if (!String.IsNullOrEmpty(item.Element("select_choices_or_calculations").Value.ToString()))
+            if (!item.Element("select_choices_or_calculations").ElementIsEmpty())
             {
-                string element = item.Element("select_choices_or_calculations").Value.ToString();
+                string element = item.Element("select_choices_or_calculations").GetValue();
                 if (dataDictionary.FieldType == "calc")
                 {
-                    dataDictionary.FieldCalculation = item.Element("select_choices_or_calculations").Value.ToString();
+                    dataDictionary.FieldCalculation = item.Element("select_choices_or_calculations").GetValue();
                 }
                 else if (dataDictionary.FieldType == "slider")
                 {
@@ -152,6 +152,59 @@ namespace PCF.REDCap
 
             return dataDictionary;
         }
+
+
+        /// <summary>
+        /// Parse user xml
+        /// </summary>
+        /// <param name="xDocUsers" <see cref="XElement"/>> this is the xml snippet containing the user xml data </param>
+        /// <returns name = "users"></returns>
+        public async Task<List<User>> HydrateUsers(XElement xDocUsers)
+        {
+            List<User> users = new List<User>();
+
+            foreach (var item in xDocUsers.Descendants("item"))
+            {
+                User user = new User
+                {
+                    UserName = item.Element("unique_event_name").GetValue(),
+                    Email = item.Element("event_name").GetValue(),
+                    FirstName = item.Element("arm_num").GetValue(),
+                    LastName = item.Element("day_offset").GetValue(),
+                    Expiration = item.Element("offset_max").GetValue(),
+                    DataAccessGroup = item.Element("offset_min").GetValue(),
+                    DataExport = item.Element("offset_min").GetValueAsInt()
+                };
+
+                foreach (var entries in item.Elements("forms"))
+                {
+                    user.Forms.Add(entries.Element("demographics").GetValue(), entries.Element("demographics").GetValueAsInt());
+                    user.Forms.Add(entries.Element("medical_history").GetValue(), entries.Element("medical_history").GetValueAsInt());
+                    user.Forms.Add(entries.Element("study_design").GetValue(), entries.Element("study_design").GetValueAsInt());
+                    user.Forms.Add(entries.Element("screening_bloodwork").GetValue(), entries.Element("screening_bloodwork").GetValueAsInt());
+                    user.Forms.Add(entries.Element("nursing_flowchart").GetValue(), entries.Element("nursing_flowchart").GetValueAsInt());
+                    user.Forms.Add(entries.Element("physical_exam").GetValue(), entries.Element("physical_exam").GetValueAsInt());
+                    user.Forms.Add(entries.Element("past_medical_history").GetValue(), entries.Element("past_medical_history").GetValueAsInt());
+                    user.Forms.Add(entries.Element("medications").GetValue(), entries.Element("medications").GetValueAsInt());
+                    user.Forms.Add(entries.Element("labs").GetValue(), entries.Element("labs").GetValueAsInt());
+                    user.Forms.Add(entries.Element("dexa").GetValue(), entries.Element("dexa").GetValueAsInt());
+                    user.Forms.Add(entries.Element("inclusion_exclusion_criteria").GetValue(), entries.Element("inclusion_exclusion_criteria").GetValueAsInt());
+                    user.Forms.Add(entries.Element("mri_mrs").GetValue(), entries.Element("mri_mrs").GetValueAsInt());
+                    user.Forms.Add(entries.Element("vldl").GetValue(), entries.Element("vldl").GetValueAsInt());
+                    user.Forms.Add(entries.Element("vldl_loading").GetValue(), entries.Element("vldl_loading").GetValueAsInt());
+                    user.Forms.Add(entries.Element("clamp").GetValue(), entries.Element("clamp").GetValueAsInt());
+                    user.Forms.Add(entries.Element("clamp_infusate").GetValue(), entries.Element("clamp_infusate").GetValueAsInt());
+                    user.Forms.Add(entries.Element("dietitian").GetValue(), entries.Element("dietitian").GetValueAsInt());
+                    user.Forms.Add(entries.Element("adverse_event").GetValue(), entries.Element("adverse_event").GetValueAsInt());
+                 }
+
+                users.Add(user);
+
+                }
+
+            return users;
+        }
+
 
         private Dictionary<string, string> ParseFieldChoicesSliderType(string element)
         {

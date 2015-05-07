@@ -25,5 +25,14 @@ namespace PCF.REDCap
             else
                 return element.Value.ToString();
         }
+
+        public static int GetValueAsInt(this XElement element)
+        {
+            if (element.ElementIsEmpty())
+                return -1;
+            else
+                return Convert.ToInt32(element.Value);
+
+        }
     }
 }
