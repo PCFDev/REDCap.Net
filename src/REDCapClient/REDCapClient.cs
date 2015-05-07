@@ -243,41 +243,6 @@ namespace REDCapClient
         #endregion
 
         #region Old Code
-        public async Task<List<ExportFieldNames>> GetExportFieldNamesAsync()
-        {
-            XDocument xDoc = await GetExportFieldNamesXmlAsync();
-
-            if (xDoc == null)
-            {
-                return null;
-            }
-            else
-            {
-                List<ExportFieldNames> fieldNames = new List<ExportFieldNames>();
-
-                return fieldNames;
-            }
-        }
-
-        public async Task<XDocument> GetExportFieldNamesXmlAsync()
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = this._baseUri;
-                var req = BuildRequest(PARAMS_GETEXPORTFIELDNAMES);
-                req.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
-                var response = await client.PostAsync("", req);
-                var data = await response.Content.ReadAsStringAsync();
-
-                if (string.IsNullOrEmpty(data))
-                    return null;
-                else
-                {
-                    var xDoc = XDocument.Parse(data);
-                    return xDoc;
-                }
-            }
-        }
 
         private StringContent BuildRequest(string parameter)
         {
@@ -525,6 +490,11 @@ namespace REDCapClient
         }
 
         public Task<XDocument> GetUsersAsXmlAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<ExportFieldNames>> GetExportFieldNamesAsync()
         {
             throw new NotImplementedException();
         }

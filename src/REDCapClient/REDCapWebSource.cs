@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -10,31 +11,35 @@ namespace REDCapClient
 {
     public class REDCapWebSource : IREDCapClient
     {
-        public REDCapStudy Study
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
+        private HttpClient _client = new HttpClient();
+        private Uri _baseUri;
+        private string _token = string.Empty;
 
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        private static string _eventFileName;
-        private static string _instrumentFileName;
+        // Query string constants
+        private const string PARAMS_GETEVENT = "token={0}&content=event&format={1}";
+        private const string PARAMS_GETARMS = "token={0}&content=arm&format={1}";
+        private const string PARAMS_GETINSTRUMENTS = "token={0}&content=instrument&format={1}";
+        private const string PARAMS_GETMETADATA = "token={0}&content=metadata&format={1}";
+        private const string PARAMS_GETUSERS = "token={0}&content=user&format={1}";
+        private const string PARAMS_GETINSTUMENTEVENTMAP = "token={0}&content=formEventMapping&format={1}";
+        private const string PARAMS_GETEXPORTFIELDNAMES = "token={0}&content=exportFieldNames&format={1}";
+        // ----------------------
 
         public async Task Initialize(string apiKey, string apiUri)
         {
-            _eventFileName = apiKey;
-            _instrumentFileName = apiUri;
+            _token = apiKey;
+            _baseUri = new Uri(apiUri);
         }
 
-        public Task<XDocument> GetArmsAsXmlAsync()
+        public REDCapStudy Study
         {
-            throw new NotImplementedException();
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public async Task<XDocument> GetArmsAsXmlAsync()
+        {
+            return await GetXml(new StringContent(string.Format(PARAMS_GETARMS, _token, "xml")));
         }
 
         public Task<Dictionary<string, string>> GetArmsAsync()
@@ -42,9 +47,9 @@ namespace REDCapClient
             throw new NotImplementedException();
         }
 
-        public Task<XDocument> GetEventsAsXmlAsync()
+        public async Task<XDocument> GetEventsAsXmlAsync()
         {
-            throw new NotImplementedException();
+            return await GetXml(new StringContent(string.Format(PARAMS_GETEVENT, _token, "xml")));
         }
 
         public Task<List<Event>> GetEventsAsync()
@@ -52,22 +57,47 @@ namespace REDCapClient
             throw new NotImplementedException();
         }
 
+        public async Task<XDocument> GetInstrumentsAsXmlAsync()
+        {
+            return await GetXml(new StringContent(string.Format(PARAMS_GETINSTRUMENTS, _token, "xml")));
+        }
+
+        public Task<List<Instrument>> GetFormsAsync()  // TODO: Need to change name to GetInstrumentsAsync
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<XDocument> GetMetadataAsXmlAsync()
+        {
+            return await GetXml(new StringContent(string.Format(PARAMS_GETMETADATA, _token, "xml")));
+        }
+
+        public Task<List<Metadata>> GetMetadataAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<XDocument> GetUsersAsXmlAsync()
+        {
+            return await GetXml(new StringContent(string.Format(PARAMS_GETUSERS, _token, "xml")));
+        }
+
+        public async Task<XDocument> GetInstrumentEventMappingAsXmlAsync()
+        {
+            return await GetXml(new StringContent(string.Format(PARAMS_GETINSTUMENTEVENTMAP, _token, "xml")));
+        }
+        
+        public async Task<XDocument> GetExportFieldNamesAsXmlAsync()
+        {
+            return await GetXml(new StringContent(string.Format(PARAMS_GETEXPORTFIELDNAMES, _token, "xml")));
+        }
+
         public Task<List<ExportFieldNames>> GetExportFieldNamesAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<XDocument> GetExportFieldNamesXmlAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<XDocument> GetFormDataAsXmlAsync(string formName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<XDocument> GetInstrumentEventMappingAsXmlAsync()
         {
             throw new NotImplementedException();
         }
@@ -81,27 +111,7 @@ namespace REDCapClient
         {
             throw new NotImplementedException();
         }
-
-        public Task<XDocument> GetInstrumentsAsXmlAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Instrument>> GetFormsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<XDocument> GetMetadataAsXmlAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Metadata>> GetMetadataAsync()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public Task<XDocument> GetRecordsAsXmlAsync(string eventName, string formName)
         {
             throw new NotImplementedException();
@@ -148,14 +158,19 @@ namespace REDCapClient
             throw new NotImplementedException();
         }
 
-        public Task<XDocument> GetUsersAsXmlAsync()
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<XDocument> GetExportFieldNamesAsXmlAsync()
+        private async Task<XDocument> GetXml(StringContent request)
         {
-            throw new NotImplementedException();
+            using (var _client = new HttpClient())
+            {
+                _client.BaseAddress = _baseUri;
+                request.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+                var response = await _client.PostAsync("", request);
+                var data = await response.Content.ReadAsStringAsync();
+                var xDoc = XDocument.Parse(data);
+
+                return xDoc;
+            }
         }
     }
 }

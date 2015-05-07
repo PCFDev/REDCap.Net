@@ -133,13 +133,7 @@ namespace REDCapClient
         {
             throw new NotImplementedException();
         }
-
-        [Obsolete]
-        public Task<XDocument> GetExportFieldNamesXmlAsync()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public Task<XDocument> GetFormDataAsXmlAsync()
         {
             throw new NotImplementedException();
