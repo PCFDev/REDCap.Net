@@ -21,8 +21,15 @@ namespace PCF.REDCap
             return new List<ProjectConfiguration>()
             {
                 new ProjectConfiguration() {
-                     ApiKey = "https://redcap.wustl.edu/redcap/srvrs/dev_v3_1_0_001/redcap/api/",
-                      ApiUrl = "820E65DD2D930A0859BB3F727989D29E"
+                     ApiUrl = "https://redcap.wustl.edu/redcap/srvrs/dev_v3_1_0_001/redcap/api/",
+                      ApiKey = "820E65DD2D930A0859BB3F727989D29E",
+                      ArmFileName = string.Empty,
+                      EventFileName = string.Empty,
+                      ExportFieldNamesFileName = string.Empty,
+                      InstrumentEventMappingFileName = string.Empty,
+                      InstrumentFileName = string.Empty,
+                      MetadataFileName = string.Empty,
+                      UserFileName = string.Empty
                 }
             };
         }

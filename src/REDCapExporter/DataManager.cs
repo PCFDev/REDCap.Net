@@ -7,44 +7,94 @@ namespace PCF.REDCap
 {
     public class DataManager
     {
-        private DataContext _context = new DataContext();
-        private REDCapClient _redCapClient;
-        private SqlConvertor _sqlConvertor = new SqlConvertor();
+        //private DataContext _context = new DataContext();
+        //private REDCapClient _redCapClient;
+        //private SqlConvertor _sqlConvertor = new SqlConvertor();
 
         // FILE WRITING
-        FileStream ostream;
-        StreamWriter writer;
-        TextWriter oldOut = Console.Out;
+        //FileStream ostream;
+        //StreamWriter writer;
+        //TextWriter oldOut = Console.Out;
         // FILE WRITING
 
         public async Task ProcessProject(ProjectConfiguration cfgItem)
         {
-            // Using file system source
-            REDCapFileSource _rcClient = new REDCapFileSource();
-            await _rcClient.Initialize(cfgItem.ArmFileName, cfgItem.EventFileName, cfgItem.ExportFieldNamesFileName, cfgItem.InstrumentFileName, cfgItem.InstrumentEventMappingFileName, cfgItem.MetadataFileName, cfgItem.UserFileName);
+            if(string.IsNullOrEmpty(cfgItem.ApiKey))
+            {
+                // Process using files:
+                await Task.FromResult(ProcessFileProject(cfgItem));
+            }
+            else
+            {
+                // Process using web API calls:
+                await Task.FromResult(ProcessWebProject(cfgItem));
+            }
+        }
+
+        private async Task ProcessWebProject(ProjectConfiguration cfgItem)
+        {
+            // Using WEB API:
+            REDCapWebSource rcClient = new REDCapWebSource();
+            await rcClient.Initialize(cfgItem.ApiKey, cfgItem.ApiUrl);
 
             // Each instrument is a "table"
-            XDocument xInstrument = await _rcClient.GetInstrumentsAsXmlAsync();
+            XDocument xInstrument = await rcClient.GetInstrumentsAsXmlAsync();
 
             // Each item in metadata will be assigned to an instrument
             // Each item will contain data about that item (radio selection, checkbox values, etc.)
-            XDocument xMetadata = await _rcClient.GetMetadataAsXmlAsync();
+            XDocument xMetadata = await rcClient.GetMetadataAsXmlAsync();
 
             // Multi-value fields have different names than the parent field, those are in this file
-            XDocument xExportFieldNames = await _rcClient.GetExportFieldNamesAsXmlAsync();
+            XDocument xExportFieldNames = await rcClient.GetExportFieldNamesAsXmlAsync();
 
             // A study may have multiple arms, arm information is in this file
-            XDocument xArms = await _rcClient.GetArmsAsXmlAsync();
+            XDocument xArms = await rcClient.GetArmsAsXmlAsync();
 
             // An event has a particular arm and can have multiple instruments used and
             // A particular instrument can be listed in multiple events
-            XDocument xEvents = await _rcClient.GetEventsAsXmlAsync();
+            XDocument xEvents = await rcClient.GetEventsAsXmlAsync();
 
             // This file lists each event in the study and the list of instruments used in that event
-            XDocument xMaping = await _rcClient.GetInstrumentEventMappingAsXmlAsync();
+            XDocument xMaping = await rcClient.GetInstrumentEventMappingAsXmlAsync();
 
             // The user list for this study
-            XDocument xUsers = await _rcClient.GetUsersAsXmlAsync();
+            XDocument xUsers = await rcClient.GetUsersAsXmlAsync();
+        }
+
+        private async Task ProcessFileProject(ProjectConfiguration cfgItem)
+        {
+            // Using file system source
+            REDCapFileSource rcClient = new REDCapFileSource();
+            await rcClient.Initialize(cfgItem.ArmFileName,
+                cfgItem.EventFileName,
+                cfgItem.ExportFieldNamesFileName,
+                cfgItem.InstrumentFileName,
+                cfgItem.InstrumentEventMappingFileName,
+                cfgItem.MetadataFileName,
+                cfgItem.UserFileName);
+
+            // Each instrument is a "table"
+            XDocument xInstrument = await rcClient.GetInstrumentsAsXmlAsync();
+
+            // Each item in metadata will be assigned to an instrument
+            // Each item will contain data about that item (radio selection, checkbox values, etc.)
+            XDocument xMetadata = await rcClient.GetMetadataAsXmlAsync();
+
+            // Multi-value fields have different names than the parent field, those are in this file
+            XDocument xExportFieldNames = await rcClient.GetExportFieldNamesAsXmlAsync();
+
+            // A study may have multiple arms, arm information is in this file
+            XDocument xArms = await rcClient.GetArmsAsXmlAsync();
+
+            // An event has a particular arm and can have multiple instruments used and
+            // A particular instrument can be listed in multiple events
+            XDocument xEvents = await rcClient.GetEventsAsXmlAsync();
+
+            // This file lists each event in the study and the list of instruments used in that event
+            XDocument xMaping = await rcClient.GetInstrumentEventMappingAsXmlAsync();
+
+            // The user list for this study
+            XDocument xUsers = await rcClient.GetUsersAsXmlAsync();
         }
 
         //public async Task ProcessProject(string apiUrl, string token)
@@ -171,51 +221,51 @@ namespace PCF.REDCap
         //    return line;
         //}
 
-        private async Task ProcessForm(string form)
-        {
+        //private async Task ProcessForm(string form)
+        //{
 
-            try
-            {
-                var formDoc = await this._redCapClient.GetFormDataAsXmlAsync(form);
-                formDoc.Save("output\\" + form + "_form_data.xml");
+        //    try
+        //    {
+        //        var formDoc = await this._redCapClient.GetFormDataAsXmlAsync(form);
+        //        formDoc.Save("output\\" + form + "_form_data.xml");
 
-                var sqlCmd = this._sqlConvertor.GenerateCreateFormTableSQL(form, formDoc);
-                File.WriteAllText("output\\" + form + "_create_table.sql", sqlCmd);
-                //await ExecuteSQL(sqlCmd);
+        //        var sqlCmd = this._sqlConvertor.GenerateCreateFormTableSQL(form, formDoc);
+        //        File.WriteAllText("output\\" + form + "_create_table.sql", sqlCmd);
+        //        //await ExecuteSQL(sqlCmd);
 
-                var insertCmd = this._sqlConvertor.GenerateInsertFormDataSQL(form, formDoc);
-                File.WriteAllText("output\\" + form + "_insert_data.sql", insertCmd);
-                // await ExecuteSQL(insertCmd);
+        //        var insertCmd = this._sqlConvertor.GenerateInsertFormDataSQL(form, formDoc);
+        //        File.WriteAllText("output\\" + form + "_insert_data.sql", insertCmd);
+        //        // await ExecuteSQL(insertCmd);
 
-                Console.WriteLine("Processed : " + form);
+        //        Console.WriteLine("Processed : " + form);
 
-            }
-            catch (Exception ex)
-            {
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                Console.WriteLine("ERROR: Cannot Process form:" + form);
-                Console.WriteLine(ex.Message);
-            }
+        //        Console.WriteLine("ERROR: Cannot Process form:" + form);
+        //        Console.WriteLine(ex.Message);
+        //    }
 
 
-        }
+        //}
 
-        private async Task ExecuteSQL(string sqlCmd)
-        {
-            try
-            {
-                await _context.Database.ExecuteSqlCommandAsync(sqlCmd);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("");
-                Console.WriteLine("ERROR:");
-                Console.WriteLine(ex.Message);
+        //private async Task ExecuteSQL(string sqlCmd)
+        //{
+        //    try
+        //    {
+        //        await _context.Database.ExecuteSqlCommandAsync(sqlCmd);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("");
+        //        Console.WriteLine("ERROR:");
+        //        Console.WriteLine(ex.Message);
 
-                Console.WriteLine(sqlCmd);
-                Console.WriteLine("END ERROR:");
-                Console.WriteLine("");
-            }
-        }
+        //        Console.WriteLine(sqlCmd);
+        //        Console.WriteLine("END ERROR:");
+        //        Console.WriteLine("");
+        //    }
+        //}
     }
 }

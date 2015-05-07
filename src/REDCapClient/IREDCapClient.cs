@@ -32,7 +32,7 @@ namespace PCF.REDCap
         Task<List<Instrument>> GetFormEventMapAsync();
         Task<List<FormMetadata>> GetFormMetadataAsync();
         Task<XDocument> GetInstrumentsAsXmlAsync();
-        Task<List<Instrument>> GetFormsAsync();// TODO: Need to change name to GetInstrumentsAsync
+        Task<List<Instrument>> GetInstrumentsAsync();
         Task<XDocument> GetMetadataAsXmlAsync();
         Task<XDocument> GetExportFieldNamesAsXmlAsync();
         Task<List<Metadata>> GetMetadataAsync();

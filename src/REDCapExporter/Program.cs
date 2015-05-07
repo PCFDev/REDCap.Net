@@ -6,11 +6,13 @@ namespace PCF.REDCap
     {
         static void Main(string[] args)
         {
-            // Get Configuration
-            // IConfigController controller = new TestConfigController();
-            IConfigController controller = new FileConfigController();
-            var configs = controller.GetConfigurations();
+            // File Controller:
+            //IConfigController controller = new FileConfigController();
 
+            // Web Controller:
+            IConfigController controller = new WebConfigController();
+
+            var configs = controller.GetConfigurations();
             IStudyWriter studyWriter = new TestStudyWriter();
 
             foreach (var item in configs)

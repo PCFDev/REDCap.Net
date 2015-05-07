@@ -149,8 +149,7 @@ namespace PCF.REDCap
             throw new NotImplementedException();
         }
 
-        [Obsolete]
-        public async Task<List<Instrument>> GetFormsAsync()
+        public async Task<List<Instrument>> GetInstrumentsAsync()
         {
             // throw new NotImplementedException();
             var xDoc = XDocument.Load(_instrumentFile);

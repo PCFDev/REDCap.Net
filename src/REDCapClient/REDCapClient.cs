@@ -499,6 +499,11 @@ namespace PCF.REDCap
             throw new NotImplementedException();
         }
 
+        public Task<List<Instrument>> GetInstrumentsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
 
 
         #endregion

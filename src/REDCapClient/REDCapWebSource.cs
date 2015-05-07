@@ -12,7 +12,7 @@ namespace PCF.REDCap
     public class REDCapWebSource : IREDCapClient
     {
         private HttpClient _client = new HttpClient();
-        private Uri _baseUri;
+        private Uri _baseUri = new Uri("http://www.wustl.edu");
         private string _token = string.Empty;
 
         // Query string constants
@@ -62,7 +62,7 @@ namespace PCF.REDCap
             return await GetXml(new StringContent(string.Format(PARAMS_GETINSTRUMENTS, _token, "xml")));
         }
 
-        public Task<List<Instrument>> GetFormsAsync()  // TODO: Need to change name to GetInstrumentsAsync
+        public Task<List<Instrument>> GetInstrumentsAsync()
         {
             throw new NotImplementedException();
         }

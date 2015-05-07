@@ -9,6 +9,8 @@ namespace PCF.REDCap
             return new List<ProjectConfiguration>()
             {
                 new ProjectConfiguration() {
+                    ApiKey = string.Empty,
+                    ApiUrl = string.Empty,
                     EventFileName = @"TestFiles\Fructose_Events.xml",
                     ArmFileName = @"TestFiles\Fructose_Arms.xml",
                     ExportFieldNamesFileName = @"TestFiles\Fructose_ExportFieldNames.xml",
