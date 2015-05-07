@@ -1,4 +1,4 @@
-﻿namespace REDCapExporter
+﻿namespace PCF.REDCap
 {
     public class ProjectConfiguration
     {

@@ -1,4 +1,4 @@
-namespace REDCapExporter
+namespace PCF.REDCap
 {
     using System;
     using System.Data.Entity;

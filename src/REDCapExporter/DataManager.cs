@@ -2,18 +2,15 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using REDCapClient;
-using System.Linq;
-using System.Collections.Generic;
 
-namespace REDCapExporter
+namespace PCF.REDCap
 {
     public class DataManager
     {
         private DataContext _context = new DataContext();
-        private REDCapClient.REDCapClient _redCapClient;
-        private REDCapClient.SqlConvertor _sqlConvertor = new REDCapClient.SqlConvertor();
-        
+        private REDCapClient _redCapClient;
+        private SqlConvertor _sqlConvertor = new SqlConvertor();
+
         // FILE WRITING
         FileStream ostream;
         StreamWriter writer;
@@ -42,7 +39,7 @@ namespace REDCapExporter
             // An event has a particular arm and can have multiple instruments used and
             // A particular instrument can be listed in multiple events
             XDocument xEvents = await _rcClient.GetEventsAsXmlAsync();
-            
+
             // This file lists each event in the study and the list of instruments used in that event
             XDocument xMaping = await _rcClient.GetInstrumentEventMappingAsXmlAsync();
 

@@ -1,4 +1,4 @@
-﻿namespace PCF.REDCap.Model
+﻿namespace PCF.REDCap
 {
     public class Instrument
     {

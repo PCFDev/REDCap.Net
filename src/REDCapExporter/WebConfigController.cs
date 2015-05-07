@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace REDCapExporter
+namespace PCF.REDCap
 {
     internal class WebConfigController : IConfigController
     {

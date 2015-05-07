@@ -4,9 +4,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using PCF.REDCap.Model;
 
-namespace REDCapClient
+
+namespace PCF.REDCap
 {
     public class REDCapClient : IREDCapClient
     {

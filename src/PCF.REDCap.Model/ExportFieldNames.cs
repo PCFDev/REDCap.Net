@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PCF.REDCap.Model
+namespace PCF.REDCap
 {
     public class ExportFieldNames
     {

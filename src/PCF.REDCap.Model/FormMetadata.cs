@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PCF.REDCap.Model
+namespace PCF.REDCap
 {
     [Obsolete]
     public class FormMetadata

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace REDCapExporter
+namespace PCF.REDCap
 {
     internal class TestStudyWriter : IStudyWriter
     {

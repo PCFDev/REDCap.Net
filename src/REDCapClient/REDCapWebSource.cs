@@ -5,9 +5,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using PCF.REDCap.Model;
 
-namespace REDCapClient
+
+namespace PCF.REDCap
 {
     public class REDCapWebSource : IREDCapClient
     {

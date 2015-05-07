@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace REDCapExporter
+namespace PCF.REDCap
 {
     public interface IStudyWriter
     {

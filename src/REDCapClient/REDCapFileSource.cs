@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using PCF.REDCap.Model;
 
-namespace REDCapClient
+
+namespace PCF.REDCap
 {
     public class REDCapFileSource : IREDCapClient
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PCF.REDCap.Model
+namespace PCF.REDCap
 {
     public class Metadata
     {

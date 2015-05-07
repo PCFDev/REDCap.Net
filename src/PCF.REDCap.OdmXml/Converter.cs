@@ -8,8 +8,10 @@ namespace PCF.REDCap.OdmXml
 {
     public class Converter
     {
-        public async Task<ODMcomplexTypeDefinitionStudy> ConvertStudy(PCF.REDCap.Model.REDCapStudy rcStudy)
+        public async Task<ODM> ConvertStudy(REDCapStudy rcStudy)
         {
+
+            var odm = new ODM();
 
             var study = new ODMcomplexTypeDefinitionStudy()
             {
@@ -62,7 +64,9 @@ namespace PCF.REDCap.OdmXml
 
             };
 
-            return await Task.FromResult(study);
+            odm.Study = new ODMcomplexTypeDefinitionStudy[] { study };
+
+            return await Task.FromResult(odm);
 
         }
 
