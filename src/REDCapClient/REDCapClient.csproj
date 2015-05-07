@@ -76,6 +76,7 @@
     <Content Include="TestFiles\Fructose_Record_Demographics.xml" />
     <Content Include="TestFiles\Fructose_Record_EAV - Copy.xml" />
     <Content Include="TestFiles\Fructose_Labs_StudyScreeningArm1.xml" />
+    <Content Include="TestFiles\Fructose_Users.xml" />
     <Content Include="TestFiles\Sample1_Demographics.xml" />
     <Content Include="TestFiles\Sample1_Events.xml" />
     <Content Include="TestFiles\Sample1_Forms.xml" />

@@ -15,6 +15,7 @@ namespace REDCapClient
         private static string _instrumentFile = string.Empty;
         private static string _instrumentEventMappingFile = string.Empty;
         private static string _metadataFile = string.Empty;
+        private static string _userFile = string.Empty;
 
         public async Task Initialize(string apiKey, string apiUri)
         {
@@ -26,7 +27,8 @@ namespace REDCapClient
             string exportFiledNamesFileName,
             string instrumentFileName,
             string instrumentEventMappingFileName,
-            string metadataFileName)
+            string metadataFileName,
+            string userFileName)
         {
             _armFile = armFileName;
             _eventFile = eventFileName;
@@ -34,6 +36,7 @@ namespace REDCapClient
             _instrumentFile = instrumentFileName;
             _instrumentEventMappingFile = instrumentEventMappingFileName;
             _metadataFile = metadataFileName;
+            _userFile = userFileName;
         }
 
         public Task<XDocument> GetMetadataAsXmlAsync()
@@ -62,6 +65,11 @@ namespace REDCapClient
         public Task<XDocument> GetExportFieldNamesAsXmlAsync()
         {
             return Task.FromResult(XDocument.Load(_exportFiledNamesFile));
+        }
+
+        public Task<XDocument> GetUsersAsXmlAsync()
+        {
+            return Task.FromResult(XDocument.Load(_userFile));
         }
 
         public REDCapStudy Study

@@ -14,7 +14,8 @@ namespace REDCapExporter
                     ExportFieldNamesFileName = @"TestFiles\Fructose_ExportFieldNames.xml",
                     InstrumentFileName = @"TestFiles\Fructose_Forms.xml",
                     InstrumentEventMappingFileName = @"TestFiles\Fructose_Mapping.xml",
-                    MetadataFileName = @"TestFiles\Fructose_Metadata.xml"
+                    MetadataFileName = @"TestFiles\Fructose_Metadata.xml",
+                    UserFileName = @"TestFiles\Fructose_Users.xml"
                 }
             };
         }

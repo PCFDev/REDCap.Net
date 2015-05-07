@@ -40,7 +40,7 @@ namespace REDCapClient
             _instrumentFileName = apiUri;
         }
 
-        public Task Initialize(string armFileName, string eventFileName, string exportFiledNamesFileName, string instrumentFileName, string instrumentEventMappingFileName, string metadataFileName)
+        public Task Initialize(string armFileName, string eventFileName, string exportFiledNamesFileName, string instrumentFileName, string instrumentEventMappingFileName, string metadataFileName, string userFileName)
         {
             throw new NotImplementedException();
         }
@@ -520,6 +520,11 @@ namespace REDCapClient
         }
 
         public Task<XDocument> GetExportFieldNamesAsXmlAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<XDocument> GetUsersAsXmlAsync()
         {
             throw new NotImplementedException();
         }

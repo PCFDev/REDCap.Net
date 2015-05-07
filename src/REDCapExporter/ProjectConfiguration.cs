@@ -13,5 +13,6 @@
         public string ExportFieldNamesFileName { get; set; }
         public string InstrumentEventMappingFileName { get; set; }
         public string MetadataFileName { get; set; }
+        public string UserFileName { get; set; }
     }
 }

@@ -137,7 +137,18 @@ namespace REDCapClient
             throw new NotImplementedException();
         }
 
-        public Task Initialize(string armFileName, string eventFileName, string exportFiledNamesFileName, string instrumentFileName, string instrumentEventMappingFileName, string metadataFileName)
+        public Task Initialize(string armFileName,
+            string eventFileName,
+            string exportFiledNamesFileName,
+            string instrumentFileName,
+            string instrumentEventMappingFileName,
+            string metadataFileName,
+            string userFileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<XDocument> GetUsersAsXmlAsync()
         {
             throw new NotImplementedException();
         }

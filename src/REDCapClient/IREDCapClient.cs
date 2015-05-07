@@ -19,10 +19,12 @@ namespace REDCapClient
             string exportFiledNamesFileName,
             string instrumentFileName,
             string instrumentEventMappingFileName,
-            string metadataFileName);
+            string metadataFileName,
+            string userFileName);
         Task<XDocument> GetArmsAsXmlAsync();
         Task<Dictionary<string, string>> GetArmsAsync();
         Task<XDocument> GetEventsAsXmlAsync();
+        Task<XDocument> GetUsersAsXmlAsync();
         Task<List<Event>> GetEventsAsync();
         Task<List<ExportFieldNames>> GetExportFieldNamesAsync();
         Task<XDocument> GetExportFieldNamesXmlAsync();

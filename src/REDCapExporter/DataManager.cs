@@ -24,7 +24,7 @@ namespace REDCapExporter
         {
             // Using file system source
             REDCapFileSource _rcClient = new REDCapFileSource();
-            await _rcClient.Initialize(cfgItem.ArmFileName, cfgItem.EventFileName, cfgItem.ExportFieldNamesFileName, cfgItem.InstrumentFileName, cfgItem.InstrumentEventMappingFileName, cfgItem.MetadataFileName);
+            await _rcClient.Initialize(cfgItem.ArmFileName, cfgItem.EventFileName, cfgItem.ExportFieldNamesFileName, cfgItem.InstrumentFileName, cfgItem.InstrumentEventMappingFileName, cfgItem.MetadataFileName, cfgItem.UserFileName);
 
             // Each instrument is a "table"
             XDocument xInstrument = await _rcClient.GetInstrumentsAsXmlAsync();
@@ -44,7 +44,10 @@ namespace REDCapExporter
             XDocument xEvents = await _rcClient.GetEventsAsXmlAsync();
             
             // This file lists each event in the study and the list of instruments used in that event
-            XDocument xMaping = await _rcClient.GetInstrumentEventMappingAsXmlAsync();            
+            XDocument xMaping = await _rcClient.GetInstrumentEventMappingAsXmlAsync();
+
+            // The user list for this study
+            XDocument xUsers = await _rcClient.GetUsersAsXmlAsync();
         }
 
         //public async Task ProcessProject(string apiUrl, string token)
