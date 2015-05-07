@@ -15,8 +15,7 @@ namespace REDCapExporter
         {
             var odm = new ODM();
 
-            odm.ID = study.StudyName;
-           
+            odm.ID = study.StudyName;           
 
             return odm;
         }

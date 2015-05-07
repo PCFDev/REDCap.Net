@@ -167,13 +167,13 @@ namespace PCF.REDCap
             {
                 User user = new User
                 {
-                    UserName = item.Element("unique_event_name").GetValue(),
-                    Email = item.Element("event_name").GetValue(),
-                    FirstName = item.Element("arm_num").GetValue(),
-                    LastName = item.Element("day_offset").GetValue(),
-                    Expiration = item.Element("offset_max").GetValue(),
-                    DataAccessGroup = item.Element("offset_min").GetValue(),
-                    DataExport = item.Element("offset_min").GetValueAsInt()
+                    UserName = item.Element("username").GetValue(),
+                    Email = item.Element("email").GetValue(),
+                    FirstName = item.Element("firstname").GetValue(),
+                    LastName = item.Element("lastname").GetValue(),
+                    Expiration = item.Element("expiration").GetValue(),
+                    DataAccessGroup = item.Element("data_access_group").GetValue(),
+                    DataExport = item.Element("data_export").GetValueAsInt()
                 };
 
                 foreach (var entries in item.Elements("forms"))
