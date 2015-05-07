@@ -11,6 +11,17 @@ namespace REDCapClient
     public class XMLParser
     {
 
+        public async Task<Event> HydrateEvent(XElement item)
+        {
+
+
+        }
+
+        /// <summary>
+        /// Parse metadata xml <see cref="REDCapClient.GetFormMetadataAsync"/>
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task<Metadata> HydrateMetadataFields(XElement item)
         {
             List<ExportFieldNames> exportFieldNames = new List<ExportFieldNames>();
