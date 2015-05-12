@@ -140,7 +140,7 @@ namespace PCF.REDCap
                 {
                     if (exportFieldNames != null)
                     {
-                        int x = 10;
+                        //int x = 10;
                         // dataDictionary.ExportFieldNames = await GetExportFieldNamesAsync(item.Element("field_name").Value.ToString());
                     }
                 }

@@ -231,7 +231,7 @@ namespace PCF.REDCap
                 xDoc = XDocument.Parse(data);
             }
 
-            string results;
+            //string results;
 
             //foreach (var item in xDoc.Descendants("item"))
             //{
@@ -423,7 +423,7 @@ namespace PCF.REDCap
                 {
                     if (exportFieldNames != null)
                     {
-                        int x = 10;
+                        //int x = 10;
                         // dataDictionary.ExportFieldNames = await GetExportFieldNamesAsync(item.Element("field_name").Value.ToString());
                     }
                 }

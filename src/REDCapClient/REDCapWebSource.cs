@@ -107,6 +107,7 @@ namespace PCF.REDCap
             throw new NotImplementedException();
         }
 
+        [Obsolete]
         public Task<List<FormMetadata>> GetFormMetadataAsync()
         {
             throw new NotImplementedException();

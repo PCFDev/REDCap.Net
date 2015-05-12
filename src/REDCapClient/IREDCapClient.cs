@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -30,6 +31,7 @@ namespace PCF.REDCap
         Task<XDocument> GetFormDataAsXmlAsync();
         Task<XDocument> GetInstrumentEventMappingAsXmlAsync();
         Task<List<Instrument>> GetFormEventMapAsync();
+        [Obsolete]
         Task<List<FormMetadata>> GetFormMetadataAsync();
         Task<XDocument> GetInstrumentsAsXmlAsync();
         Task<List<Instrument>> GetInstrumentsAsync();
