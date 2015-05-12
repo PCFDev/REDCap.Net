@@ -176,30 +176,12 @@ namespace PCF.REDCap
                     DataExport = item.Element("data_export").GetValueAsInt()
                 };
 
-                foreach (var entries in item.Elements("forms"))
+                foreach (XElement entries in item.Elements("forms").Elements())
                 {
-                    user.Forms.Add(entries.Element("demographics").GetValue(), entries.Element("demographics").GetValueAsInt());
-                    user.Forms.Add(entries.Element("medical_history").GetValue(), entries.Element("medical_history").GetValueAsInt());
-                    user.Forms.Add(entries.Element("study_design").GetValue(), entries.Element("study_design").GetValueAsInt());
-                    user.Forms.Add(entries.Element("screening_bloodwork").GetValue(), entries.Element("screening_bloodwork").GetValueAsInt());
-                    user.Forms.Add(entries.Element("nursing_flowchart").GetValue(), entries.Element("nursing_flowchart").GetValueAsInt());
-                    user.Forms.Add(entries.Element("physical_exam").GetValue(), entries.Element("physical_exam").GetValueAsInt());
-                    user.Forms.Add(entries.Element("past_medical_history").GetValue(), entries.Element("past_medical_history").GetValueAsInt());
-                    user.Forms.Add(entries.Element("medications").GetValue(), entries.Element("medications").GetValueAsInt());
-                    user.Forms.Add(entries.Element("labs").GetValue(), entries.Element("labs").GetValueAsInt());
-                    user.Forms.Add(entries.Element("dexa").GetValue(), entries.Element("dexa").GetValueAsInt());
-                    user.Forms.Add(entries.Element("inclusion_exclusion_criteria").GetValue(), entries.Element("inclusion_exclusion_criteria").GetValueAsInt());
-                    user.Forms.Add(entries.Element("mri_mrs").GetValue(), entries.Element("mri_mrs").GetValueAsInt());
-                    user.Forms.Add(entries.Element("vldl").GetValue(), entries.Element("vldl").GetValueAsInt());
-                    user.Forms.Add(entries.Element("vldl_loading").GetValue(), entries.Element("vldl_loading").GetValueAsInt());
-                    user.Forms.Add(entries.Element("clamp").GetValue(), entries.Element("clamp").GetValueAsInt());
-                    user.Forms.Add(entries.Element("clamp_infusate").GetValue(), entries.Element("clamp_infusate").GetValueAsInt());
-                    user.Forms.Add(entries.Element("dietitian").GetValue(), entries.Element("dietitian").GetValueAsInt());
-                    user.Forms.Add(entries.Element("adverse_event").GetValue(), entries.Element("adverse_event").GetValueAsInt());
+                    user.Forms.Add(entries.Name.ToString(), entries.GetValueAsInt());
                  }
 
                 users.Add(user);
-
                 }
 
             return users;
