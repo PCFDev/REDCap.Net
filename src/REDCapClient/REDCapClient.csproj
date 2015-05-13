@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestFiles\Fructose_Events.xml" />
+    <Content Include="TestFiles\Fructose_ExportFieldNames.xml" />
     <Content Include="TestFiles\Fructose_Forms.xml" />
     <Content Include="TestFiles\Fructose_Labs_BaselineTestingArm1.xml" />
     <Content Include="TestFiles\Fructose_Labs_EndOfStudyTestingArm1.xml" />

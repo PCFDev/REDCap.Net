@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using PCF.OdmXml;
 using PCF.REDCap;
 
@@ -12,7 +13,22 @@ namespace REDCapExporter
             var odm = new ODM();
 
             odm.ID = study.StudyName;
+
+            // Study element
+            odm.Study.Add(MapStudyElement(study));
+
+            // AdminData element
             odm.AdminData.Add(MapAdminDataElement(study));
+
+            // ReferenceData element
+
+            // ClinicalData element
+
+            // Association element
+            // -- no current mapping
+
+            // ds:Signature element
+            // -- no current mapping
 
             return odm;
         }
@@ -20,7 +36,7 @@ namespace REDCapExporter
         // AdminData element construction
         private ODMcomplexTypeDefinitionAdminData MapAdminDataElement(Study study)
         {
-            // The User Element
+            // The User Element (0 to many)
             ODMcomplexTypeDefinitionAdminData adminElement = new ODMcomplexTypeDefinitionAdminData();
             ODMcomplexTypeDefinitionUser loopUser = new ODMcomplexTypeDefinitionUser();
 
@@ -71,13 +87,53 @@ namespace REDCapExporter
                 adminElement.User.Add(loopUser);
             }
 
-            // The Location Element
+            // The Location Element (0 to many)
             // -- no current mapping
 
-            // The SignatureDef Element
+            // The SignatureDef Element (0 to many)
             // -- no current mapping
 
             return adminElement;
+        }
+
+        // Study element construction
+        private ODMcomplexTypeDefinitionStudy MapStudyElement(Study study)
+        {
+            ODMcomplexTypeDefinitionStudy odmStudy = new ODMcomplexTypeDefinitionStudy();
+
+            // GlobalVariables Element (required)
+            odmStudy.GlobalVariables = MapGlobalVariables(study);
+
+            // BasicDefinitions Element (optional)
+            // -- not porting, if even available
+
+            // MetaDataVersion Element (0 to many)
+            odmStudy.MetaDataVersion.AddRange(MapMetadataVersion(study));
+
+            return odmStudy;
+        }
+
+        private ODMcomplexTypeDefinitionGlobalVariables MapGlobalVariables(Study study)
+        {
+            ODMcomplexTypeDefinitionGlobalVariables globes = new ODMcomplexTypeDefinitionGlobalVariables();
+
+            globes.StudyName.Value = study.StudyName;
+            // globes.StudyDescription -- no current mapping
+            // globes.ProtocolName -- no current mapping
+
+            return globes;
+        }
+
+        private List<ODMcomplexTypeDefinitionMetaDataVersion> MapMetadataVersion(Study study)
+        {
+            List<ODMcomplexTypeDefinitionMetaDataVersion> metas = new List<ODMcomplexTypeDefinitionMetaDataVersion>();
+
+            foreach (var item in study.Metadata)
+            {
+
+            }
+
+            return metas;
         }
     }
 }
