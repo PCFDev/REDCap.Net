@@ -1,4 +1,5 @@
 ﻿using System;
+using Ninject;
 
 namespace PCF.REDCap
 {
@@ -6,14 +7,13 @@ namespace PCF.REDCap
     {
         static void Main(string[] args)
         {
+         
+            var kernal = new StandardKernel(new RegistryModule());
+
             // File Controller:
-            IConfigController controller = new FileConfigController();
-
-            // Web Controller:
-            //IConfigController controller = new WebConfigController();
-
+            var controller = kernal.Get<IConfigController>();                       
             var configs = controller.GetConfigurations();
-            IStudyWriter studyWriter = new TestStudyWriter();
+            var studyWriter = kernal.Get<IStudyWriter>();
 
             foreach (var item in configs)
             {

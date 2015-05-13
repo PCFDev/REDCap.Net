@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace PCF.REDCap
 {
-    public class REDCapFileSource : IREDCapClient
+    public class FileREDCapClient : IREDCapClient
     {
         private static string _armFile = string.Empty;
         private static string _eventFile = string.Empty;

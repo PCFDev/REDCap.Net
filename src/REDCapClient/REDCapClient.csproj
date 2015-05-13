@@ -8,7 +8,7 @@
     <ProjectGuid>{48BAA86C-4432-4B4C-90FC-D573F04E64C4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>REDCapClient</RootNamespace>
+    <RootNamespace>PCF.REDCap</RootNamespace>
     <AssemblyName>REDCapClient</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
@@ -36,12 +36,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="IProjectConfiguration.cs" />
     <Compile Include="IREDCapClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="REDCapClient.cs" />
-    <Compile Include="REDCapFileSource.cs" />
-    <Compile Include="REDCapWebSource.cs" />
-    <Compile Include="SqlConvertor.cs" />
+    <Compile Include="__REMOVE__REDCapClient.cs" />
+    <Compile Include="FileREDCapClient.cs" />
+    <Compile Include="WebREDCapClient.cs" />
     <Compile Include="XmlExtensions.cs" />
     <Compile Include="XMLParser.cs" />
   </ItemGroup>

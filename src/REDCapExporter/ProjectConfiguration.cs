@@ -1,6 +1,6 @@
 ﻿namespace PCF.REDCap
 {
-    public class ProjectConfiguration
+    public class ProjectConfiguration : IProjectConfiguration
     {
         // Web API fields
         public string ApiKey { get; set; }

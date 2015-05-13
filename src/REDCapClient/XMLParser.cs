@@ -10,7 +10,7 @@ namespace PCF.REDCap
     public class XMLParser
     {
         /// <summary>
-        /// Parse event xml <see cref="REDCapClient.GetEventsAsync"/>
+        /// Parse event xml <see cref="__REMOVE__REDCapClient.GetEventsAsync"/>
         /// </summary>
         /// <param name="xDocEvents"></param>
         /// <returns name = "events"></param></returns>
@@ -43,7 +43,7 @@ namespace PCF.REDCap
         }
 
         /// <summary>
-        /// Parse form xml <see cref="REDCapClient.GetFormsAsync"/>
+        /// Parse form xml <see cref="__REMOVE__REDCapClient.GetFormsAsync"/>
         /// </summary>
         /// <param name="xDocForms"></param>
         /// <returns name = "forms"></returns>
@@ -66,7 +66,7 @@ namespace PCF.REDCap
         }
 
         /// <summary>
-        /// Parse metadata xml <see cref="REDCapClient.GetMetadataAsync"/>
+        /// Parse metadata xml <see cref="__REMOVE__REDCapClient.GetMetadataAsync"/>
         /// </summary>
         /// <param name="xDocMetadata"></param>
         /// <returns name = "metadata"></returns>
@@ -83,7 +83,7 @@ namespace PCF.REDCap
         }
 
         /// <summary>
-        /// Parse arms xml <see cref="REDCapClient.GetArmsAsync"/>
+        /// Parse arms xml <see cref="__REMOVE__REDCapClient.GetArmsAsync"/>
         /// </summary>
         /// <param name="xDocArms"></param>
         /// <returns name = "arms"></returns>

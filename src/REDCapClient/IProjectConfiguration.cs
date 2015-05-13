@@ -1,5 +1,4 @@
-﻿using PCF.OdmXml;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace PCF.REDCap
 {
-    public interface IStudyWriter
+    public interface IProjectConfiguration
     {
-        Task Write(ODM study);
+         string ApiKey { get; set; }
+         string ApiUrl { get; set; }
+
     }
 }

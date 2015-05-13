@@ -18,6 +18,11 @@ namespace PCF.REDCap
         //TextWriter oldOut = Console.Out;
         // FILE WRITING
 
+        public DataManager(IREDCapClient client)
+        {
+
+        }
+
         private XMLParser _parser = new XMLParser();
         private REDCap.Study _study = new Study();
 
@@ -38,7 +43,7 @@ namespace PCF.REDCap
         private async Task ProcessWebProject(ProjectConfiguration cfgItem)
         {
             // Using WEB API:
-            REDCapWebSource rcClient = new REDCapWebSource();
+            WebREDCapClient rcClient = new WebREDCapClient();
             await rcClient.Initialize(cfgItem.ApiKey, cfgItem.ApiUrl);
 
             // Each instrument is a "table"
@@ -68,7 +73,7 @@ namespace PCF.REDCap
         private async Task ProcessFileProject(ProjectConfiguration cfgItem)
         {
             // Using file system source
-            REDCapFileSource rcClient = new REDCapFileSource();
+            FileREDCapClient rcClient = new FileREDCapClient();
             await rcClient.Initialize(cfgItem.ArmFileName,
                 cfgItem.EventFileName,
                 cfgItem.ExportFieldNamesFileName,
