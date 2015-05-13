@@ -188,6 +188,42 @@ namespace PCF.REDCap
         }
 
 
+        /// <summary>
+        /// Parse instrument event xml
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public async Task<List<InstrumentEventMapping>> HydrateInstrumentEvents(XElement xDocInstrumentEvents)
+        {
+            List<InstrumentEventMapping> instruments = new List<InstrumentEventMapping>();
+
+            foreach (XElement instrument in xDocInstrumentEvents.Descendants("arm"))
+            {
+                InstrumentEventMapping iem = new InstrumentEventMapping()
+                {
+                    ArmNumber = instrument.Element("number").GetValue()
+                };
+
+                foreach (XElement entries in instrument.Descendants("event"))
+                {
+                    List<string> form = new List<string>();
+
+                    foreach (XElement forms in entries.Elements("form"))
+                    {
+                        form.Add(forms.GetValue());
+                    }
+
+                    iem.EventInstruments.Add(entries.Element("unique_event_name").GetValue(), form);
+                }
+
+                instruments.Add(iem);
+            }
+
+
+            return instruments;
+        }
+
+
         private Dictionary<string, string> ParseFieldChoicesSliderType(string element)
         {
             Dictionary<string, string> choices = new Dictionary<string, string>();
