@@ -45,6 +45,7 @@
     <Compile Include="InstrumentEventMapping.cs" />
     <Compile Include="Metadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Record.cs" />
     <Compile Include="Study.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
