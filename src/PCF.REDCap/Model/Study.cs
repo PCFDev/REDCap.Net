@@ -42,7 +42,7 @@ namespace PCF.REDCap
         public virtual IEnumerable<User> Users
         {
             get { return _users; }
-            set { _users = value; }
+            set { _users = value.ToList(); }
         }
     }
 }

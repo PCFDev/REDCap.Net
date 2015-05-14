@@ -341,7 +341,7 @@ namespace PCF.REDCap.i2b2Importer
             throw new NotImplementedException();
         }
 
-        public async Task<Study> GetStudyAsync(ProjectConfiguration project)
+        public async Task<Study> GetStudyAsync(IProjectConfiguration project)
         {
             var study = new Study();
             study.ApiKey = project.ApiKey;
