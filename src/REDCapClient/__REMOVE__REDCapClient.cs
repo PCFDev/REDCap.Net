@@ -9,7 +9,7 @@ using System.Xml.Linq;
 namespace PCF.REDCap
 {
     [Obsolete]
-    public class __REMOVE__REDCapClient : IREDCapClient
+    public class __REMOVE__REDCapClient //: IREDCapClient
     {
         private List<string> _formNames = new List<string>();
         private HttpClient client = new HttpClient();
@@ -227,7 +227,7 @@ namespace PCF.REDCap
                 xDoc = XDocument.Parse(data);
             }
 
-            string results;
+            //string results;
 
             //foreach (var item in xDoc.Descendants("item"))
             //{
@@ -419,7 +419,7 @@ namespace PCF.REDCap
                 {
                     if (exportFieldNames != null)
                     {
-                        int x = 10;
+                        //int x = 10;
                         // dataDictionary.ExportFieldNames = await GetExportFieldNamesAsync(item.Element("field_name").Value.ToString());
                     }
                 }

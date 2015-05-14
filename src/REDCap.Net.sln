@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REDCapClient", "REDCapClient\REDCapClient.csproj", "{48BAA86C-4432-4B4C-90FC-D573F04E64C4}"
 EndProject
@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{61D4BF
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.Model", "PCF.REDCap.Model\PCF.REDCap.Model.csproj", "{B4C4B540-4CA1-43C3-A732-38613D4B9C59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.OdmXml", "PCF.REDCap.OdmXml\PCF.REDCap.OdmXml.csproj", "{F4A15501-4120-4F30-9E38-89B634C995B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4A15501-4120-4F30-9E38-89B634C995B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4A15501-4120-4F30-9E38-89B634C995B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4A15501-4120-4F30-9E38-89B634C995B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4A15501-4120-4F30-9E38-89B634C995B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

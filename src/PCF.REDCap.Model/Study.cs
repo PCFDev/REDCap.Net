@@ -9,11 +9,13 @@ namespace PCF.REDCap
             _events = new List<Event>();
             _metadata = new List<Metadata>();
             _arms = new Dictionary<string, string>();
+            _users = new List<User>();
         }
 
         private ICollection<Event> _events;
         private List<Metadata> _metadata;
         private Dictionary<string, string> _arms;
+        private List<User> _users;
 
         public string ApiKey { get; set; } // Key
         public string StudyName { get; set; }
@@ -34,6 +36,12 @@ namespace PCF.REDCap
         {
             get { return _arms; }
             set { _arms = value; }
+        }
+
+        public virtual List<User> Users
+        {
+            get { return _users; }
+            set { _users = value; }
         }
     }
 }

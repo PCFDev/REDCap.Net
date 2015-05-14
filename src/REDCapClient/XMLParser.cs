@@ -140,7 +140,7 @@ namespace PCF.REDCap
                 {
                     if (exportFieldNames != null)
                     {
-                        int x = 10;
+                        //int x = 10;
                         // dataDictionary.ExportFieldNames = await GetExportFieldNamesAsync(item.Element("field_name").Value.ToString());
                     }
                 }
@@ -176,33 +176,51 @@ namespace PCF.REDCap
                     DataExport = item.Element("data_export").GetValueAsInt()
                 };
 
-                foreach (var entries in item.Elements("forms"))
+                foreach (XElement entries in item.Elements("forms").Elements())
                 {
-                    user.Forms.Add(entries.Element("demographics").GetValue(), entries.Element("demographics").GetValueAsInt());
-                    user.Forms.Add(entries.Element("medical_history").GetValue(), entries.Element("medical_history").GetValueAsInt());
-                    user.Forms.Add(entries.Element("study_design").GetValue(), entries.Element("study_design").GetValueAsInt());
-                    user.Forms.Add(entries.Element("screening_bloodwork").GetValue(), entries.Element("screening_bloodwork").GetValueAsInt());
-                    user.Forms.Add(entries.Element("nursing_flowchart").GetValue(), entries.Element("nursing_flowchart").GetValueAsInt());
-                    user.Forms.Add(entries.Element("physical_exam").GetValue(), entries.Element("physical_exam").GetValueAsInt());
-                    user.Forms.Add(entries.Element("past_medical_history").GetValue(), entries.Element("past_medical_history").GetValueAsInt());
-                    user.Forms.Add(entries.Element("medications").GetValue(), entries.Element("medications").GetValueAsInt());
-                    user.Forms.Add(entries.Element("labs").GetValue(), entries.Element("labs").GetValueAsInt());
-                    user.Forms.Add(entries.Element("dexa").GetValue(), entries.Element("dexa").GetValueAsInt());
-                    user.Forms.Add(entries.Element("inclusion_exclusion_criteria").GetValue(), entries.Element("inclusion_exclusion_criteria").GetValueAsInt());
-                    user.Forms.Add(entries.Element("mri_mrs").GetValue(), entries.Element("mri_mrs").GetValueAsInt());
-                    user.Forms.Add(entries.Element("vldl").GetValue(), entries.Element("vldl").GetValueAsInt());
-                    user.Forms.Add(entries.Element("vldl_loading").GetValue(), entries.Element("vldl_loading").GetValueAsInt());
-                    user.Forms.Add(entries.Element("clamp").GetValue(), entries.Element("clamp").GetValueAsInt());
-                    user.Forms.Add(entries.Element("clamp_infusate").GetValue(), entries.Element("clamp_infusate").GetValueAsInt());
-                    user.Forms.Add(entries.Element("dietitian").GetValue(), entries.Element("dietitian").GetValueAsInt());
-                    user.Forms.Add(entries.Element("adverse_event").GetValue(), entries.Element("adverse_event").GetValueAsInt());
+                    user.Forms.Add(entries.Name.ToString(), entries.GetValueAsInt());
                  }
 
                 users.Add(user);
-
                 }
 
             return users;
+        }
+
+
+        /// <summary>
+        /// Parse instrument event xml
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public async Task<List<InstrumentEventMapping>> HydrateInstrumentEvents(XElement xDocInstrumentEvents)
+        {
+            List<InstrumentEventMapping> instruments = new List<InstrumentEventMapping>();
+
+            foreach (XElement instrument in xDocInstrumentEvents.Descendants("arm"))
+            {
+                InstrumentEventMapping iem = new InstrumentEventMapping()
+                {
+                    ArmNumber = instrument.Element("number").GetValue()
+                };
+
+                foreach (XElement entries in instrument.Descendants("event"))
+                {
+                    List<string> form = new List<string>();
+
+                    foreach (XElement forms in entries.Elements("form"))
+                    {
+                        form.Add(forms.GetValue());
+                    }
+
+                    iem.EventInstruments.Add(entries.Element("unique_event_name").GetValue(), form);
+                }
+
+                instruments.Add(iem);
+            }
+
+
+            return instruments;
         }
 
 

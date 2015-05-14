@@ -144,6 +144,7 @@ namespace PCF.REDCap
             throw new NotImplementedException();
         }
 
+        [Obsolete]
         public Task<List<FormMetadata>> GetFormMetadataAsync()
         {
             throw new NotImplementedException();
@@ -246,7 +247,7 @@ namespace PCF.REDCap
                 {
                     if (exportFieldNames != null)
                     {
-                        int x = 10;
+                        //int x = 10;
                         // dataDictionary.ExportFieldNames = await GetExportFieldNamesAsync(item.Element("field_name").Value.ToString());
                     }
                 }
