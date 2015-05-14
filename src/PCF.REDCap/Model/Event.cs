@@ -17,7 +17,7 @@ namespace PCF.REDCap
         public string DayOffset { get; set; }
         public string OffsetMin { get; set; }
         public string OffsetMax { get; set; }
-        
+        public Arm Arm { get; set; }
         public virtual List<Instrument> Instruments
         {
             get { return _instruments; }

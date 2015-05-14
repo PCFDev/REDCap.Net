@@ -20,7 +20,7 @@ namespace PCF.REDCap
         {
             var odm = new ODM();
 
-            odm.ID = study.StudyName;           
+            odm.ID = study.StudyName;
 
             // Study element
             odm.Study.Add(MapStudyObject(study));
@@ -29,8 +29,10 @@ namespace PCF.REDCap
             odm.AdminData.Add(MapAdminDataObject(study));
 
             // ReferenceData element
+            odm.ReferenceData.Add(MapReferenceDataObject(study));
 
             // ClinicalData element
+            odm.ClinicalData.Add(MapClinicalDataObject(study));
 
             // Association element
             // -- no current mapping
@@ -56,7 +58,7 @@ namespace PCF.REDCap
             foreach (var user in study.Users)
             {
                 loopUser.OID = user.UserName; // using UserName for the user identifier
-                
+
                 // switch on the data export value to fill in UserType
                 // UserType: Sponsor | Investigator | Lab | Other
                 switch (user.DataExport)
@@ -81,7 +83,7 @@ namespace PCF.REDCap
                 loopUser.LastName.Value = user.LastName;
                 // loopUser.Organization -- no current mapping
                 // loopuser.Address -- no current mapping
-                if(!string.IsNullOrEmpty(user.Email))
+                if (!string.IsNullOrEmpty(user.Email))
                 {
                     ODMcomplexTypeDefinitionEmail email = new ODMcomplexTypeDefinitionEmail();
                     email.Value = user.Email;
@@ -153,27 +155,76 @@ namespace PCF.REDCap
             // Include Element (optional)
             // --not porting
 
-            // Protocol Element (optional)-----------------------
-            ODMcomplexTypeDefinitionProtocol protocol = new ODMcomplexTypeDefinitionProtocol();
-
             // Description Element (optional) -- no current mapping
             // StudyEventRef Element (0 to many)
-            ODMcomplexTypeDefinitionStudyEventRef studyRef = new ODMcomplexTypeDefinitionStudyEventRef();
-            int i = 0; // REDCap event counter
             foreach (var eventItem in study.Events)
             {
-                studyRef.StudyEventOID = eventItem.UniqueEventName;
-                studyRef.OrderNumber = i.ToString();
+                var studyRef = new ODMcomplexTypeDefinitionStudyEventRef();
+                var studyDef = new ODMcomplexTypeDefinitionStudyEventDef();
+
+                studyDef.Name = eventItem.Arm.Name + ":" + eventItem.EventName;
+                studyDef.OID = "SE." + eventItem.Arm.Name + ":" + eventItem.EventName;
+                foreach (var formItem in eventItem.Instruments)
+                {
+                    var formRef = new ODMcomplexTypeDefinitionFormRef();
+
+                    formRef.FormOID = "FM." + formItem.InstrumentName;
+                    formRef.OrderNumber = (studyDef.FormRef.Count + 1).ToString();
+                    //formRef.CollectionExceptionConditionOID -- no current mapping
+                    formRef.Mandatory = YesOrNo.No;
+                    studyDef.FormRef.Add(formRef);
+                }
+
+                studyRef.StudyEventOID = studyDef.OID;
+                studyRef.OrderNumber = (meta.Protocol.StudyEventRef.Count + 1).ToString();
                 // studyRef.Mandatory -- no current mapping
                 // studyRef.CollectionExceptionConditionOID -- no current mapping
 
-                protocol.StudyEventRef.Add(studyRef);
+                meta.Protocol.StudyEventRef.Add(studyRef);
+                meta.StudyEventDef.Add(studyDef);
             }
+
+            //always returning single meta due to lack of versioning in RedCap
+            metas.Add(meta);
 
             // Alias Element (0 to many) -- no current mapping
             // End Protocol Element-------------------------------
 
             return metas;
+        }
+
+        //Stubs. Not Complete!
+        private ODMcomplexTypeDefinitionReferenceData MapReferenceDataObject(Study study)
+        {
+            ODMcomplexTypeDefinitionStudy odmStudy = new ODMcomplexTypeDefinitionStudy();
+
+            // GlobalVariables Element (required)
+            odmStudy.GlobalVariables = MapGlobalVariables(study);
+
+            // BasicDefinitions Element (optional)
+            // -- not porting, if even available
+
+            // MetaDataVersion Element (0 to many)
+            odmStudy.MetaDataVersion.AddRange(MapMetadataVersion(study));
+
+            return odmStudy;
+        }
+
+        //Stubs. Not Complete!
+        private ODMcomplexTypeDefinitionClinicalData MapClinicalDataObject(Study study)
+        {
+            ODMcomplexTypeDefinitionStudy odmStudy = new ODMcomplexTypeDefinitionStudy();
+
+            // GlobalVariables Element (required)
+            odmStudy.GlobalVariables = MapGlobalVariables(study);
+
+            // BasicDefinitions Element (optional)
+            // -- not porting, if even available
+
+            // MetaDataVersion Element (0 to many)
+            odmStudy.MetaDataVersion.AddRange(MapMetadataVersion(study));
+
+            return odmStudy;
         }
         #endregion
     }

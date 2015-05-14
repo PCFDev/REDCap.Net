@@ -33,7 +33,7 @@ namespace PCF.REDCap
 
                 //TODO: Need arm information here?
                 //Dictionary<string, string> arms = await GetArmsAsync();
-                // Actual data is <items><arm><event></event>...</arm></itmes>
+                // Actual data is <items><arm><event></event>...</arm></items>
 
                 events.Add(thisEvent);
             }
