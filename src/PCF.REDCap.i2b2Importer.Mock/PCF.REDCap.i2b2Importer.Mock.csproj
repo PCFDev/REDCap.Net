@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PCF.OdmXml.i2b2Importer">
+      <HintPath>..\..\lib\PCF.OdmXml.i2b2Importer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileConfigController.cs" />
+    <Compile Include="FileConfigProvider.cs" />
     <Compile Include="FileREDCapClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

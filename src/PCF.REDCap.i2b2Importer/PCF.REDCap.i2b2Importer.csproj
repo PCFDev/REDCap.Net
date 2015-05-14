@@ -92,13 +92,19 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PCF.REDCap.i2b2Importer.Mock\PCF.REDCap.i2b2Importer.Mock.csproj">
+      <Project>{268f3ba3-7a0c-47c9-84e2-025f11dbb8c0}</Project>
+      <Name>PCF.REDCap.i2b2Importer.Mock</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PCF.REDCap\PCF.REDCap.csproj">
       <Project>{23587cf1-9f19-4100-9758-2c923e48c305}</Project>
       <Name>PCF.REDCap</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="NinjectConfig.xml" />
+    <Content Include="NinjectConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,8 +8,9 @@ namespace PCF.REDCap
 {
     public interface IProjectConfiguration
     {
-         string ApiKey { get; set; }
-         string ApiUrl { get; set; }
+        string Name { get; set; }
+        string ApiKey { get; set; }
+        string ApiUrl { get; set; }
 
     }
 }

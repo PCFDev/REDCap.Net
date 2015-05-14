@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 
-namespace PCF.REDCap
+namespace PCF.REDCap.i2b2Importer
 {
     public class FileREDCapClient : IREDCapClient
     {
@@ -17,27 +17,24 @@ namespace PCF.REDCap
         private static string _metadataFile = string.Empty;
         private static string _userFile = string.Empty;
 
+
+        public FileREDCapClient()
+        {
+            _eventFile = @"TestFiles\Fructose_Events.xml";
+            _armFile = @"TestFiles\Fructose_Arms.xml";
+            _exportFiledNamesFile = @"TestFiles\Fructose_ExportFieldNames.xml";
+            _instrumentFile = @"TestFiles\Fructose_Forms.xml";
+            _instrumentEventMappingFile = @"TestFiles\Fructose_Mapping.xml";
+            _metadataFile = @"TestFiles\Fructose_Metadata.xml";
+            _metadataFile = @"TestFiles\Fructose_Users.xml";
+
+        }
         public async Task Initialize(string apiKey, string apiUri)
         {
             throw new NotImplementedException();
         }
 
-        public async Task Initialize(string armFileName,
-            string eventFileName,
-            string exportFiledNamesFileName,
-            string instrumentFileName,
-            string instrumentEventMappingFileName,
-            string metadataFileName,
-            string userFileName)
-        {
-            _armFile = armFileName;
-            _eventFile = eventFileName;
-            _exportFiledNamesFile = exportFiledNamesFileName;
-            _instrumentFile = instrumentFileName;
-            _instrumentEventMappingFile = instrumentEventMappingFileName;
-            _metadataFile = metadataFileName;
-            _userFile = userFileName;
-        }
+    
 
         public Task<XDocument> GetMetadataAsXmlAsync()
         {
@@ -342,6 +339,38 @@ namespace PCF.REDCap
         Task<IEnumerable<Metadata>> IREDCapClient.GetMetadataAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Study> GetStudyAsync(ProjectConfiguration project)
+        {
+            var study = new Study();
+            study.ApiKey = project.ApiKey;
+            study.StudyName = project.Name;
+
+            // Each instrument is a "table"
+            var forms = await this.GetInstrumentsAsync();
+
+            // Each item in metadata will be assigned to an instrument
+            // Each item will contain data about that item (radio selection, checkbox values, etc.)
+            study.Metadata = await this.GetMetadataAsync();
+
+            // Multi-value fields have different names than the parent field, those are in this file
+            var exportFieldNames = await this.GetExportFieldNamesAsync();
+
+            // A study may have multiple arms, arm information is in this file
+            study.Arms = await this.GetArmsAsync();
+
+            // An event has a particular arm and can have multiple instruments used and
+            // A particular instrument can be listed in multiple events
+            study.Events = await this.GetEventsAsync();
+
+            // This file lists each event in the study and the list of instruments used in that event
+            var mapping = await this.GetFormEventMapAsync();
+
+            // The user list for this study
+            study.Users = await this.GetUsersAsync();
+
+            return study;
         }
     }
 }

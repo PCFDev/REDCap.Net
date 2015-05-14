@@ -8,58 +8,27 @@ namespace PCF.REDCap
 {
     public interface IREDCapClient
     {
-        //Study Study
-        //{
-        //    get;
-        //    set;
-        //}
-
+       
         Task Initialize(IProjectConfiguration config);
 
 
-        //Task Initialize(string apiKey, string apiUri);
-
-        //Task Initialize(string armFileName,
-        //    string eventFileName,
-        //    string exportFiledNamesFileName,
-        //    string instrumentFileName,
-        //    string instrumentEventMappingFileName,
-        //    string metadataFileName,
-        //    string userFileName);
-
+        #region REMOVED XML Functions
         //Task<XDocument> GetArmsAsXmlAsync();
 
-        Task<IDictionary<string, string>> GetArmsAsync();
-
-       // Task<XDocument> GetEventsAsXmlAsync();
+        // Task<XDocument> GetEventsAsXmlAsync();
 
         //Task<XDocument> GetUsersAsXmlAsync();
-
-        Task<IEnumerable<User>> GetUsersAsync();
-
-
-        Task<IEnumerable<Event>> GetEventsAsync();
-
-        Task<IEnumerable<ExportFieldNames>> GetExportFieldNamesAsync();
-
         //Task<XDocument> GetFormDataAsXmlAsync();
 
         //Task<XDocument> GetInstrumentEventMappingAsXmlAsync();
+        // Task<IEnumerable<FormMetadata>> GetFormMetadataAsync();
 
-        Task<IEnumerable<Instrument>> GetFormEventMapAsync();
-
-       // Task<IEnumerable<FormMetadata>> GetFormMetadataAsync();
-
-       // Task<XDocument> GetInstrumentsAsXmlAsync();
-
-        Task<IEnumerable<Instrument>> GetInstrumentsAsync();
-
-        Task<IEnumerable<Metadata>> GetMetadataAsync();
+        // Task<XDocument> GetInstrumentsAsXmlAsync();
         //Task<XDocument> GetMetadataAsXmlAsync();
 
         //Task<XDocument> GetExportFieldNamesAsXmlAsync();
 
-        
+
 
         //Task<XDocument> GetRecordsAsXmlAsync(string eventName, string[] formNames);
 
@@ -71,6 +40,27 @@ namespace PCF.REDCap
 
         //Task<XDocument> GetReportAsXmlAsync(string reportId);
 
-        //Task<string> TestRecords();
+        #endregion
+
+        Task<IDictionary<string, string>> GetArmsAsync();
+
+        Task<Study> GetStudyAsync(IProjectConfiguration project);
+
+
+        Task<IEnumerable<User>> GetUsersAsync();
+
+
+        Task<IEnumerable<Event>> GetEventsAsync();
+
+        Task<IEnumerable<ExportFieldNames>> GetExportFieldNamesAsync();
+
+
+        Task<IEnumerable<Instrument>> GetFormEventMapAsync();
+
+
+        Task<IEnumerable<Instrument>> GetInstrumentsAsync();
+
+        Task<IEnumerable<Metadata>> GetMetadataAsync();
+  
     }
 }

@@ -53,7 +53,7 @@ namespace PCF.REDCap
             }
 
             return arms;
-            
+
         }
 
         //public async Task<XDocument> GetEventsAsXmlAsync()
@@ -64,7 +64,7 @@ namespace PCF.REDCap
         public async Task<IEnumerable<Event>> GetEventsAsync()
         {
             var xml = await GetXml(string.Format(PARAMS_GETEVENT, _token, "xml"));
-          
+
             return await this._parser.HydrateEvent(xml);
 
         }
@@ -193,6 +193,36 @@ namespace PCF.REDCap
             }
         }
 
-    
+        public async Task<Study> GetStudyAsync(IProjectConfiguration project)
+        {
+            var study = new Study();
+            study.ApiKey = project.ApiKey;
+            study.StudyName = project.Name;
+
+            // Each instrument is a "table"
+            var forms = await this.GetInstrumentsAsync();
+
+            // Each item in metadata will be assigned to an instrument
+            // Each item will contain data about that item (radio selection, checkbox values, etc.)
+            study.Metadata = await this.GetMetadataAsync();
+
+            // Multi-value fields have different names than the parent field, those are in this file
+            var exportFieldNames = await this.GetExportFieldNamesAsync();
+
+            // A study may have multiple arms, arm information is in this file
+            study.Arms = await this.GetArmsAsync();
+
+            // An event has a particular arm and can have multiple instruments used and
+            // A particular instrument can be listed in multiple events
+            study.Events = await this.GetEventsAsync();
+
+            // This file lists each event in the study and the list of instruments used in that event
+            var mapping = await this.GetFormEventMapAsync();
+
+            // The user list for this study
+            study.Users = await this.GetUsersAsync();
+
+            return study;
+        }
     }
 }

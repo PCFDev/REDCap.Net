@@ -12,12 +12,12 @@ using System;
 
 namespace PCF.REDCap
 {
-    public class OdmXmlConverter
+    public class OdmXmlConverter : IOdmXmlConverter
     {
         /// <summary>Converts the parameterized REDCap study into an ODM model study.</summary>
         /// <param name="study">The PCF REDCap model study to convert.</param>
         /// <returns>An ODM study.</returns>
-        public async Task<ODM> Convert(Study study)
+        public async Task<ODM> ConvertAsync(Study study)
         {
             var odm = new ODM();
 

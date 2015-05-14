@@ -2,7 +2,7 @@
 
 namespace PCF.REDCap.i2b2Importer
 {
-    internal class FileConfigProvider : IConfigProvider
+    public class FileConfigProvider : IConfigProvider
     {
         public List<ProjectConfiguration> GetConfigurations()
         {
@@ -11,6 +11,7 @@ namespace PCF.REDCap.i2b2Importer
                 new ProjectConfiguration() {
                     ApiKey = string.Empty,
                     ApiUrl = string.Empty,
+                    Name = "File Project 1"
                     //EventFileName = @"TestFiles\Fructose_Events.xml",
                     //ArmFileName = @"TestFiles\Fructose_Arms.xml",
                     //ExportFieldNamesFileName = @"TestFiles\Fructose_ExportFieldNames.xml",

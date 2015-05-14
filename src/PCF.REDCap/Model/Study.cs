@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace PCF.REDCap
 {
@@ -12,33 +13,33 @@ namespace PCF.REDCap
             _users = new List<User>();
         }
 
-        private ICollection<Event> _events;
+        private List<Event> _events;
         private List<Metadata> _metadata;
-        private Dictionary<string, string> _arms;
+        private IDictionary<string, string> _arms;
         private List<User> _users;
 
         public string ApiKey { get; set; } // Key
         public string StudyName { get; set; }
 
-        public virtual ICollection<Event> Events
+        public virtual IEnumerable<Event> Events
         {
             get { return _events; }
-            set { _events = value; }
+            set { _events = value.ToList(); }
         }
 
-        public virtual List<Metadata> Metadata
+        public virtual IEnumerable<Metadata> Metadata
         {
             get { return _metadata; }
-            set { _metadata = value; }
+            set { _metadata = value.ToList(); }
         }
 
-        public virtual Dictionary<string,string> Arms
+        public virtual IDictionary<string,string> Arms
         {
             get { return _arms; }
             set { _arms = value; }
         }
 
-        public virtual List<User> Users
+        public virtual IEnumerable<User> Users
         {
             get { return _users; }
             set { _users = value; }
