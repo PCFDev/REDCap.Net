@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!--https://github.com/ninject/ninject.extensions.xml/wiki/Getting-started-->
+
+<module name="myXmlConfigurationModule">
+  <bind service="MyNamespace.IMyService, MyAssembly"
+        to="MyNamespace.MyServiceImplementation, MyAssembly" />
+  <bind service="MyNamespace.IMyOtherService, MyAssembly"
+        to="MyNamespace.MyOtherServiceImplementation, MyAssembly" />
+</module>

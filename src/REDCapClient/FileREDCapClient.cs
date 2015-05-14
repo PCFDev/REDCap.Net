@@ -304,5 +304,44 @@ namespace PCF.REDCap
             return choices;
         }
 
+        public Task Initialize(IProjectConfiguration config)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IDictionary<string, string>> IREDCapClient.GetArmsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<User>> GetUsersAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<Event>> IREDCapClient.GetEventsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<ExportFieldNames>> IREDCapClient.GetExportFieldNamesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<Instrument>> IREDCapClient.GetFormEventMapAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<Instrument>> IREDCapClient.GetInstrumentsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<Metadata>> IREDCapClient.GetMetadataAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

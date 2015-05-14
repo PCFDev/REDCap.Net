@@ -1,5 +1,6 @@
 ﻿using System;
 using Ninject;
+using Ninject.Extensions.Xml;
 
 namespace PCF.REDCap
 {
@@ -10,6 +11,8 @@ namespace PCF.REDCap
          
             var kernal = new StandardKernel(new RegistryModule());
 
+           
+
             // File Controller:
             var controller = kernal.Get<IConfigController>();                       
             var configs = controller.GetConfigurations();
@@ -18,22 +21,22 @@ namespace PCF.REDCap
             foreach (var item in configs)
             {
                 // Process the study
-                var manager = new DataManager();
+                //var manager = new DataManager();
 
-                manager.ProcessProject(item).ContinueWith(t =>
-                {
+                //manager.ProcessProject(item).ContinueWith(t =>
+                //{
 
-                    if (t.Exception != null)
-                        Console.WriteLine(t.Exception.Message);
-                    else
-                    {
-                        // Output study data to something
-                        studyWriter.Write("");
-                        //studyWriter.Write(t.Result);
+                //    if (t.Exception != null)
+                //        Console.WriteLine(t.Exception.Message);
+                //    else
+                //    {
+                //        // Output study data to something
+                //        studyWriter.Write("");
+                //        //studyWriter.Write(t.Result);
 
-                        Console.WriteLine("Done");
-                    }
-                });
+                //        Console.WriteLine("Done");
+                //    }
+                //});
             }
 
             Console.ReadLine();

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace PCF.REDCap
 {
-    internal class TestStudyWriter : IStudyWriter
+    public class TestStudyWriter : IStudyWriter
     {
         public async Task Write(ODM study)
         {

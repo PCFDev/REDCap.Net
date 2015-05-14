@@ -38,7 +38,11 @@
   <ItemGroup>
     <Compile Include="IProjectConfiguration.cs" />
     <Compile Include="IREDCapClient.cs" />
+    <Compile Include="IStudyWriter.cs" />
+    <Compile Include="OdmXmlConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestStudyWriter.cs" />
+    <Compile Include="XmlStudyWriter.cs" />
     <Compile Include="__REMOVE__REDCapClient.cs" />
     <Compile Include="FileREDCapClient.cs" />
     <Compile Include="WebREDCapClient.cs" />
@@ -48,6 +52,9 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net45+wp80+win8+wpa81+aspnetcore50\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PCF.OdmXml">
+      <HintPath>..\..\lib\PCF.OdmXml.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.22\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
