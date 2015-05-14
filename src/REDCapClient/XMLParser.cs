@@ -187,11 +187,10 @@ namespace PCF.REDCap
             return users;
         }
 
-
         /// <summary>
         /// Parse instrument event xml
         /// </summary>
-        /// <param name="element"></param>
+        /// <param name="xDocInstrumentEvents"></param>
         /// <returns></returns>
         public async Task<List<InstrumentEventMapping>> HydrateInstrumentEvents(XElement xDocInstrumentEvents)
         {
@@ -223,6 +222,30 @@ namespace PCF.REDCap
             return instruments;
         }
 
+        /// <summary>
+        /// Parse record xml
+        /// </summary>
+        /// <param name="xDocRecords" <see cref="XElement"/>> this is the xml snippet containing the user xml data </param>
+        /// <returns name="records"></returns>
+        public async Task<List<Record>> HydrateRecords(XElement xDocRecords)
+        {
+            List<Record> records = new List<Record>();
+
+            foreach (XElement item in xDocRecords.Descendants("records").Elements("item"))
+            {
+                Record record = new Record
+                {        
+                    PatientId = item.Element("record").GetValue(),
+                    Concept = item.Element("field_name").GetValue(),
+                    ConceptValue = item.Element("value").GetValue(),
+                    EventName = item.Element("redcap_event_name").GetValue(),
+                };
+
+                records.Add(record);
+            }
+
+            return records;
+        }
 
         private Dictionary<string, string> ParseFieldChoicesSliderType(string element)
         {

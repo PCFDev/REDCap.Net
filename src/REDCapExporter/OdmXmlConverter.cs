@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿//---------------------------------------
+//  PCF REDCap to ODM
+//
+//  REDCap model v1.0
+//  ODM model v1.3.2
+//----------------------------------------
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using PCF.OdmXml;
 using PCF.REDCap;
@@ -7,7 +13,9 @@ namespace REDCapExporter
 {
     public class OdmXmlConverter
     {
-
+        /// <summary>Converts the parameterized REDCap study into an ODM model study.</summary>
+        /// <param name="study">The PCF REDCap model study to convert.</param>
+        /// <returns>An ODM study.</returns>
         public async Task<ODM> Convert(Study study)
         {
             var odm = new ODM();
@@ -15,10 +23,10 @@ namespace REDCapExporter
             odm.ID = study.StudyName;           
 
             // Study element
-            odm.Study.Add(MapStudyElement(study));
+            odm.Study.Add(MapStudyObject(study));
 
             // AdminData element
-            odm.AdminData.Add(MapAdminDataElement(study));
+            odm.AdminData.Add(MapAdminDataObject(study));
 
             // ReferenceData element
 
@@ -33,10 +41,13 @@ namespace REDCapExporter
             return odm;
         }
 
-        // AdminData element construction
-        private ODMcomplexTypeDefinitionAdminData MapAdminDataElement(Study study)
+        #region ADMINDATA element construction
+        /// <summary>Creates the ODM AdminData object and flushes out its User object(s).</summary>
+        /// <param name="study">The PCF REDCap model study to convert.</param>
+        /// <returns>An ODM AdminData object.</returns>
+        private ODMcomplexTypeDefinitionAdminData MapAdminDataObject(Study study)
         {
-            // The User Element (0 to many)
+            // User Element (0 to many)
             ODMcomplexTypeDefinitionAdminData adminElement = new ODMcomplexTypeDefinitionAdminData();
             ODMcomplexTypeDefinitionUser loopUser = new ODMcomplexTypeDefinitionUser();
 
@@ -87,17 +98,21 @@ namespace REDCapExporter
                 adminElement.User.Add(loopUser);
             }
 
-            // The Location Element (0 to many)
+            // Location Element (0 to many)
             // -- no current mapping
 
-            // The SignatureDef Element (0 to many)
+            // SignatureDef Element (0 to many)
             // -- no current mapping
 
             return adminElement;
         }
+        #endregion
 
-        // Study element construction
-        private ODMcomplexTypeDefinitionStudy MapStudyElement(Study study)
+        #region STUDY element construction
+        /// <summary>Creates the ODM Study object and flushes out its GlobalVariables, BasicDefinitions, and MetaDataVersion objects.</summary>
+        /// <param name="study">The PCF REDCap model study to convert.</param>
+        /// <returns>An ODM Study object.</returns>
+        private ODMcomplexTypeDefinitionStudy MapStudyObject(Study study)
         {
             ODMcomplexTypeDefinitionStudy odmStudy = new ODMcomplexTypeDefinitionStudy();
 
@@ -113,6 +128,9 @@ namespace REDCapExporter
             return odmStudy;
         }
 
+        /// <summary>Creates the GlobalVariables object.</summary>
+        /// <param name="study">The PCF REDCap model study to convert.</param>
+        /// <returns>An ODM GlobalVariables object.</returns>
         private ODMcomplexTypeDefinitionGlobalVariables MapGlobalVariables(Study study)
         {
             ODMcomplexTypeDefinitionGlobalVariables globes = new ODMcomplexTypeDefinitionGlobalVariables();
@@ -124,16 +142,39 @@ namespace REDCapExporter
             return globes;
         }
 
+        /// <summary></summary>
+        /// <param name="study"></param>
+        /// <returns></returns>
         private List<ODMcomplexTypeDefinitionMetaDataVersion> MapMetadataVersion(Study study)
         {
             List<ODMcomplexTypeDefinitionMetaDataVersion> metas = new List<ODMcomplexTypeDefinitionMetaDataVersion>();
+            ODMcomplexTypeDefinitionMetaDataVersion meta = new ODMcomplexTypeDefinitionMetaDataVersion();
 
-            foreach (var item in study.Metadata)
+            // Include Element (optional)
+            // --not porting
+
+            // Protocol Element (optional)-----------------------
+            ODMcomplexTypeDefinitionProtocol protocol = new ODMcomplexTypeDefinitionProtocol();
+
+            // Description Element (optional) -- no current mapping
+            // StudyEventRef Element (0 to many)
+            ODMcomplexTypeDefinitionStudyEventRef studyRef = new ODMcomplexTypeDefinitionStudyEventRef();
+            int i = 0; // REDCap event counter
+            foreach (var eventItem in study.Events)
             {
+                studyRef.StudyEventOID = eventItem.UniqueEventName;
+                studyRef.OrderNumber = i.ToString();
+                // studyRef.Mandatory -- no current mapping
+                // studyRef.CollectionExceptionConditionOID -- no current mapping
 
+                protocol.StudyEventRef.Add(studyRef);
             }
+
+            // Alias Element (0 to many) -- no current mapping
+            // End Protocol Element-------------------------------
 
             return metas;
         }
+        #endregion
     }
 }
