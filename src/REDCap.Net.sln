@@ -22,6 +22,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\docs\MainCodeMap.dgml = ..\docs\MainCodeMap.dgml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap", "PCF.REDCap\PCF.REDCap.csproj", "{23587CF1-9F19-4100-9758-2C923E48C305}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__OLD", "__OLD", "{AB7A01A8-3547-4FBB-B184-1CC4C9824F1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.i2b2Importer", "PCF.REDCap.i2b2Importer\PCF.REDCap.i2b2Importer.csproj", "{0B8153D8-C87C-49F3-9A66-761BB90A64BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,8 +46,21 @@ Global
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23587CF1-9F19-4100-9758-2C923E48C305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23587CF1-9F19-4100-9758-2C923E48C305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23587CF1-9F19-4100-9758-2C923E48C305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23587CF1-9F19-4100-9758-2C923E48C305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B8153D8-C87C-49F3-9A66-761BB90A64BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B8153D8-C87C-49F3-9A66-761BB90A64BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B8153D8-C87C-49F3-9A66-761BB90A64BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B8153D8-C87C-49F3-9A66-761BB90A64BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{48BAA86C-4432-4B4C-90FC-D573F04E64C4} = {AB7A01A8-3547-4FBB-B184-1CC4C9824F1D}
+		{F57F03F4-56B9-4007-933D-1524DDAEA26F} = {AB7A01A8-3547-4FBB-B184-1CC4C9824F1D}
+		{B4C4B540-4CA1-43C3-A732-38613D4B9C59} = {AB7A01A8-3547-4FBB-B184-1CC4C9824F1D}
 	EndGlobalSection
 EndGlobal
