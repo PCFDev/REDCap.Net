@@ -18,13 +18,13 @@ namespace PCF.REDCap
         private XMLParser _parser = new XMLParser();
 
         // Query string constants
-        private const string PARAMS_GETEVENT = "token={0}&content=event&format={1}";
-        private const string PARAMS_GETARMS = "token={0}&content=arm&format={1}";
-        private const string PARAMS_GETINSTRUMENTS = "token={0}&content=instrument&format={1}";
-        private const string PARAMS_GETMETADATA = "token={0}&content=metadata&format={1}";
-        private const string PARAMS_GETUSERS = "token={0}&content=user&format={1}";
-        private const string PARAMS_GETINSTUMENTEVENTMAP = "token={0}&content=formEventMapping&format={1}";
-        private const string PARAMS_GETEXPORTFIELDNAMES = "token={0}&content=exportFieldNames&format={1}";
+        protected const string PARAMS_GETEVENT = "token={0}&content=event&format={1}";
+        protected const string PARAMS_GETARMS = "token={0}&content=arm&format={1}";
+        protected const string PARAMS_GETINSTRUMENTS = "token={0}&content=instrument&format={1}";
+        protected const string PARAMS_GETMETADATA = "token={0}&content=metadata&format={1}";
+        protected const string PARAMS_GETUSERS = "token={0}&content=user&format={1}";
+        protected const string PARAMS_GETINSTUMENTEVENTMAP = "token={0}&content=formEventMapping&format={1}";
+        protected const string PARAMS_GETEXPORTFIELDNAMES = "token={0}&content=exportFieldNames&format={1}";
         // ----------------------
 
 
@@ -177,7 +177,7 @@ namespace PCF.REDCap
         //}
 
 
-        private async Task<XElement> GetXml(string url)
+        protected virtual async Task<XElement> GetXml(string url)
         {
             using (var _client = new HttpClient())
             {

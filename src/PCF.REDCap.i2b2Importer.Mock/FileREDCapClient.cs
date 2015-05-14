@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-
 namespace PCF.REDCap.i2b2Importer
 {
-    public class FileREDCapClient : IREDCapClient
+    public class FileREDCapClient : WebREDCapClient
     {
+
         private static string _armFile = string.Empty;
         private static string _eventFile = string.Empty;
         private static string _exportFiledNamesFile = string.Empty;
@@ -20,6 +21,7 @@ namespace PCF.REDCap.i2b2Importer
 
         public FileREDCapClient()
         {
+
             _eventFile = @"TestFiles\Fructose_Events.xml";
             _armFile = @"TestFiles\Fructose_Arms.xml";
             _exportFiledNamesFile = @"TestFiles\Fructose_ExportFieldNames.xml";
@@ -29,348 +31,44 @@ namespace PCF.REDCap.i2b2Importer
             _metadataFile = @"TestFiles\Fructose_Users.xml";
 
         }
-        public async Task Initialize(string apiKey, string apiUri)
-        {
-            throw new NotImplementedException();
-        }
 
-    
-
-        public Task<XDocument> GetMetadataAsXmlAsync()
+        protected override async Task<XElement> GetXml(string url)
         {
-            return Task.FromResult(XDocument.Load(_metadataFile));
-        }
-        public Task<XDocument> GetEventsAsXmlAsync()
-        {
-            return Task.FromResult(XDocument.Load(_eventFile));
-        }
-
-        public Task<XDocument> GetInstrumentsAsXmlAsync()
-        {
-            return Task.FromResult(XDocument.Load(_instrumentFile));
-        }
-
-        public Task<XDocument> GetInstrumentEventMappingAsXmlAsync()
-        {
-            return Task.FromResult(XDocument.Load(_instrumentEventMappingFile));
-        }
-        public Task<XDocument> GetArmsAsXmlAsync()
-        {
-            return Task.FromResult(XDocument.Load(_armFile));
-        }
-
-        public Task<XDocument> GetExportFieldNamesAsXmlAsync()
-        {
-            return Task.FromResult(XDocument.Load(_exportFiledNamesFile));
-        }
-
-        public Task<XDocument> GetUsersAsXmlAsync()
-        {
-            return Task.FromResult(XDocument.Load(_userFile));
-        }
-
-        public Study Study
-        {
-            get
+            var xml = await Task.Run<XElement>( () =>
             {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-        
-        [Obsolete]
-        public Task<Dictionary<string, string>> GetArmsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Obsolete]
-        public Task<List<Event>> GetEventsAsync()
-        {
-            //throw new NotImplementedException();
-            var xDoc = XDocument.Load(_eventFile);
-            List<Event> events = new List<Event>();
-
-            foreach (var item in xDoc.Descendants("item"))
-            {
-                Event thisEvent = new Event
+                if (url.Contains("content=arm"))
                 {
-                    UniqueEventName = item.Element("unique_event_name").Value.ToString(),
-                    EventName = item.Element("event_name").Value.ToString(),
-                    ArmNumber = item.Element("arm_num").Value.ToString(),
-                    DayOffset = item.Element("day_offset").Value.ToString(),
-                    OffsetMax = item.Element("offset_max").Value.ToString(),
-                    OffsetMin = item.Element("offset_min").Value.ToString()
-                };
-
-                //TODO: Need arm information here?
-                //Dictionary<string, string> arms = await GetArmsAsync();
-                // Actual data is <items><arm><event></event>...</arm></itmes>
-
-                // not for a direct  proxy
-                //var mappings = xDocMapping.Descendants("event").Where(e => e.Element("unique_event_name").Value.ToString() == item.Element("unique_event_name").Value.ToString());
-
-                //foreach (var form in mappings.Descendants("form"))
-                //{
-                //    thisEvent.Forms.Add(forms.Where(f => f.FormName == form.Value.ToString()).FirstOrDefault());
-                //}
-
-                events.Add(thisEvent);
-            }
-
-            return Task.FromResult(events.ToList());
-        }
-
-        [Obsolete]
-        public Task<List<ExportFieldNames>> GetExportFieldNamesAsync()
-        {
-            throw new NotImplementedException();
-        }
-        
-        public Task<XDocument> GetFormDataAsXmlAsync()
-        {
-            throw new NotImplementedException();
-        }
-        
-        public Task<List<Instrument>> GetFormEventMapAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Obsolete]
-        public Task<List<FormMetadata>> GetFormMetadataAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<Instrument>> GetInstrumentsAsync()
-        {
-            // throw new NotImplementedException();
-            var xDoc = XDocument.Load(_instrumentFile);
-            List<Instrument> forms = new List<Instrument>();
-
-            foreach (var item in xDoc.Descendants("item"))
-            {
-                Instrument form = new Instrument
-                {
-                    InstrumentName = item.Element("instrument_name").Value.ToString(),
-                    InstrumentLabel = item.Element("instrument_label").Value.ToString()
-                };
-
-                forms.Add(form);
-            }
-
-            return forms.ToList();
-        }
-
-        [Obsolete]
-        public async Task<List<Metadata>> GetMetadataAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<XDocument> GetRecordsAsXmlAsync(string eventName, string formName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<XDocument> GetRecordsAsXmlAsync(string eventName, string[] formNames)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<XDocument> GetRecordsAsync(string eventName, string formName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<XDocument> GetRecordsAsync(string eventName, string[] formNames)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<XDocument> GetReportAsXmlAsync(string reportId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> TestRecords()
-        {
-            throw new NotImplementedException();
-        }
-
-        private async Task<Metadata> HydrateMetadataFields(XElement item)
-        {
-            List<ExportFieldNames> exportFieldNames = new List<ExportFieldNames>();
-
-            //---not working yet
-            //exportFieldNames = await this.GetExportFieldNamesAsync();
-
-            Metadata dataDictionary = new Metadata
-            {
-                FieldName = (item.Element("field_name").IsEmpty ? "" : item.Element("field_name").Value.ToString()),
-                FormName = (item.Element("form_name").IsEmpty ? "" : item.Element("form_name").Value.ToString()),
-                FieldType = (item.Element("field_type").IsEmpty ? "" : item.Element("field_type").Value.ToString()),
-                FieldLabel = (item.Element("field_label").IsEmpty ? "" : item.Element("field_label").Value.ToString()),
-                FieldNote = (item.Element("field_note").IsEmpty ? "" : item.Element("field_note").Value.ToString()),
-                TextValidation = (item.Element("text_validation_type_or_show_slider_number").IsEmpty ? "" : item.Element("text_validation_type_or_show_slider_number").Value.ToString()),
-                TextValidationMax = (item.Element("text_validation_max").IsEmpty ? "" : item.Element("text_validation_max").Value.ToString()),
-                TextValidationMin = (item.Element("text_validation_min").IsEmpty ? "" : item.Element("text_validation_min").Value.ToString()),
-                IsIdentifier = (item.Element("identifier").IsEmpty ? false : item.Element("identifier").Value.ToString().ToLower() == "y" ? true : false),
-                BranchingLogic = (item.Element("branching_logic").IsEmpty ? "" : item.Element("branching_logic").Value.ToString()),
-                IsRequired = (item.Element("required_field").IsEmpty ? false : item.Element("required_field").Value.ToString().ToLower() == "y" ? true : false),
-                CustomAlignment = (item.Element("custom_alignment").IsEmpty ? "" : item.Element("custom_alignment").Value.ToString()),
-                QuestionNumber = (item.Element("question_number").IsEmpty ? "" : item.Element("question_number").Value.ToString()),
-                MatrixGroupName = (item.Element("matrix_group_name").IsEmpty ? "" : item.Element("matrix_group_name").Value.ToString()),
-                IsMatrixRanking = (item.Element("matrix_ranking").IsEmpty ? false : item.Element("matrix_ranking").Value.ToString().ToLower() == "y" ? true : false)
-            };
-
-            if (!String.IsNullOrEmpty(item.Element("select_choices_or_calculations").Value.ToString()))
-            {
-                string element = item.Element("select_choices_or_calculations").Value.ToString();
-                if (dataDictionary.FieldType == "calc")
-                {
-                    dataDictionary.FieldCalculation = item.Element("select_choices_or_calculations").Value.ToString();
+                    return XElement.Load(_armFile);
                 }
-                else if (dataDictionary.FieldType == "slider")
+                else if (url.Contains("content=event"))
                 {
-                    dataDictionary.FieldChoices = ParseFieldChoicesSliderType(element);
+                    return XElement.Load(_eventFile);
                 }
-                else if (dataDictionary.FieldType == "checkbox")
+                else if (url.Contains("content=insturment"))
                 {
-                    if (exportFieldNames != null)
-                    {
-                        //int x = 10;
-                        // dataDictionary.ExportFieldNames = await GetExportFieldNamesAsync(item.Element("field_name").Value.ToString());
-                    }
+                    return XElement.Load(_instrumentFile);
                 }
-                else
+                else if (url.Contains("content=metadata"))
                 {
-                    dataDictionary.FieldChoices = ParseFieldChoices(element);
+                    return XElement.Load(_metadataFile);
                 }
-            }
-
-            return dataDictionary;
-        }
-
-        private Dictionary<string, string> ParseFieldChoicesSliderType(string element)
-        {
-            Dictionary<string, string> choices = new Dictionary<string, string>();
-            string[] split = element.Split('|');
-            int count = 0;
-
-            foreach (string value in split)
-            {
-                choices.Add(count.ToString(), value);
-
-                count += 1;
-            }
-
-            return choices;
-        }
-
-        private Dictionary<string, string> ParseFieldChoices(string element)
-        {
-            Dictionary<string, string> choices = new Dictionary<string, string>();
-            string[] split = element.Split('|');
-
-            foreach (string group in split)
-            {
-                int pos = group.IndexOf(',');
-                string key = string.Empty;
-                string value = string.Empty;
-
-                if (pos > 0)
+                else if (url.Contains("content=user"))
                 {
-                    key = group.Substring(0, pos);
-                    value = group.Substring(key.Length + 2, group.Length - (key.Length + 2));
+                    return XElement.Load(_userFile);
                 }
-                else
+                else if (url.Contains("content=formEventMapping"))
                 {
-                    key = group.Trim();
-                    value = group.Trim();
+                    return XElement.Load(_instrumentEventMappingFile);
+                }
+                else if (url.Contains("content=exportFieldNames"))
+                {
+                    return XElement.Load(_exportFiledNamesFile);
                 }
 
-                choices.Add(key.Trim(), value.Trim());
-            }
+                return null;
+            });
 
-            return choices;
-        }
-
-        public Task Initialize(IProjectConfiguration config)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<IDictionary<string, string>> IREDCapClient.GetArmsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<User>> GetUsersAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<IEnumerable<Event>> IREDCapClient.GetEventsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<IEnumerable<ExportFieldNames>> IREDCapClient.GetExportFieldNamesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<IEnumerable<Instrument>> IREDCapClient.GetFormEventMapAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<IEnumerable<Instrument>> IREDCapClient.GetInstrumentsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<IEnumerable<Metadata>> IREDCapClient.GetMetadataAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Study> GetStudyAsync(IProjectConfiguration project)
-        {
-            var study = new Study();
-            study.ApiKey = project.ApiKey;
-            study.StudyName = project.Name;
-
-            // Each instrument is a "table"
-            var forms = await this.GetInstrumentsAsync();
-
-            // Each item in metadata will be assigned to an instrument
-            // Each item will contain data about that item (radio selection, checkbox values, etc.)
-            study.Metadata = await this.GetMetadataAsync();
-
-            // Multi-value fields have different names than the parent field, those are in this file
-            var exportFieldNames = await this.GetExportFieldNamesAsync();
-
-            // A study may have multiple arms, arm information is in this file
-            study.Arms = await this.GetArmsAsync();
-
-            // An event has a particular arm and can have multiple instruments used and
-            // A particular instrument can be listed in multiple events
-            study.Events = await this.GetEventsAsync();
-
-            // This file lists each event in the study and the list of instruments used in that event
-            var mapping = await this.GetFormEventMapAsync();
-
-            // The user list for this study
-            study.Users = await this.GetUsersAsync();
-
-            return study;
+            return xml;
         }
     }
 }

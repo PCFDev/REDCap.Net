@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="FileConfigProvider.cs" />
     <Compile Include="FileREDCapClient.cs" />
+    <Compile Include="OG_FileREDCapClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
