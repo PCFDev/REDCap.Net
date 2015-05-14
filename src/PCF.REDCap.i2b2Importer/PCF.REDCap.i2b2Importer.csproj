@@ -56,6 +56,12 @@
       <HintPath>..\packages\Ninject.Extensions.Xml.3.2.0.0\lib\net45-full\Ninject.Extensions.Xml.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PCF.OdmXml">
+      <HintPath>..\..\lib\PCF.OdmXml.dll</HintPath>
+    </Reference>
+    <Reference Include="PCF.OdmXml.i2b2Importer">
+      <HintPath>..\..\lib\PCF.OdmXml.i2b2Importer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -84,6 +90,15 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PCF.REDCap\PCF.REDCap.csproj">
+      <Project>{23587cf1-9f19-4100-9758-2c923e48c305}</Project>
+      <Name>PCF.REDCap</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NinjectConfig.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,71 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REDCapClient", "REDCapClient\REDCapClient.csproj", "{48BAA86C-4432-4B4C-90FC-D573F04E64C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REDCapExporter", "REDCapExporter\REDCapExporter.csproj", "{F57F03F4-56B9-4007-933D-1524DDAEA26F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{61D4BF50-4230-4C2B-A320-0E0B7ED69793}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.Model", "PCF.REDCap.Model\PCF.REDCap.Model.csproj", "{B4C4B540-4CA1-43C3-A732-38613D4B9C59}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CA9F3140-F252-4C74-850F-361A224EBD97}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\MainCodeMap.dgml = ..\docs\MainCodeMap.dgml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap", "PCF.REDCap\PCF.REDCap.csproj", "{23587CF1-9F19-4100-9758-2C923E48C305}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__OLD", "__OLD", "{AB7A01A8-3547-4FBB-B184-1CC4C9824F1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.i2b2Importer", "PCF.REDCap.i2b2Importer\PCF.REDCap.i2b2Importer.csproj", "{0B8153D8-C87C-49F3-9A66-761BB90A64BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.i2b2Importer.Mock", "PCF.REDCap.i2b2Importer.Mock\PCF.REDCap.i2b2Importer.Mock.csproj", "{268F3BA3-7A0C-47C9-84E2-025F11DBB8C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48BAA86C-4432-4B4C-90FC-D573F04E64C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48BAA86C-4432-4B4C-90FC-D573F04E64C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48BAA86C-4432-4B4C-90FC-D573F04E64C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48BAA86C-4432-4B4C-90FC-D573F04E64C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F57F03F4-56B9-4007-933D-1524DDAEA26F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F57F03F4-56B9-4007-933D-1524DDAEA26F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F57F03F4-56B9-4007-933D-1524DDAEA26F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F57F03F4-56B9-4007-933D-1524DDAEA26F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4C4B540-4CA1-43C3-A732-38613D4B9C59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23587CF1-9F19-4100-9758-2C923E48C305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23587CF1-9F19-4100-9758-2C923E48C305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23587CF1-9F19-4100-9758-2C923E48C305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23587CF1-9F19-4100-9758-2C923E48C305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B8153D8-C87C-49F3-9A66-761BB90A64BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B8153D8-C87C-49F3-9A66-761BB90A64BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B8153D8-C87C-49F3-9A66-761BB90A64BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B8153D8-C87C-49F3-9A66-761BB90A64BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{268F3BA3-7A0C-47C9-84E2-025F11DBB8C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{268F3BA3-7A0C-47C9-84E2-025F11DBB8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{268F3BA3-7A0C-47C9-84E2-025F11DBB8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{268F3BA3-7A0C-47C9-84E2-025F11DBB8C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{48BAA86C-4432-4B4C-90FC-D573F04E64C4} = {AB7A01A8-3547-4FBB-B184-1CC4C9824F1D}
+		{F57F03F4-56B9-4007-933D-1524DDAEA26F} = {AB7A01A8-3547-4FBB-B184-1CC4C9824F1D}
+		{B4C4B540-4CA1-43C3-A732-38613D4B9C59} = {AB7A01A8-3547-4FBB-B184-1CC4C9824F1D}
+	EndGlobalSection
+EndGlobal

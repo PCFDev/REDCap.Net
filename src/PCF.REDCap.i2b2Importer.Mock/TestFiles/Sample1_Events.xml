@@ -1,0 +1,42 @@
+<events>
+  <item>
+    <event_name><![CDATA[BL]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[0]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[bl_arm_1]]></unique_event_name>
+  </item>
+  <item>
+    <event_name><![CDATA[Month 1]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[0]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[month_1_arm_1]]></unique_event_name>
+  </item>
+  <item>
+    <event_name><![CDATA[Month 2]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[0]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[month_2_arm_1]]></unique_event_name>
+  </item>
+  <item>
+    <event_name><![CDATA[Month 3]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[0]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[month_3_arm_1]]></unique_event_name>
+  </item>
+  <item>
+    <event_name><![CDATA[Complete]]></event_name>
+    <arm_num><![CDATA[1]]></arm_num>
+    <day_offset><![CDATA[1]]></day_offset>
+    <offset_min><![CDATA[0]]></offset_min>
+    <offset_max><![CDATA[0]]></offset_max>
+    <unique_event_name><![CDATA[complete_arm_1]]></unique_event_name>
+  </item>
+</events>

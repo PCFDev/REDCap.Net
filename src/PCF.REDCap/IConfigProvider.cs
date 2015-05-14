@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PCF.REDCap
 {
-    public interface IConfigController
+    public interface IConfigProvider
     {
         List<ProjectConfiguration> GetConfigurations();
     }

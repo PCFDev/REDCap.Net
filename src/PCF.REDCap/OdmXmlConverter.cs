@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using PCF.OdmXml;
 using PCF.REDCap;
+using System;
 
 namespace PCF.REDCap
 {
@@ -207,7 +208,8 @@ namespace PCF.REDCap
             // MetaDataVersion Element (0 to many)
             odmStudy.MetaDataVersion.AddRange(MapMetadataVersion(study));
 
-            return odmStudy;
+            //return odmStudy;
+            throw new NotImplementedException();
         }
 
         //Stubs. Not Complete!
@@ -224,7 +226,7 @@ namespace PCF.REDCap
             // MetaDataVersion Element (0 to many)
             odmStudy.MetaDataVersion.AddRange(MapMetadataVersion(study));
 
-            return odmStudy;
+            throw new NotImplementedException();
         }
         #endregion
     }

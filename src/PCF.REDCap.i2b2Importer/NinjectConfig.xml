@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!--https://github.com/ninject/ninject.extensions.xml/wiki/Getting-started-->
+
+<module name="DefaultConfigModule">
+  <bind service="PCF.REDCap.IConfigProvider, PCF.REDCap"
+        to="PCF.REDCap.i2b2Importer.FileConfigProvider, PCF.REDCap.i2b2Importer.Mock" />
+  
+  <!--<bind service="MyNamespace.IMyOtherService, MyAssembly"
+        to="MyNamespace.MyOtherServiceImplementation, MyAssembly" />-->
+</module>

@@ -1,0 +1,18 @@
+<instruments>
+  <item>
+    <instrument_name><![CDATA[demographics]]></instrument_name>
+    <instrument_label><![CDATA[Demographics]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[baseline_data]]></instrument_name>
+    <instrument_label><![CDATA[Baseline Data]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[month_data]]></instrument_name>
+    <instrument_label><![CDATA[Month Data]]></instrument_label>
+  </item>
+  <item>
+    <instrument_name><![CDATA[completion_data]]></instrument_name>
+    <instrument_label><![CDATA[Completion Data]]></instrument_label>
+  </item>
+</instruments>
