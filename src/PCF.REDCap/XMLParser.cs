@@ -64,24 +64,17 @@ namespace PCF.REDCap
         /// </summary>
         /// <param name="data"></param>
         /// <returns name = "forms"></returns>
-        public IEnumerable<Instrument> HydrateForms(string data)
+        public IEnumerable<Instrument> HydrateInstrument(string data)
         {
-            List<Instrument> forms = new List<Instrument>();
-
             var xml = XElement.Parse(data);
-
             foreach (var item in xml.Descendants("item"))
             {
-                Instrument form = new Instrument
+                yield return new Instrument
                 {
                     InstrumentName = item.Element("instrument_name").GetValue(),
                     InstrumentLabel = item.Element("instrument_label").GetValue()
                 };
-
-                forms.Add(form);
             }
-
-            return forms;
         }
 
         /// <summary>
@@ -93,14 +86,12 @@ namespace PCF.REDCap
         {
             var xml = XElement.Parse(data);
 
-            List<Metadata> metadata = new List<Metadata>();
-
             foreach (XElement item in xml.Descendants("item"))
             {
-                metadata.Add(HydrateMetadataFields(item.ToString()));
+                if (item != null)
+                    yield return HydrateMetadataFields(item.ToString());
             }
 
-            return metadata;
         }
 
 
@@ -109,53 +100,62 @@ namespace PCF.REDCap
         {
             var xml = XElement.Parse(data);
 
-            List<ExportFieldNames> exportFieldNames = new List<ExportFieldNames>();
-
+            //var exportFieldNames = new List<ExportFieldNames>();
             //---not working yet
             //exportFieldNames = await this.GetExportFieldNamesAsync();
 
-            Metadata dataDictionary = new Metadata
-            {
-                FieldName = (xml.Element("field_name").GetValue()),
-                FormName = (xml.Element("form_name").GetValue()),
-                FieldType = (xml.Element("field_type").GetValue()),
-                FieldLabel = (xml.Element("field_label").GetValue()),
-                FieldNote = (xml.Element("field_note").GetValue()),
-                TextValidation = (xml.Element("text_validation_type_or_show_slider_number").GetValue()),
-                TextValidationMax = (xml.Element("text_validation_max").GetValue()),
-                TextValidationMin = (xml.Element("text_validation_min").GetValue()),
-                IsIdentifier = (xml.Element("identifier").GetValue().ToLower() == "y" ? true : false),
-                BranchingLogic = (xml.Element("branching_logic").GetValue()),
-                IsRequired = (xml.Element("required_field").GetValue().ToLower() == "y" ? true : false),
-                CustomAlignment = (xml.Element("custom_alignment").GetValue()),
-                QuestionNumber = (xml.Element("question_number").GetValue()),
-                MatrixGroupName = (xml.Element("matrix_group_name").GetValue()),
-                IsMatrixRanking = (xml.Element("matrix_ranking").GetValue().ToLower() == "y" ? true : false)
-            };
+            Metadata dataDictionary;
 
-            if (!xml.Element("select_choices_or_calculations").ElementIsEmpty())
+            try
             {
-                string element = xml.Element("select_choices_or_calculations").GetValue();
-                if (dataDictionary.FieldType == "calc")
+                dataDictionary = new Metadata
                 {
-                    dataDictionary.FieldCalculation = xml.Element("select_choices_or_calculations").GetValue();
-                }
-                else if (dataDictionary.FieldType == "slider")
+                    FieldName = (xml.Element("field_name").GetValue()),
+                    FormName = (xml.Element("form_name").GetValue()),
+                    FieldType = (xml.Element("field_type").GetValue()),
+                    FieldLabel = (xml.Element("field_label").GetValue()),
+                    FieldNote = (xml.Element("field_note").GetValue()),
+                    TextValidation = (xml.Element("text_validation_type_or_show_slider_number").GetValue()),
+                    TextValidationMax = (xml.Element("text_validation_max").GetValue()),
+                    TextValidationMin = (xml.Element("text_validation_min").GetValue()),
+                    IsIdentifier = (xml.Element("identifier").GetValue().ToLower() == "y" ? true : false),
+                    BranchingLogic = (xml.Element("branching_logic").GetValue()),
+                    IsRequired = (xml.Element("required_field").GetValue().ToLower() == "y" ? true : false),
+                    CustomAlignment = (xml.Element("custom_alignment").GetValue()),
+                    QuestionNumber = (xml.Element("question_number").GetValue()),
+                    MatrixGroupName = (xml.Element("matrix_group_name").GetValue()),
+                    IsMatrixRanking = (xml.Element("matrix_ranking").GetValue().ToLower() == "y" ? true : false)
+                };
+
+                if (!xml.Element("select_choices_or_calculations").ElementIsEmpty())
                 {
-                    dataDictionary.FieldChoices = ParseFieldChoicesSliderType(element);
-                }
-                else if (dataDictionary.FieldType == "checkbox")
-                {
-                    if (exportFieldNames != null)
+                    string element = xml.Element("select_choices_or_calculations").GetValue();
+                    if (dataDictionary.FieldType == "calc")
                     {
-                        //int x = 10;
-                        // dataDictionary.ExportFieldNames = await GetExportFieldNamesAsync(item.Element("field_name").Value.ToString());
+                        dataDictionary.FieldCalculation = xml.Element("select_choices_or_calculations").GetValue();
+                    }
+                    else if (dataDictionary.FieldType == "slider")
+                    {
+                        dataDictionary.FieldChoices = ParseFieldChoicesSliderType(element);
+                    }
+                    //else if (dataDictionary.FieldType == "checkbox")
+                    //{
+                    //    if (exportFieldNames != null)
+                    //    {
+                    //        //int x = 10;
+                    //        // dataDictionary.ExportFieldNames = await GetExportFieldNamesAsync(item.Element("field_name").Value.ToString());
+                    //    }
+                    //}
+                    else
+                    {
+                        dataDictionary.FieldChoices = ParseFieldChoices(element);
                     }
                 }
-                else
-                {
-                    dataDictionary.FieldChoices = ParseFieldChoices(element);
-                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
 
             return dataDictionary;
@@ -206,30 +206,38 @@ namespace PCF.REDCap
         {
             var xml = XElement.Parse(data);
 
-            List<InstrumentEventMapping> instruments = new List<InstrumentEventMapping>();
+            var instruments = new List<InstrumentEventMapping>();
 
-            foreach (XElement instrument in xml.Descendants("arm"))
+            try
             {
-                InstrumentEventMapping iem = new InstrumentEventMapping()
+                foreach (XElement instrument in xml.Descendants("arm"))
                 {
-                    ArmNumber = instrument.Element("number").GetValue()
-                };
-
-                foreach (XElement entries in instrument.Descendants("event"))
-                {
-                    List<string> form = new List<string>();
-
-                    foreach (XElement forms in entries.Elements("form"))
+                    var iem = new InstrumentEventMapping()
                     {
-                        form.Add(forms.GetValue());
+                        ArmNumber = instrument.Element("number").GetValue()
+                    };
+
+                    foreach (XElement entries in instrument.Descendants("event"))
+                    {
+                        var forms = new List<string>();
+
+                        foreach (XElement form in entries.Elements("form"))
+                        {
+                            forms.Add(form.GetValue());
+                        }
+
+                        iem.EventInstruments.Add(entries.Element("unique_event_name").GetValue(), forms);
                     }
 
-                    iem.EventInstruments.Add(entries.Element("unique_event_name").GetValue(), form);
+                    instruments.Add(iem);
                 }
 
-                instruments.Add(iem);
             }
+            catch (Exception ex)
+            {
 
+                throw;
+            }
 
             return instruments;
         }
@@ -309,7 +317,7 @@ namespace PCF.REDCap
         {
 
             var xml = XElement.Parse(data);
-            
+
             foreach (var item in xml.Descendants("field"))
             {
                 yield return new ExportFieldNames()

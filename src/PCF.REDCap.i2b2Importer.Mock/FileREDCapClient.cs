@@ -28,8 +28,7 @@ namespace PCF.REDCap.i2b2Importer
             _instrumentFile = @"TestFiles\Fructose_Forms.xml";
             _instrumentEventMappingFile = @"TestFiles\Fructose_Mapping.xml";
             _metadataFile = @"TestFiles\Fructose_Metadata.xml";
-            _metadataFile = @"TestFiles\Fructose_Users.xml";
-
+            _userFile = @"TestFiles\Fructose_Users.xml";            
         }
 
         protected override async Task<string> GetXml(string url)

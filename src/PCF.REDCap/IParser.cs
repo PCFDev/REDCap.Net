@@ -9,7 +9,7 @@ namespace PCF.REDCap
         IDictionary<string, string> HydrateArms(string data);
 
         IEnumerable<Event> HydrateEvent(string data);
-        IEnumerable<Instrument> HydrateForms(string data);
+        IEnumerable<Instrument> HydrateInstrument(string data);
         IEnumerable<InstrumentEventMapping> HydrateInstrumentEvents(string data);
         IEnumerable<Metadata> HydrateMetadata(string data);
 

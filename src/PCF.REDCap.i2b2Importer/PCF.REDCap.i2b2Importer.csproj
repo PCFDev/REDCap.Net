@@ -56,10 +56,12 @@
       <HintPath>..\packages\Ninject.Extensions.Xml.3.2.0.0\lib\net45-full\Ninject.Extensions.Xml.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PCF.OdmXml">
+    <Reference Include="PCF.OdmXml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\PCF.OdmXml.dll</HintPath>
     </Reference>
-    <Reference Include="PCF.OdmXml.i2b2Importer">
+    <Reference Include="PCF.OdmXml.i2b2Importer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\PCF.OdmXml.i2b2Importer.dll</HintPath>
     </Reference>
     <Reference Include="System" />

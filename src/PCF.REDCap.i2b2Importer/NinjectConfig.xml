@@ -3,23 +3,21 @@
 <!--https://github.com/ninject/ninject.extensions.xml/wiki/Getting-started-->
 
 <module name="DefaultConfigModule">
-  
-
-
-  
+    
   <bind service="PCF.REDCap.IOdmXmlConverter, PCF.REDCap"
         to="PCF.REDCap.OdmXmlConverter, PCF.REDCap" />
 
+  <bind service=" PCF.OdmXml.i2b2Importer.IOdmImporter, PCF.OdmXml"
+        to="PCF.OdmXml.i2b2Importer.i2b2OdmImporter, PCF.OdmXml.i2b2Importer" />
   
-  <bind service=" PCF.OdmXml.i2b2Importer.IOdmImporter,  PCF.OdmXml.i2b2Importer"
-        to="PCF.OdmXml.i2b2Importer.Importer, PCF.OdmXml.i2b2Importer" />
   
+  <!-- TESTING  -->
   <bind service="PCF.REDCap.IConfigProvider, PCF.REDCap"
         to="PCF.REDCap.i2b2Importer.FileConfigProvider, PCF.REDCap.i2b2Importer.Mock" />
 
   <bind service="PCF.REDCap.IREDCapClient, PCF.REDCap"
       to="PCF.REDCap.i2b2Importer.FileREDCapClient, PCF.REDCap.i2b2Importer.Mock" />
-
+<!--END TESTING-->
   
   
   <!--<bind service="MyNamespace.IMyOtherService, MyAssembly"

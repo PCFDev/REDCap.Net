@@ -37,12 +37,9 @@ namespace PCF.REDCap.i2b2Importer
                         var study = await client.GetStudyAsync(project);
 
                         Console.WriteLine(String.Format("Starting conversion of {0}", project.Name));
-
                         var odmStudy = await converter.ConvertAsync(study);
 
-                        Console.WriteLine(String.Format("Starting import of {0}", project.Name));
-
-                        //Todo this needs to be changed to ImportAsync to follow convention
+                        Console.WriteLine(String.Format("Starting import of {0}", project.Name));                        
                         await importer.ImportAsync(odmStudy, new Dictionary<string, string>());
 
                     });

@@ -13,14 +13,15 @@ namespace PCF.REDCap
         {
             bool result = false;
 
-            result = string.IsNullOrEmpty(element.Value);
+            if (element != null)
+                result = String.IsNullOrEmpty(element.Value);
 
             return result;
         }
 
         public static string GetValue(this XElement element)
         {
-            if (element.ElementIsEmpty())
+            if (element == null || element.ElementIsEmpty())
                 return string.Empty;
             else
                 return element.Value.ToString();
@@ -28,7 +29,7 @@ namespace PCF.REDCap
 
         public static int GetValueAsInt(this XElement element)
         {
-            if (element.ElementIsEmpty())
+            if (element == null || element.ElementIsEmpty())
                 return -1;
             else
                 return Convert.ToInt32(element.Value);
