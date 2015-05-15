@@ -9,8 +9,8 @@ namespace PCF.REDCap.i2b2Importer
             return new List<ProjectConfiguration>()
             {
                 new ProjectConfiguration() {
-                    ApiKey = string.Empty,
-                    ApiUrl = string.Empty,
+                    ApiKey = "Key",
+                    ApiUrl = "file://TesFiles/",
                     Name = "File Project 1"
                     //EventFileName = @"TestFiles\Fructose_Events.xml",
                     //ArmFileName = @"TestFiles\Fructose_Arms.xml",

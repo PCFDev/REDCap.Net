@@ -32,7 +32,7 @@ namespace PCF.REDCap.i2b2Importer
 
         }
 
-        protected override async Task<XElement> GetXml(string url)
+        protected override async Task<string> GetXml(string url)
         {
             var xml = await Task.Run<XElement>( () =>
             {
@@ -68,7 +68,7 @@ namespace PCF.REDCap.i2b2Importer
                 return null;
             });
 
-            return xml;
+            return xml.ToString();
         }
     }
 }

@@ -102,6 +102,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataManager.cs" />
     <Compile Include="FileConfigController.cs" />
     <Compile Include="IConfigController.cs" />
     <Compile Include="Program.cs" />

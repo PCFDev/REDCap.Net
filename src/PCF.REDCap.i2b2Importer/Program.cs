@@ -46,8 +46,8 @@ namespace PCF.REDCap.i2b2Importer
                         var odmStudy = await converter.ConvertAsync(study);
 
                         Console.WriteLine(String.Format("Starting import of {0}", project.Name));
-                    //Todo this needs to be changed to ImportAsync to follow convention
-                    await importer.Import(odmStudy);
+                        //Todo this needs to be changed to ImportAsync to follow convention
+                        await importer.Import(odmStudy);
 
                     });
 
@@ -62,6 +62,13 @@ namespace PCF.REDCap.i2b2Importer
             {
                 //Todo this is not how you error handle... you're doing it wrong!
                 Console.WriteLine(aggEx.Flatten().Message);
+                foreach (var ex in aggEx.InnerExceptions)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                }
+
+
             }
             catch (Exception ex)
             {

@@ -11,11 +11,13 @@ namespace PCF.REDCap
 {
     public class WebREDCapClient : IREDCapClient
     {
-        private HttpClient _client = new HttpClient();
-        private Uri _baseUri = new Uri("http://www.wustl.edu");
-        private string _token = string.Empty;
+        //private HttpClient _client = new HttpClient();
 
-        private XMLParser _parser = new XMLParser();
+        private Uri _baseUri = new Uri("http://www.wustl.edu");
+        private string _apiKey = string.Empty;
+
+        private IParser _parser = new XMLParser();
+        private IProjectConfiguration _config;
 
         // Query string constants
         protected const string PARAMS_GETEVENT = "token={0}&content=event&format={1}";
@@ -25,176 +27,28 @@ namespace PCF.REDCap
         protected const string PARAMS_GETUSERS = "token={0}&content=user&format={1}";
         protected const string PARAMS_GETINSTUMENTEVENTMAP = "token={0}&content=formEventMapping&format={1}";
         protected const string PARAMS_GETEXPORTFIELDNAMES = "token={0}&content=exportFieldNames&format={1}";
+        private const string FORMAT_TOKEN = "xml";
+
         // ----------------------
 
 
         public async Task Initialize(IProjectConfiguration config)
         {
-            this._token = config.ApiKey;
+            this._apiKey = config.ApiKey;
             this._baseUri = new Uri(config.ApiUrl);
+
+            this._config = config;
         }
 
-
-
-        //public async Task<XDocument> GetArmsAsXmlAsync()
-        //{
-        //    return await GetXml(new StringContent(string.Format(PARAMS_GETARMS, _token, "xml")));
-        //}
-
-        public async Task<IDictionary<string, string>> GetArmsAsync()
-        {
-            var xml = await GetXml(string.Format(PARAMS_GETARMS, _token, "xml"));
-
-            var arms = new Dictionary<string, string>();
-
-            foreach (var item in xml.Descendants("item"))
-            {
-                arms.Add(item.Element("arm_num").Value.ToString(), item.Element("name").Value.ToString());
-            }
-
-            return arms;
-
-        }
-
-        //public async Task<XDocument> GetEventsAsXmlAsync()
-        //{
-        //    return await GetXml(string.Format(PARAMS_GETEVENT, _token, "xml"));
-        //}
-
-        public async Task<IEnumerable<Event>> GetEventsAsync()
-        {
-            var xml = await GetXml(string.Format(PARAMS_GETEVENT, _token, "xml"));
-
-            return await this._parser.HydrateEvent(xml);
-
-        }
-
-        //public async Task<XDocument> GetInstrumentsAsXmlAsync()
-        //{
-        //    return await GetXml(string.Format(PARAMS_GETINSTRUMENTS, _token, "xml"));
-        //}
-
-        public Task<IEnumerable<Instrument>> GetInstrumentsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        //public async Task<XDocument> GetMetadataAsXmlAsync()
-        //{
-        //    return await GetXml(string.Format(PARAMS_GETMETADATA, _token, "xml"));
-        //}
-
-        public Task<IEnumerable<Metadata>> GetMetadataAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        //public async Task<XDocument> GetUsersAsXmlAsync()
-        //{
-        //    return await GetXml(string.Format(PARAMS_GETUSERS, _token, "xml"));
-        //}
-
-        //public async Task<XDocument> GetInstrumentEventMappingAsXmlAsync()
-        //{
-        //    return await GetXml(string.Format(PARAMS_GETINSTUMENTEVENTMAP, _token, "xml"));
-        //}
-
-        //public async Task<XDocument> GetExportFieldNamesAsXmlAsync()
-        //{
-        //    return await GetXml(string.Format(PARAMS_GETEXPORTFIELDNAMES, _token, "xml"));
-        //}
-
-        public Task<IEnumerable<ExportFieldNames>> GetExportFieldNamesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        //public Task<XDocument> GetFormDataAsXmlAsync(string formName)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        public Task<IEnumerable<Instrument>> GetFormEventMapAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<User>> GetUsersAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        //[Obsolete]
-        //public Task<List<FormMetadata>> GetFormMetadataAsync()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<XDocument> GetRecordsAsXmlAsync(string eventName, string formName)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<XDocument> GetRecordsAsXmlAsync(string eventName, string[] formNames)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<XDocument> GetRecordsAsync(string eventName, string formName)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<XDocument> GetRecordsAsync(string eventName, string[] formNames)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<XDocument> GetReportAsXmlAsync(string reportId)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<string> TestRecords()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<XDocument> GetFormDataAsXmlAsync()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task Initialize(string armFileName,
-        //    string eventFileName,
-        //    string exportFiledNamesFileName,
-        //    string instrumentFileName,
-        //    string instrumentEventMappingFileName,
-        //    string metadataFileName,
-        //    string userFileName)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-
-        protected virtual async Task<XElement> GetXml(string url)
-        {
-            using (var _client = new HttpClient())
-            {
-                var request = new StringContent(url);
-
-                _client.BaseAddress = _baseUri;
-                request.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
-                var response = await _client.PostAsync("", request);
-                var data = await response.Content.ReadAsStringAsync();
-                var xDoc = XElement.Parse(data);
-
-                return xDoc;
-            }
-        }
-
+        /// <summary>
+        /// Creates a fully loaded study object.
+        /// </summary>
+        /// <param name="project"></param>
+        /// <returns></returns>
         public async Task<Study> GetStudyAsync(IProjectConfiguration project)
         {
+            await this.Initialize(project);
+
             var study = new Study();
             study.ApiKey = project.ApiKey;
             study.StudyName = project.Name;
@@ -224,5 +78,91 @@ namespace PCF.REDCap
 
             return study;
         }
-    }
+
+
+        public async Task<IDictionary<string, string>> GetArmsAsync()
+        {
+            var xml = await GetXml(string.Format(PARAMS_GETARMS, _apiKey, FORMAT_TOKEN));
+
+            return  this._parser.HydrateArms(xml);
+
+        }
+        
+        public async Task<IEnumerable<Event>> GetEventsAsync()
+        {
+            var xml = await GetXml(string.Format(PARAMS_GETEVENT, _apiKey, FORMAT_TOKEN));
+
+            return  this._parser.HydrateEvent(xml);
+
+        }
+
+        public async Task<IEnumerable<Instrument>> GetInstrumentsAsync()
+        {
+            var xml = await GetXml(string.Format(PARAMS_GETINSTRUMENTS, _apiKey, FORMAT_TOKEN));
+
+            return  this._parser.HydrateForms(xml);
+        }
+        
+        public async Task<IEnumerable<Metadata>> GetMetadataAsync()
+        {
+            var xml = await GetXml(string.Format(PARAMS_GETMETADATA, _apiKey, FORMAT_TOKEN));
+
+            return  this._parser.HydrateMetadata(xml);
+        }
+
+
+
+        //public async Task<XDocument> GetInstrumentEventMappingAsXmlAsync()
+        //{
+        //    return await GetXml(string.Format(PARAMS_GETINSTUMENTEVENTMAP, _token, "xml"));
+        //}
+
+        //public async Task<XDocument> GetExportFieldNamesAsXmlAsync()
+        //{
+        //    return await GetXml(string.Format(PARAMS_GETEXPORTFIELDNAMES, _token, "xml"));
+        //}
+
+        public async Task<IEnumerable<ExportFieldNames>> GetExportFieldNamesAsync()
+        {
+            var xml =  await GetXml(string.Format(PARAMS_GETEXPORTFIELDNAMES, _apiKey, FORMAT_TOKEN));
+
+            throw new NotImplementedException();
+        }
+
+        //public Task<XDocument> GetFormDataAsXmlAsync(string formName)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+
+        public Task<IEnumerable<Instrument>> GetFormEventMapAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+   
+        public async Task<IEnumerable<User>> GetUsersAsync()
+        {
+            var xml = await GetXml(string.Format(PARAMS_GETUSERS, _apiKey, FORMAT_TOKEN));
+
+            return this._parser.HydrateUsers(xml);
+        }
+
+        protected virtual async Task<string> GetXml(string url)
+        {
+            using (var _client = new HttpClient())
+            {
+                var request = new StringContent(url);
+
+                _client.BaseAddress = _baseUri;
+                request.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+                var response = await _client.PostAsync("", request);
+                var data = await response.Content.ReadAsStringAsync();
+                //var xDoc = XElement.Parse(data);
+
+                return data;
+            }
+        }
+
+   }
 }

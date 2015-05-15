@@ -7,15 +7,18 @@ using System.Xml.Linq;
 
 namespace PCF.REDCap
 {
-    public class XMLParser
+    public class XMLParser : IParser
     {
+
+        #region XElement Methods
         /// <summary>
         /// Parse event xml <see cref="__REMOVE__REDCapClient.GetEventsAsync"/>
         /// </summary>
         /// <param name="xDocEvents"></param>
         /// <returns name = "events"></param></returns>
-        public async Task<List<Event>> HydrateEvent(XElement xDocEvents)
+        public IEnumerable<Event> HydrateEvent(string data)
         {
+            var xDocEvents = XElement.Parse(data);
 
             List<Event> events = new List<Event>();
 
@@ -82,22 +85,7 @@ namespace PCF.REDCap
             return metadata;
         }
 
-        /// <summary>
-        /// Parse arms xml <see cref="__REMOVE__REDCapClient.GetArmsAsync"/>
-        /// </summary>
-        /// <param name="xDocArms"></param>
-        /// <returns name = "arms"></returns>
-        public async Task<Dictionary<string, string>> HydrateArms(XElement xDocArms)
-        {
-            Dictionary<string, string> arms = new Dictionary<string, string>();
 
-            foreach (var item in xDocArms.Descendants("item"))
-            {
-                arms.Add(item.Element("arm_num").GetValue(), item.Element("name").GetValue());
-            }
-
-            return arms;
-        }
 
         public async Task<Metadata> HydrateMetadataFields(XElement item)
         {
@@ -179,10 +167,10 @@ namespace PCF.REDCap
                 foreach (XElement entries in item.Elements("forms").Elements())
                 {
                     user.Forms.Add(entries.Name.ToString(), entries.GetValueAsInt());
-                 }
+                }
 
                 users.Add(user);
-                }
+            }
 
             return users;
         }
@@ -234,7 +222,7 @@ namespace PCF.REDCap
             foreach (XElement item in xDocRecords.Descendants("records").Elements("item"))
             {
                 Record record = new Record
-                {        
+                {
                     PatientId = item.Element("record").GetValue(),
                     Concept = item.Element("field_name").GetValue(),
                     ConceptValue = item.Element("value").GetValue(),
@@ -292,5 +280,54 @@ namespace PCF.REDCap
         }
 
 
+        #endregion
+
+
+
+        public IDictionary<string, string> HydrateArms(string data)
+        {
+            var xDocArms = XElement.Parse(data);
+
+            Dictionary<string, string> arms = new Dictionary<string, string>();
+
+            foreach (var item in xDocArms.Descendants("item"))
+            {
+                arms.Add(item.Element("arm_num").GetValue(), item.Element("name").GetValue());
+            }
+
+            return arms;
+        }
+
+ 
+
+        public IEnumerable<Instrument> HydrateForms(string data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<InstrumentEventMapping> HydrateInstrumentEvents(string data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Metadata> HydrateMetadata(string data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Metadata HydrateMetadataFields(string data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Record> HydrateRecords(string data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> HydrateUsers(string data)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

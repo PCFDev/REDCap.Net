@@ -42,32 +42,32 @@ namespace PCF.REDCap
 
         private async Task ProcessWebProject(ProjectConfiguration cfgItem)
         {
-            // Using WEB API:
-            WebREDCapClient rcClient = new WebREDCapClient();
-            await rcClient.Initialize(cfgItem.ApiKey, cfgItem.ApiUrl);
+            //// Using WEB API:
+            //WebREDCapClient rcClient = new WebREDCapClient();
+            //await rcClient.Initialize(cfgItem.ApiKey, cfgItem.ApiUrl);
 
-            // Each instrument is a "table"
-            XDocument xInstrument = await rcClient.GetInstrumentsAsXmlAsync();
+            //// Each instrument is a "table"
+            //XDocument xInstrument = await rcClient.GetInstrumentsAsXmlAsync();
 
-            // Each item in metadata will be assigned to an instrument
-            // Each item will contain data about that item (radio selection, checkbox values, etc.)
-            XDocument xMetadata = await rcClient.GetMetadataAsXmlAsync();
+            //// Each item in metadata will be assigned to an instrument
+            //// Each item will contain data about that item (radio selection, checkbox values, etc.)
+            //XDocument xMetadata = await rcClient.GetMetadataAsXmlAsync();
 
-            // Multi-value fields have different names than the parent field, those are in this file
-            XDocument xExportFieldNames = await rcClient.GetExportFieldNamesAsXmlAsync();
+            //// Multi-value fields have different names than the parent field, those are in this file
+            //XDocument xExportFieldNames = await rcClient.GetExportFieldNamesAsXmlAsync();
 
-            // A study may have multiple arms, arm information is in this file
-            XDocument xArms = await rcClient.GetArmsAsXmlAsync();
+            //// A study may have multiple arms, arm information is in this file
+            //XDocument xArms = await rcClient.GetArmsAsXmlAsync();
 
-            // An event has a particular arm and can have multiple instruments used and
-            // A particular instrument can be listed in multiple events
-            XDocument xEvents = await rcClient.GetEventsAsXmlAsync();
+            //// An event has a particular arm and can have multiple instruments used and
+            //// A particular instrument can be listed in multiple events
+            //XDocument xEvents = await rcClient.GetEventsAsXmlAsync();
 
-            // This file lists each event in the study and the list of instruments used in that event
-            XDocument xMaping = await rcClient.GetInstrumentEventMappingAsXmlAsync();
+            //// This file lists each event in the study and the list of instruments used in that event
+            //XDocument xMaping = await rcClient.GetInstrumentEventMappingAsXmlAsync();
 
-            // The user list for this study
-            XDocument xUsers = await rcClient.GetUsersAsXmlAsync();
+            //// The user list for this study
+            //XDocument xUsers = await rcClient.GetUsersAsXmlAsync();
         }
 
         private async Task ProcessFileProject(ProjectConfiguration cfgItem)

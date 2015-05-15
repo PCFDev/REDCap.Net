@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="IConfigProvider.cs" />
     <Compile Include="IOdmXmlConverter.cs" />
+    <Compile Include="IParser.cs" />
     <Compile Include="IProjectConfiguration.cs" />
     <Compile Include="IREDCapClient.cs" />
     <Compile Include="Model\Arm.cs" />
