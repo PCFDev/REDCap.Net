@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace PCF.REDCap
 {
-    public class WebREDCapClient : IREDCapClient
+    public class REDCapClient : IREDCapClient
     {
         //private HttpClient _client = new HttpClient();
 

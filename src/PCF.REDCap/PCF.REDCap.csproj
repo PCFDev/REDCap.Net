@@ -69,7 +69,7 @@
     <Compile Include="OdmXmlConverter.cs" />
     <Compile Include="ProjectConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebREDCapClient.cs" />
+    <Compile Include="REDCapClient.cs" />
     <Compile Include="XmlExtensions.cs" />
     <Compile Include="XMLParser.cs" />
   </ItemGroup>

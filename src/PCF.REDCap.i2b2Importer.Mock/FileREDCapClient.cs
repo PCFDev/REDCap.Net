@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace PCF.REDCap.i2b2Importer
 {
-    public class FileREDCapClient : WebREDCapClient
+    public class FileREDCapClient : REDCapClient
     {
 
         private static string _armFile = string.Empty;

@@ -10,19 +10,33 @@ namespace PCF.REDCap
     public class XMLParser : IParser
     {
 
-        #region XElement Methods
+
+        public IDictionary<string, string> HydrateArms(string data)
+        {
+            var xDocArms = XElement.Parse(data);
+
+            Dictionary<string, string> arms = new Dictionary<string, string>();
+
+            foreach (var item in xDocArms.Descendants("item"))
+            {
+                arms.Add(item.Element("arm_num").GetValue(), item.Element("name").GetValue());
+            }
+
+            return arms;
+        }
+
         /// <summary>
-        /// Parse event xml <see cref="__REMOVE__REDCapClient.GetEventsAsync"/>
+        /// Parse event xml <see cref="REDCapClient.GetEventsAsync"/>
         /// </summary>
         /// <param name="xDocEvents"></param>
         /// <returns name = "events"></param></returns>
         public IEnumerable<Event> HydrateEvent(string data)
         {
-            var xDocEvents = XElement.Parse(data);
+            var xml = XElement.Parse(data);
 
             List<Event> events = new List<Event>();
 
-            foreach (var item in xDocEvents.Descendants("item"))
+            foreach (var item in xml.Descendants("item"))
             {
                 Event thisEvent = new Event
                 {
@@ -46,15 +60,17 @@ namespace PCF.REDCap
         }
 
         /// <summary>
-        /// Parse form xml <see cref="__REMOVE__REDCapClient.GetFormsAsync"/>
+        /// Parse form xml <see cref="REDCapClient.GetFormsAsync"/>
         /// </summary>
         /// <param name="xDocForms"></param>
         /// <returns name = "forms"></returns>
-        public async Task<List<Instrument>> HydrateForms(XElement xDocForms)
+        public IEnumerable<Instrument> HydrateForms(string data)
         {
             List<Instrument> forms = new List<Instrument>();
 
-            foreach (var item in xDocForms.Descendants("item"))
+            var xml = XElement.Parse(data);
+
+            foreach (var item in xml.Descendants("item"))
             {
                 Instrument form = new Instrument
                 {
@@ -69,17 +85,19 @@ namespace PCF.REDCap
         }
 
         /// <summary>
-        /// Parse metadata xml <see cref="__REMOVE__REDCapClient.GetMetadataAsync"/>
+        /// Parse metadata xml <see cref="REDCapClient.GetMetadataAsync"/>
         /// </summary>
         /// <param name="xDocMetadata"></param>
         /// <returns name = "metadata"></returns>
-        public async Task<List<Metadata>> HydrateMetadata(XElement xDocMetadata)
+        public IEnumerable<Metadata> HydrateMetadata(string data)
         {
+            var xml = XElement.Parse(data);
+
             List<Metadata> metadata = new List<Metadata>();
 
-            foreach (XElement item in xDocMetadata.Descendants("item"))
+            foreach (XElement item in xml.Descendants("item"))
             {
-                metadata.Add(await HydrateMetadataFields(item));
+                metadata.Add(HydrateMetadataFields(item.ToString()));
             }
 
             return metadata;
@@ -87,8 +105,10 @@ namespace PCF.REDCap
 
 
 
-        public async Task<Metadata> HydrateMetadataFields(XElement item)
+        public Metadata HydrateMetadataFields(string data)
         {
+            var xml = XElement.Parse(data);
+
             List<ExportFieldNames> exportFieldNames = new List<ExportFieldNames>();
 
             //---not working yet
@@ -96,29 +116,29 @@ namespace PCF.REDCap
 
             Metadata dataDictionary = new Metadata
             {
-                FieldName = (item.Element("field_name").GetValue()),
-                FormName = (item.Element("form_name").GetValue()),
-                FieldType = (item.Element("field_type").GetValue()),
-                FieldLabel = (item.Element("field_label").GetValue()),
-                FieldNote = (item.Element("field_note").GetValue()),
-                TextValidation = (item.Element("text_validation_type_or_show_slider_number").GetValue()),
-                TextValidationMax = (item.Element("text_validation_max").GetValue()),
-                TextValidationMin = (item.Element("text_validation_min").GetValue()),
-                IsIdentifier = (item.Element("identifier").GetValue().ToLower() == "y" ? true : false),
-                BranchingLogic = (item.Element("branching_logic").GetValue()),
-                IsRequired = (item.Element("required_field").GetValue().ToLower() == "y" ? true : false),
-                CustomAlignment = (item.Element("custom_alignment").GetValue()),
-                QuestionNumber = (item.Element("question_number").GetValue()),
-                MatrixGroupName = (item.Element("matrix_group_name").GetValue()),
-                IsMatrixRanking = (item.Element("matrix_ranking").GetValue().ToLower() == "y" ? true : false)
+                FieldName = (xml.Element("field_name").GetValue()),
+                FormName = (xml.Element("form_name").GetValue()),
+                FieldType = (xml.Element("field_type").GetValue()),
+                FieldLabel = (xml.Element("field_label").GetValue()),
+                FieldNote = (xml.Element("field_note").GetValue()),
+                TextValidation = (xml.Element("text_validation_type_or_show_slider_number").GetValue()),
+                TextValidationMax = (xml.Element("text_validation_max").GetValue()),
+                TextValidationMin = (xml.Element("text_validation_min").GetValue()),
+                IsIdentifier = (xml.Element("identifier").GetValue().ToLower() == "y" ? true : false),
+                BranchingLogic = (xml.Element("branching_logic").GetValue()),
+                IsRequired = (xml.Element("required_field").GetValue().ToLower() == "y" ? true : false),
+                CustomAlignment = (xml.Element("custom_alignment").GetValue()),
+                QuestionNumber = (xml.Element("question_number").GetValue()),
+                MatrixGroupName = (xml.Element("matrix_group_name").GetValue()),
+                IsMatrixRanking = (xml.Element("matrix_ranking").GetValue().ToLower() == "y" ? true : false)
             };
 
-            if (!item.Element("select_choices_or_calculations").ElementIsEmpty())
+            if (!xml.Element("select_choices_or_calculations").ElementIsEmpty())
             {
-                string element = item.Element("select_choices_or_calculations").GetValue();
+                string element = xml.Element("select_choices_or_calculations").GetValue();
                 if (dataDictionary.FieldType == "calc")
                 {
-                    dataDictionary.FieldCalculation = item.Element("select_choices_or_calculations").GetValue();
+                    dataDictionary.FieldCalculation = xml.Element("select_choices_or_calculations").GetValue();
                 }
                 else if (dataDictionary.FieldType == "slider")
                 {
@@ -145,13 +165,15 @@ namespace PCF.REDCap
         /// <summary>
         /// Parse user xml
         /// </summary>
-        /// <param name="xDocUsers" <see cref="XElement"/>> this is the xml snippet containing the user xml data </param>
+        /// <param name="data"> this is the xml snippet containing the user xml data </param>
         /// <returns name = "users"></returns>
-        public async Task<List<User>> HydrateUsers(XElement xDocUsers)
+        public IEnumerable<User> HydrateUsers(string data)
         {
+            var xml = XElement.Parse(data);
+
             List<User> users = new List<User>();
 
-            foreach (var item in xDocUsers.Descendants("item"))
+            foreach (var item in xml.Descendants("item"))
             {
                 User user = new User
                 {
@@ -180,11 +202,13 @@ namespace PCF.REDCap
         /// </summary>
         /// <param name="xDocInstrumentEvents"></param>
         /// <returns></returns>
-        public async Task<List<InstrumentEventMapping>> HydrateInstrumentEvents(XElement xDocInstrumentEvents)
+        public IEnumerable<InstrumentEventMapping> HydrateInstrumentEvents(string data)
         {
+            var xml = XElement.Parse(data);
+
             List<InstrumentEventMapping> instruments = new List<InstrumentEventMapping>();
 
-            foreach (XElement instrument in xDocInstrumentEvents.Descendants("arm"))
+            foreach (XElement instrument in xml.Descendants("arm"))
             {
                 InstrumentEventMapping iem = new InstrumentEventMapping()
                 {
@@ -215,11 +239,13 @@ namespace PCF.REDCap
         /// </summary>
         /// <param name="xDocRecords" <see cref="XElement"/>> this is the xml snippet containing the user xml data </param>
         /// <returns name="records"></returns>
-        public async Task<List<Record>> HydrateRecords(XElement xDocRecords)
+        public IEnumerable<Record> HydrateRecords(string data)
         {
+            var xml = XElement.Parse(data);
+
             List<Record> records = new List<Record>();
 
-            foreach (XElement item in xDocRecords.Descendants("records").Elements("item"))
+            foreach (XElement item in xml.Descendants("records").Elements("item"))
             {
                 Record record = new Record
                 {
@@ -280,54 +306,7 @@ namespace PCF.REDCap
         }
 
 
-        #endregion
 
 
-
-        public IDictionary<string, string> HydrateArms(string data)
-        {
-            var xDocArms = XElement.Parse(data);
-
-            Dictionary<string, string> arms = new Dictionary<string, string>();
-
-            foreach (var item in xDocArms.Descendants("item"))
-            {
-                arms.Add(item.Element("arm_num").GetValue(), item.Element("name").GetValue());
-            }
-
-            return arms;
-        }
-
- 
-
-        public IEnumerable<Instrument> HydrateForms(string data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<InstrumentEventMapping> HydrateInstrumentEvents(string data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Metadata> HydrateMetadata(string data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Metadata HydrateMetadataFields(string data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Record> HydrateRecords(string data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<User> HydrateUsers(string data)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
