@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="FileConfigProvider.cs" />
     <Compile Include="FileREDCapClient.cs" />
-    <Compile Include="OG_FileREDCapClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -56,24 +55,57 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestFiles\Fructose_Arms.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\Fructose_Events.xml" />
-    <Content Include="TestFiles\Fructose_ExportFieldNames.xml" />
-    <Content Include="TestFiles\Fructose_Forms.xml" />
-    <Content Include="TestFiles\Fructose_Labs_BaselineTestingArm1.xml" />
-    <Content Include="TestFiles\Fructose_Labs_EndOfStudyTestingArm1.xml" />
-    <Content Include="TestFiles\Fructose_Labs_PostTestingArm1.xml" />
-    <Content Include="TestFiles\Fructose_Labs_StudyScreeningArm1.xml" />
-    <Content Include="TestFiles\Fructose_Mapping.xml" />
-    <Content Include="TestFiles\Fructose_Metadata.xml" />
-    <Content Include="TestFiles\Fructose_Record_Demographics.xml" />
-    <Content Include="TestFiles\Fructose_Users.xml" />
-    <Content Include="TestFiles\Sample1_Demographics.xml" />
-    <Content Include="TestFiles\Sample1_Events.xml" />
-    <Content Include="TestFiles\Sample1_Forms.xml" />
-    <Content Include="TestFiles\Sample1_Mapping.xml" />
-    <Content Include="TestFiles\Sample1_Metadata.xml" />
+    <Content Include="TestFiles\Fructose_Events.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Fructose_ExportFieldNames.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Fructose_Forms.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Fructose_Labs_BaselineTestingArm1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Fructose_Labs_EndOfStudyTestingArm1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Fructose_Labs_PostTestingArm1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Fructose_Labs_StudyScreeningArm1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Fructose_Mapping.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="TestFiles\Fructose_Metadata.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Fructose_Record_Demographics.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Fructose_Users.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Sample1_Demographics.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Sample1_Events.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Sample1_Forms.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Sample1_Mapping.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Sample1_Metadata.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

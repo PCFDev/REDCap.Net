@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Ninject.Extensions.Xml.Extensions;
 using Ninject;
 using Ninject.Extensions.Xml;
 using PCF.OdmXml.i2b2Importer;
@@ -20,7 +17,6 @@ namespace PCF.REDCap.i2b2Importer
                 var kernel = new StandardKernel(settings, new XmlExtensionModule());
                 kernel.Load("NinjectConfig.xml");
 
-
                 var configProvider = kernel.Get<IConfigProvider>();
 
                 var client = kernel.Get<IREDCapClient>();
@@ -28,7 +24,6 @@ namespace PCF.REDCap.i2b2Importer
                 var converter = kernel.Get<IOdmXmlConverter>();
 
                 var importer = kernel.Get<IOdmImporter>();
-
 
                 var projects = configProvider.GetConfigurations();
 
@@ -46,8 +41,9 @@ namespace PCF.REDCap.i2b2Importer
                         var odmStudy = await converter.ConvertAsync(study);
 
                         Console.WriteLine(String.Format("Starting import of {0}", project.Name));
+
                         //Todo this needs to be changed to ImportAsync to follow convention
-                        await importer.Import(odmStudy);
+                        await importer.ImportAsync(odmStudy, new Dictionary<string, string>());
 
                     });
 
@@ -68,12 +64,10 @@ namespace PCF.REDCap.i2b2Importer
                     Console.WriteLine(ex.StackTrace);
                 }
 
-
             }
             catch (Exception ex)
             {
-
-                throw;
+                Console.WriteLine(ex.Message);
             }
 
             Console.ReadLine();

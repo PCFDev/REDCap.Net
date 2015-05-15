@@ -55,7 +55,7 @@ namespace PCF.REDCap
         Task<IEnumerable<ExportFieldNames>> GetExportFieldNamesAsync();
 
 
-        Task<IEnumerable<Instrument>> GetFormEventMapAsync();
+        Task<IEnumerable<InstrumentEventMapping>> GetInsturmentEventMapAsync();
 
 
         Task<IEnumerable<Instrument>> GetInstrumentsAsync();

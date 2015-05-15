@@ -44,7 +44,7 @@ namespace PCF.REDCap.i2b2Importer
                 {
                     return XElement.Load(_eventFile);
                 }
-                else if (url.Contains("content=insturment"))
+                else if (url.Contains("content=instrument"))
                 {
                     return XElement.Load(_instrumentFile);
                 }

@@ -8,6 +8,6 @@ namespace PCF.REDCap
 {
     public interface IConfigProvider
     {
-        List<ProjectConfiguration> GetConfigurations();
+        IEnumerable<IProjectConfiguration> GetConfigurations();
     }
 }

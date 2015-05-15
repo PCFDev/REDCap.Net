@@ -28,7 +28,7 @@ namespace PCF.REDCap
         /// <summary>
         /// Parse event xml <see cref="REDCapClient.GetEventsAsync"/>
         /// </summary>
-        /// <param name="xDocEvents"></param>
+        /// <param name="data"></param>
         /// <returns name = "events"></param></returns>
         public IEnumerable<Event> HydrateEvent(string data)
         {
@@ -62,7 +62,7 @@ namespace PCF.REDCap
         /// <summary>
         /// Parse form xml <see cref="REDCapClient.GetFormsAsync"/>
         /// </summary>
-        /// <param name="xDocForms"></param>
+        /// <param name="data"></param>
         /// <returns name = "forms"></returns>
         public IEnumerable<Instrument> HydrateForms(string data)
         {
@@ -87,7 +87,7 @@ namespace PCF.REDCap
         /// <summary>
         /// Parse metadata xml <see cref="REDCapClient.GetMetadataAsync"/>
         /// </summary>
-        /// <param name="xDocMetadata"></param>
+        /// <param name="data"></param>
         /// <returns name = "metadata"></returns>
         public IEnumerable<Metadata> HydrateMetadata(string data)
         {
@@ -200,7 +200,7 @@ namespace PCF.REDCap
         /// <summary>
         /// Parse instrument event xml
         /// </summary>
-        /// <param name="xDocInstrumentEvents"></param>
+        /// <param name="data"></param>
         /// <returns></returns>
         public IEnumerable<InstrumentEventMapping> HydrateInstrumentEvents(string data)
         {
@@ -237,7 +237,7 @@ namespace PCF.REDCap
         /// <summary>
         /// Parse record xml
         /// </summary>
-        /// <param name="xDocRecords" <see cref="XElement"/>> this is the xml snippet containing the user xml data </param>
+        /// <param name="data"> this is the xml snippet containing the user xml data </param>
         /// <returns name="records"></returns>
         public IEnumerable<Record> HydrateRecords(string data)
         {
@@ -305,8 +305,23 @@ namespace PCF.REDCap
             return choices;
         }
 
+        public IEnumerable<ExportFieldNames> HydrateExportFieldNames(string data)
+        {
+
+            var xml = XElement.Parse(data);
+            
+            foreach (var item in xml.Descendants("field"))
+            {
+                yield return new ExportFieldNames()
+                {
+                    ChoiceValue = item.Element("choice_value").GetValue(),
+                    ExportFieldName = item.Element("export_field_name").GetValue(),
+                    OriginalFieldName = item.Element("original_field_name").GetValue()
+                };
+            }
 
 
 
+        }
     }
 }

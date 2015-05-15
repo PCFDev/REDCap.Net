@@ -17,5 +17,6 @@ namespace PCF.REDCap
 
         IEnumerable<Record> HydrateRecords(string data);
         IEnumerable<User> HydrateUsers(string data);
+        IEnumerable<ExportFieldNames> HydrateExportFieldNames(string xml);
     }
 }

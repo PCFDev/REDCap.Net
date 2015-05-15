@@ -10,9 +10,7 @@ using System.Xml.Linq;
 namespace PCF.REDCap
 {
     public class REDCapClient : IREDCapClient
-    {
-        //private HttpClient _client = new HttpClient();
-
+    {        
         private Uri _baseUri = new Uri("http://www.wustl.edu");
         private string _apiKey = string.Empty;
 
@@ -36,7 +34,6 @@ namespace PCF.REDCap
         {
             this._apiKey = config.ApiKey;
             this._baseUri = new Uri(config.ApiUrl);
-
             this._config = config;
         }
 
@@ -61,7 +58,10 @@ namespace PCF.REDCap
             study.Metadata = await this.GetMetadataAsync();
 
             // Multi-value fields have different names than the parent field, those are in this file
-            var exportFieldNames = await this.GetExportFieldNamesAsync();
+            var exportFieldNames = await this.GetExportFieldNamesAsync();  //TODO: what do I do with this?
+
+          
+
 
             // A study may have multiple arms, arm information is in this file
             study.Arms = await this.GetArmsAsync();
@@ -70,8 +70,11 @@ namespace PCF.REDCap
             // A particular instrument can be listed in multiple events
             study.Events = await this.GetEventsAsync();
 
+
             // This file lists each event in the study and the list of instruments used in that event
-            var mapping = await this.GetFormEventMapAsync();
+            var mapping = await this.GetInsturmentEventMapAsync();  //TODO: what do I do with this?
+
+
 
             // The user list for this study
             study.Users = await this.GetUsersAsync();
@@ -111,33 +114,18 @@ namespace PCF.REDCap
         }
 
 
-
-        //public async Task<XDocument> GetInstrumentEventMappingAsXmlAsync()
-        //{
-        //    return await GetXml(string.Format(PARAMS_GETINSTUMENTEVENTMAP, _token, "xml"));
-        //}
-
-        //public async Task<XDocument> GetExportFieldNamesAsXmlAsync()
-        //{
-        //    return await GetXml(string.Format(PARAMS_GETEXPORTFIELDNAMES, _token, "xml"));
-        //}
-
         public async Task<IEnumerable<ExportFieldNames>> GetExportFieldNamesAsync()
         {
             var xml =  await GetXml(string.Format(PARAMS_GETEXPORTFIELDNAMES, _apiKey, FORMAT_TOKEN));
-
-            throw new NotImplementedException();
+         
+            return this._parser.HydrateExportFieldNames(xml);
         }
 
-        //public Task<XDocument> GetFormDataAsXmlAsync(string formName)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-
-        public Task<IEnumerable<Instrument>> GetFormEventMapAsync()
+        public async Task<IEnumerable<InstrumentEventMapping>> GetInsturmentEventMapAsync()
         {
-            throw new NotImplementedException();
+            var data = await GetXml(string.Format(PARAMS_GETINSTUMENTEVENTMAP, _apiKey, FORMAT_TOKEN));
+
+            return this._parser.HydrateInstrumentEvents(data);
         }
 
    
@@ -158,11 +146,24 @@ namespace PCF.REDCap
                 request.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
                 var response = await _client.PostAsync("", request);
                 var data = await response.Content.ReadAsStringAsync();
-                //var xDoc = XElement.Parse(data);
-
+            
                 return data;
             }
         }
+
+        //public async Task<XDocument> GetInstrumentEventMappingAsXmlAsync()
+        //{
+        //    return await GetXml(string.Format(PARAMS_GETINSTUMENTEVENTMAP, _token, "xml"));
+        //}
+
+        //public async Task<XDocument> GetExportFieldNamesAsXmlAsync()
+        //{
+        //    return await GetXml(string.Format(PARAMS_GETEXPORTFIELDNAMES, _token, "xml"));
+        //}
+        //public Task<XDocument> GetFormDataAsXmlAsync(string formName)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
    }
 }
