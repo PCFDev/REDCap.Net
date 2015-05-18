@@ -9,5 +9,20 @@
         {
             return InstrumentName;
         }
+
+        public override bool Equals(object obj)
+        {
+            var x = obj as Instrument;
+
+            if (x == null)
+                return false;
+
+            return this.InstrumentName == x.InstrumentName;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.InstrumentName.GetHashCode();
+        }
     }
 }
