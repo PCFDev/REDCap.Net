@@ -30,10 +30,10 @@ namespace PCF.REDCap
             odm.AdminData.Add(MapAdminDataObject(study));
 
             // ReferenceData element
-            odm.ReferenceData.Add(MapReferenceDataObject(study));
+            //odm.ReferenceData.Add(MapReferenceDataObject(study));
 
             // ClinicalData element
-            odm.ClinicalData.Add(MapClinicalDataObject(study));
+            //odm.ClinicalData.Add(MapClinicalDataObject(study));
 
             // Association element
             // -- no current mapping
@@ -52,12 +52,12 @@ namespace PCF.REDCap
         {
             // User Element (0 to many)
             ODMcomplexTypeDefinitionAdminData adminElement = new ODMcomplexTypeDefinitionAdminData();
-            ODMcomplexTypeDefinitionUser loopUser = new ODMcomplexTypeDefinitionUser();
 
             adminElement.StudyOID = study.StudyName;
 
             foreach (var user in study.Users)
             {
+                var loopUser = new ODMcomplexTypeDefinitionUser();
                 loopUser.OID = user.UserName; // using UserName for the user identifier
 
                 // switch on the data export value to fill in UserType
@@ -158,31 +158,78 @@ namespace PCF.REDCap
 
             // Description Element (optional) -- no current mapping
             // StudyEventRef Element (0 to many)
-            foreach (var eventItem in study.Events)
+            foreach (var eventItem in study.Events)//This is metadataversion children level
             {
-                var studyRef = new ODMcomplexTypeDefinitionStudyEventRef();
-                var studyDef = new ODMcomplexTypeDefinitionStudyEventDef();
+                //var eventRefs = new List<ODMcomplexTypeDefinitionStudyEventRef>();
+                var eventRef = new ODMcomplexTypeDefinitionStudyEventRef();
+                var eventDef = new ODMcomplexTypeDefinitionStudyEventDef();
 
-                studyDef.Name = eventItem.Arm.Name + ":" + eventItem.EventName;
-                studyDef.OID = "SE." + eventItem.Arm.Name + ":" + eventItem.EventName;
+
+
+                eventDef.Name = eventItem.Arm.Name + ":" + eventItem.EventName;
+                eventDef.OID = "SE." + eventItem.Arm.Name + ":" + eventItem.EventName;
                 foreach (var formItem in eventItem.Instruments)
                 {
+                    var codeList = new ODMcomplexTypeDefinitionCodeList();
+                    var codeListRef = new ODMcomplexTypeDefinitionCodeListRef();
+                    var formDef = new ODMcomplexTypeDefinitionFormDef();
+                    var groupDef = new ODMcomplexTypeDefinitionItemGroupDef();
+                    var itemDef = new ODMcomplexTypeDefinitionItemDef();
                     var formRef = new ODMcomplexTypeDefinitionFormRef();
+                    var groupRef = new ODMcomplexTypeDefinitionItemGroupRef();
+                    var itemRef = new ODMcomplexTypeDefinitionItemRef();
+                    var itemDescription = new ODMcomplexTypeDefinitionDescription();
+                    var translatedText = new ODMcomplexTypeDefinitionTranslatedText();
 
-                    formRef.FormOID = "FM." + formItem.InstrumentName;
-                    formRef.OrderNumber = (studyDef.FormRef.Count + 1).ToString();
+
+                    formDef.OID = "FM." + formItem.InstrumentName;
+                    formDef.Name = formItem.InstrumentName;
+                    formDef.Repeating = YesOrNo.No;
+
+                    formRef.FormOID = formDef.OID;
+                    formRef.OrderNumber = (eventDef.FormRef.Count + 1).ToString();
                     //formRef.CollectionExceptionConditionOID -- no current mapping
                     formRef.Mandatory = YesOrNo.No;
-                    studyDef.FormRef.Add(formRef);
+
+                    groupDef.OID = "IG." + formItem.InstrumentName;
+                    groupDef.Name = formItem.InstrumentName;
+                    groupDef.Repeating = YesOrNo.No;
+
+                    groupRef.ItemGroupOID = groupDef.OID;
+                    groupRef.OrderNumber = "1";
+                    groupRef.Mandatory = YesOrNo.No;
+
+                    itemDef.OID = "IT." + formItem.InstrumentName;
+                    itemDef.Name = formItem.InstrumentName;
+                    //itemDef.DataType =
+                    translatedText.lang = "en";
+                    translatedText.Value = formItem.InstrumentLabel;
+                    itemDescription.TranslatedText.Add(translatedText);
+                    itemDef.Description = itemDescription;
+
+                    itemRef.ItemOID = itemDef.OID;
+                    itemRef.OrderNumber = (groupDef.ItemRef.Count + 1).ToString();
+                    itemRef.Mandatory = YesOrNo.No;
+
+                    codeListRef.CodeListOID = codeList.OID;
+                    itemDef.CodeListRef = codeListRef;
+
+                    formDef.ItemGroupRef.Add(groupRef);
+                    groupDef.ItemRef.Add(itemRef);
+                    eventDef.FormRef.Add(formRef);
+                    meta.FormDef.Add(formDef);
+                    meta.ItemGroupDef.Add(groupDef);
+                    meta.ItemDef.Add(itemDef);
+
                 }
 
-                studyRef.StudyEventOID = studyDef.OID;
-                studyRef.OrderNumber = (meta.Protocol.StudyEventRef.Count + 1).ToString();
-                // studyRef.Mandatory -- no current mapping
+                eventRef.StudyEventOID = eventDef.OID;
+                eventRef.OrderNumber = (meta.Protocol.StudyEventRef.Count + 1).ToString();
+                eventRef.Mandatory = YesOrNo.Yes;
                 // studyRef.CollectionExceptionConditionOID -- no current mapping
 
-                meta.Protocol.StudyEventRef.Add(studyRef);
-                meta.StudyEventDef.Add(studyDef);
+                meta.Protocol.StudyEventRef.Add(eventRef);
+                meta.StudyEventDef.Add(eventDef);
             }
 
             //always returning single meta due to lack of versioning in RedCap
@@ -194,6 +241,7 @@ namespace PCF.REDCap
             return metas;
         }
 
+        /*
         //Stubs. Not Complete!
         private ODMcomplexTypeDefinitionReferenceData MapReferenceDataObject(Study study)
         {
@@ -228,6 +276,7 @@ namespace PCF.REDCap
 
             throw new NotImplementedException();
         }
+        */
         #endregion
     }
 }
