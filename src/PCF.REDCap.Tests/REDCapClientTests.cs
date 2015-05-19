@@ -9,14 +9,22 @@ namespace PCF.REDCap.Tests
     [TestClass]
     public class REDCapClientTests
     {
-        [TestMethod]
-        public async Task GetStudy_Full_Model_Test()
+
+        private static async Task<Study> GetStudy()
         {
             var client = new FileREDCapClient();
 
             var study = new Study();
 
             study = await client.GetStudyAsync(new ProjectConfiguration() { Name = "Study 1", ApiKey = "Key", ApiUrl = "file://test" });
+
+            return study;
+        }
+
+        [TestMethod]
+        public async Task GetStudy_Full_Model_Test()
+        {
+            Study study = await GetStudy();
 
             Assert.AreEqual("Study 1", study.StudyName);
 
@@ -47,7 +55,7 @@ namespace PCF.REDCap.Tests
             Assert.IsNotNull(age);
             Assert.AreEqual("calc", age.FieldType);
 
-            var gender = study.Metadata.FirstOrDefault(m => m.FieldName == "demo_gender");            
+            var gender = study.Metadata.FirstOrDefault(m => m.FieldName == "demo_gender");
             Assert.IsNotNull(gender);
             Assert.AreEqual("radio", gender.FieldType);
             Assert.AreEqual(2, gender.FieldChoices.Count);
@@ -55,7 +63,7 @@ namespace PCF.REDCap.Tests
             //Only one because it is a radio?
             Assert.AreEqual(1, gender.ExportFieldNames.Count);
 
-            var race = study.Metadata.FirstOrDefault(m => m.FieldName == "demo_race");            
+            var race = study.Metadata.FirstOrDefault(m => m.FieldName == "demo_race");
             Assert.IsNotNull(race);
             Assert.AreEqual("checkbox", race.FieldType);
             Assert.AreEqual(6, race.FieldChoices.Count);
@@ -68,5 +76,20 @@ namespace PCF.REDCap.Tests
             Assert.IsTrue(study.Users.Any(u => u.UserName == "kids_kenneyk"));
 
         }
+
+
+        [TestMethod]
+        public async Task REDCap_Instruments_Loaded()
+        {
+            var study = await GetStudy();
+
+            //Get all forms in the study
+            var forms = study.Events.SelectMany(e => e.Instruments).Distinct();
+
+            Assert.AreEqual(18, forms.Count());
+
+
+        }
+
     }
 }
