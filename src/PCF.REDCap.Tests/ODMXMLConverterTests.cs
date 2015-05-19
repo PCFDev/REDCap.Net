@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PCF.REDCap.i2b2Importer;
 using System.Threading.Tasks;
 using System.Linq;
+using PCF.OdmXml;
 
 namespace PCF.REDCap.Tests
 {
@@ -152,6 +153,40 @@ namespace PCF.REDCap.Tests
 
         }
 
+
+        public async Task Convert_Records_To_ClinicalData()
+        {
+            //https://github.com/CTMM-TraIT/trait_odm_to_i2b2/blob/master/src/main/java/com/recomdata/redcap/odm/Redcap2ODM.java
+            var study = await GetStudy();
+
+            var odm = new ODM();
+
+            var clinicalData = new ODMcomplexTypeDefinitionClinicalData();
+
+            var subjectData = new ODMcomplexTypeDefinitionSubjectData();
+
+            var studyEventData = new ODMcomplexTypeDefinitionStudyEventData();
+
+            studyEventData.TransactionType = TransactionType.Upsert;
+
+            var formData = new ODMcomplexTypeDefinitionFormData();
+
+            var itemGroupData = new ODMcomplexTypeDefinitionItemGroupData();
+
+            itemGroupData.Items.Add(new object());
+
+
+            formData.ItemGroupData.Add(itemGroupData);
+
+            studyEventData.FormData.Add(formData);
+
+            subjectData.StudyEventData.Add(studyEventData);
+
+            clinicalData.SubjectData.Add(subjectData);
+
+            odm.ClinicalData.Add(clinicalData);
+
+        }
 
 
     }
