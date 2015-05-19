@@ -30,13 +30,17 @@ namespace PCF.REDCap.Tests
 
 
         [TestMethod]
-        public async Task MainTest()
+        public async Task Convert_Study_To_ODM_Study()
         {
             var study = await GetStudy();
 
             var result = await this._converter.ConvertAsync(study);
 
             Assert.IsNotNull(result);
+
+            Assert.AreEqual(1, result.Study.Count);
+
+            Assert.AreEqual(study.StudyName, result.Study.First().GlobalVariables.StudyName.Value);
 
         }
 
@@ -58,11 +62,40 @@ namespace PCF.REDCap.Tests
 
             for (int i = 0; i < redCapForms.Count(); i++)
             {
+                var items = study.Metadata.Where(m => m.FormName == redCapForms.ElementAt(i).InstrumentName);
+
                 Assert.AreEqual(redCapForms.ElementAt(i).InstrumentName, odmItemGroupDefs.ElementAt(i).Name);
+                Assert.AreEqual(items.Count(), odmItemGroupDefs.ElementAt(i).ItemRef.Count);
 
             }
 
         }
+
+
+        [TestMethod]
+        public async Task Convert_Metadata_To_ItemDefs()
+        {
+            var study = await GetStudy();
+
+            var result = await this._converter.ConvertAsync(study);
+
+            Assert.IsNotNull(result);
+
+            var sourceList = study.Metadata.OrderBy(f => f.FieldName);
+
+            var targetList = result.Study.First().MetaDataVersion.First().ItemDef.OrderBy(i => i.Name);
+
+            Assert.AreEqual(sourceList.Count(), targetList.Count(), "Number of fields and the number of ItemDefs do not match");
+
+
+            for (int i = 0; i < sourceList.Count(); i++)
+            {
+                Assert.AreEqual(sourceList.ElementAt(i).FieldName, targetList.ElementAt(i).Name);
+                Assert.AreEqual(sourceList.ElementAt(i).FieldLabel, targetList.ElementAt(i).Description.TranslatedText.First().Value);
+            }
+
+        }
+
 
         [TestMethod]
         public async Task Create_CodeLists_From_Study_Metadata()
@@ -91,7 +124,7 @@ namespace PCF.REDCap.Tests
                 {
                     Assert.IsTrue(codeList.Items
                         .OfType<OdmXml.ODMcomplexTypeDefinitionCodeListItem>()
-                        .Count(c => c.CodedValue == item.Key && c.Decode.TranslatedText.First().Value == item.Value) == 1, 
+                        .Count(c => c.CodedValue == item.Key && c.Decode.TranslatedText.First().Value == item.Value) == 1,
                         item.Key + " - " + item.Value + " was not found in the list of CodeListItems");
                 }
 
