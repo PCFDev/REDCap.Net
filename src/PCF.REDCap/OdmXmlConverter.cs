@@ -205,6 +205,7 @@ namespace PCF.REDCap
                 eventRef.Mandatory = YesOrNo.Yes;
                 // studyRef.CollectionExceptionConditionOID -- no current mapping
 
+                meta.CodeList = GetCodeList(study);
                 meta.ItemDef = itemDefs;
                 meta.ItemGroupDef = groups;
                 meta.FormDef = forms;
@@ -265,7 +266,7 @@ namespace PCF.REDCap
                 var itemDef = new ODMcomplexTypeDefinitionItemDef();
                 var itemDescription = new ODMcomplexTypeDefinitionDescription();
                 var translatedText = new ODMcomplexTypeDefinitionTranslatedText();
-                var codeList = new ODMcomplexTypeDefinitionCodeList();
+                var codeLists = new List<ODMcomplexTypeDefinitionCodeList>();
                 var codeListRef = new ODMcomplexTypeDefinitionCodeListRef();
                 var itemRef = new ODMcomplexTypeDefinitionItemRef();
                 var group = groups.First(e => e.Name == item.FormName);
@@ -273,13 +274,13 @@ namespace PCF.REDCap
                 translatedText.lang = "en";
                 translatedText.Value = item.FieldLabel;
                 itemDescription.TranslatedText.Add(translatedText);
-                codeListRef.CodeListOID = codeList.OID;
 
                 itemDef.OID = "IT." + item.FieldName;
                 itemDef.Name = item.FieldName;
                 itemDef.DataType = GetItemType(item);
                 itemDef.Comment = item.FieldNote;
                 itemDef.Description = itemDescription;
+
                 itemDef.CodeListRef = codeListRef;
 
                 itemRef.ItemOID = itemDef.OID;
@@ -331,9 +332,61 @@ namespace PCF.REDCap
             return itemType;
         }
 
-        private List<ODMcomplexTypeDefinitionCodeListRef> GetCodeList(Study study)
+        private List<ODMcomplexTypeDefinitionCodeList> GetCodeList(Study study)
         {
-            return new List<ODMcomplexTypeDefinitionCodeListRef>();
+            List<ODMcomplexTypeDefinitionCodeList> codes = new List<ODMcomplexTypeDefinitionCodeList>();
+
+            foreach (var item in study.Metadata)
+            {
+                var code = new ODMcomplexTypeDefinitionCodeList();
+
+                if (item.FieldChoices.Count > 1 && item.FieldType != "calc" && item.FieldType != "slider")
+                {
+                    string codeListOID = item.FieldChoices.Count.ToString();
+
+                    if (codeListOID != null)
+                    {
+                        codeListOID = "CL." + (codes.Count + 1);
+                        code.OID = codeListOID;
+                        code.Name = item.FieldName;
+                        DataType itemType = GetItemType(item);
+                        switch (itemType.ToString())
+                        {
+                            case "integer":
+                                code.DataType = CLDataType.integer;
+                                break;
+                            case "@float":
+                                code.DataType = CLDataType.@float;
+                                break;
+                            case "text":
+                                code.DataType = CLDataType.text;
+                                break;
+                            case "@string":
+                                code.DataType = CLDataType.@string;
+                                break;
+                            default:
+                                code.DataType = CLDataType.text;
+                                break;
+                        }
+
+
+                        foreach (var choice in item.FieldChoices)
+                        {
+                            var codeItem = new ODMcomplexTypeDefinitionCodeListItem();
+                            var text = new ODMcomplexTypeDefinitionTranslatedText();
+
+                            codeItem.CodedValue = choice.Key;
+                            text.lang = "en";
+                            text.Value = choice.Value;
+                            codeItem.Decode.TranslatedText.Add(text);
+
+                            code.Items.Add(codeItem);
+                        }
+                    }
+                    codes.Add(code);
+                }
+            }
+            return codes;
         }
 
         /*
