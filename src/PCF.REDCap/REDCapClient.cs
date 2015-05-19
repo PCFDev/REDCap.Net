@@ -25,9 +25,27 @@ namespace PCF.REDCap
         protected const string PARAMS_GETUSERS = "token={0}&content=user&format={1}";
         protected const string PARAMS_GETINSTUMENTEVENTMAP = "token={0}&content=formEventMapping&format={1}";
         protected const string PARAMS_GETEXPORTFIELDNAMES = "token={0}&content=exportFieldNames&format={1}";
-        private const string FORMAT_TOKEN = "xml";
+        protected const string PARAMS_GETRECORDS = "token={0}&content=record&format={1}&type=eav";
+
+        protected const string FORMAT_TOKEN = "xml";
 
         // ----------------------
+
+        protected virtual async Task<string> GetXml(string url)
+        {
+            using (var _client = new HttpClient())
+            {
+                var request = new StringContent(url);
+
+                _client.BaseAddress = _baseUri;
+                request.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
+                var response = await _client.PostAsync("", request);
+                var data = await response.Content.ReadAsStringAsync();
+
+                return data;
+            }
+        }
+
 
 
         public async Task Initialize(IProjectConfiguration config)
@@ -36,6 +54,7 @@ namespace PCF.REDCap
             this._baseUri = new Uri(config.ApiUrl);
             this._config = config;
         }
+
 
         /// <summary>
         /// Creates a fully loaded study object.
@@ -56,14 +75,14 @@ namespace PCF.REDCap
             study.Metadata = await this.GetMetadataAsync();
 
             // Multi-value fields have different names than the parent field, those are in this file
-            var exportFieldNames = await this.GetExportFieldNamesAsync(); 
+            var exportFieldNames = await this.GetExportFieldNamesAsync();
 
             foreach (var item in study.Metadata)
             {
                 item.ExportFieldNames = exportFieldNames
                     .Where(f => f.OriginalFieldName == item.FieldName).ToList();
             }
-          
+
 
             // A study may have multiple arms, arm information is in this file
             study.Arms = await this.GetArmsAsync();
@@ -92,9 +111,9 @@ namespace PCF.REDCap
                 //var formNames = mapping.EventInstruments[item.UniqueEventName];
 
 
-               var formNames = mappings.FirstOrDefault(m => m.ArmNumber == item.ArmNumber)
-                    .EventInstruments.Where(ei => ei.Key == item.UniqueEventName)
-                    .SelectMany(ei => ei.Value);
+                var formNames = mappings.FirstOrDefault(m => m.ArmNumber == item.ArmNumber)
+                     .EventInstruments.Where(ei => ei.Key == item.UniqueEventName)
+                     .SelectMany(ei => ei.Value);
 
                 item.Instruments = forms.Where(f => formNames.Contains(f.InstrumentName)).ToList();
             }
@@ -102,6 +121,9 @@ namespace PCF.REDCap
 
             // The user list for this study
             study.Users = await this.GetUsersAsync();
+
+
+            study.Records = await this.GetRecords(_config);
 
             return study;
         }
@@ -160,34 +182,13 @@ namespace PCF.REDCap
             return this._parser.HydrateUsers(xml);
         }
 
-        protected virtual async Task<string> GetXml(string url)
+        public async Task<IEnumerable<Record>> GetRecords(IProjectConfiguration config)
         {
-            using (var _client = new HttpClient())
-            {
-                var request = new StringContent(url);
+            var xml = await GetXml(string.Format(PARAMS_GETRECORDS, config.ApiKey, FORMAT_TOKEN));
 
-                _client.BaseAddress = _baseUri;
-                request.Headers.ContentType.MediaType = "application/x-www-form-urlencoded";
-                var response = await _client.PostAsync("", request);
-                var data = await response.Content.ReadAsStringAsync();
-
-                return data;
-            }
+            return this._parser.HydrateRecords(xml);
         }
 
-        //public async Task<XDocument> GetInstrumentEventMappingAsXmlAsync()
-        //{
-        //    return await GetXml(string.Format(PARAMS_GETINSTUMENTEVENTMAP, _token, "xml"));
-        //}
-
-        //public async Task<XDocument> GetExportFieldNamesAsXmlAsync()
-        //{
-        //    return await GetXml(string.Format(PARAMS_GETEXPORTFIELDNAMES, _token, "xml"));
-        //}
-        //public Task<XDocument> GetFormDataAsXmlAsync(string formName)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
     }
 }

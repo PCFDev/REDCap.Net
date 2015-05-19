@@ -253,7 +253,7 @@ namespace PCF.REDCap
 
             List<Record> records = new List<Record>();
 
-            foreach (XElement item in xml.Descendants("records").Elements("item"))
+            foreach (XElement item in xml.Descendants("item"))
             {
                 Record record = new Record
                 {

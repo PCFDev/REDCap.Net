@@ -91,5 +91,19 @@ namespace PCF.REDCap.Tests
 
         }
 
+
+
+        [TestMethod]
+        public async Task REDCap_Records_Loaded()
+        {
+            var study = await GetStudy();
+
+            //Get all forms in the study
+            var forms = study.Records;
+
+            Assert.AreEqual(782, forms.Count());
+
+
+        }
     }
 }

@@ -28,44 +28,48 @@ namespace PCF.REDCap.i2b2Importer
             _instrumentFile = @"TestFiles\Fructose_Forms.xml";
             _instrumentEventMappingFile = @"TestFiles\Fructose_Mapping.xml";
             _metadataFile = @"TestFiles\Fructose_Metadata.xml";
-            _userFile = @"TestFiles\Fructose_Users.xml";            
+            _userFile = @"TestFiles\Fructose_Users.xml";
         }
 
         protected override async Task<string> GetXml(string url)
         {
-            var xml = await Task.Run<XElement>( () =>
-            {
-                if (url.Contains("content=arm"))
-                {
-                    return XElement.Load(_armFile);
-                }
-                else if (url.Contains("content=event"))
-                {
-                    return XElement.Load(_eventFile);
-                }
-                else if (url.Contains("content=instrument"))
-                {
-                    return XElement.Load(_instrumentFile);
-                }
-                else if (url.Contains("content=metadata"))
-                {
-                    return XElement.Load(_metadataFile);
-                }
-                else if (url.Contains("content=user"))
-                {
-                    return XElement.Load(_userFile);
-                }
-                else if (url.Contains("content=formEventMapping"))
-                {
-                    return XElement.Load(_instrumentEventMappingFile);
-                }
-                else if (url.Contains("content=exportFieldNames"))
-                {
-                    return XElement.Load(_exportFiledNamesFile);
-                }
+            var xml = await Task.Run<XElement>(() =>
+           {
+               if (url.Contains("content=arm"))
+               {
+                   return XElement.Load(_armFile);
+               }
+               else if (url.Contains("content=event"))
+               {
+                   return XElement.Load(_eventFile);
+               }
+               else if (url.Contains("content=instrument"))
+               {
+                   return XElement.Load(_instrumentFile);
+               }
+               else if (url.Contains("content=metadata"))
+               {
+                   return XElement.Load(_metadataFile);
+               }
+               else if (url.Contains("content=user"))
+               {
+                   return XElement.Load(_userFile);
+               }
+               else if (url.Contains("content=formEventMapping"))
+               {
+                   return XElement.Load(_instrumentEventMappingFile);
+               }
+               else if (url.Contains("content=exportFieldNames"))
+               {
+                   return XElement.Load(_exportFiledNamesFile);
+               }
+               else if (url.Contains("content=record"))
+               {
+                   return XElement.Load("TestFiles/Fructose_Labs_StudyScreeningArm1.xml");
+               }
 
-                return null;
-            });
+               return null;
+           });
 
             return xml.ToString();
         }

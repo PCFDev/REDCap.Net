@@ -14,7 +14,6 @@ namespace PCF.REDCap.Tests
     [TestClass]
     public class ODMXMLConverterTests
     {
-
         private OdmXmlConverter _converter = new OdmXmlConverter();
 
         private static async Task<Study> GetStudy()
@@ -27,7 +26,6 @@ namespace PCF.REDCap.Tests
 
             return study;
         }
-
 
         [TestMethod]
         public async Task Convert_Study_To_ODM_Study()
@@ -44,7 +42,30 @@ namespace PCF.REDCap.Tests
 
         }
 
+        [TestMethod]
+        public async Task Convert_Events_To_ODM_StudyEventDefs()
+        {
+            var study = await GetStudy();
 
+            var result = await this._converter.ConvertAsync(study);
+
+            Assert.IsNotNull(result);
+
+            var sourceList = study.Events.OrderBy(e => e.EventName);
+
+            var targetList = result.Study.First().MetaDataVersion.First().StudyEventDef.OrderBy(e => e.Name);
+
+            Assert.AreEqual(sourceList.Count(), targetList.Count());
+
+            for (int i = 0; i < sourceList.Count(); i++)
+            {
+                var source = sourceList.ElementAt(i);
+                Assert.AreEqual(source.Arm.Name + ":" + source.EventName, targetList.ElementAt(i).Name);
+                Assert.AreEqual(sourceList.ElementAt(i).Instruments.Count, targetList.ElementAt(i).FormRef.Count);
+            }
+
+
+        }
 
         [TestMethod]
         public async Task Convert_Forms_To_ItemGroupDefs()
@@ -96,7 +117,6 @@ namespace PCF.REDCap.Tests
 
         }
 
-
         [TestMethod]
         public async Task Create_CodeLists_From_Study_Metadata()
         {
@@ -131,5 +151,8 @@ namespace PCF.REDCap.Tests
             }
 
         }
+
+
+
     }
 }

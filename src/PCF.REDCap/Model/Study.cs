@@ -11,6 +11,9 @@ namespace PCF.REDCap
             _metadata = new List<Metadata>();
             _arms = new Dictionary<string, string>();
             _users = new List<User>();
+
+            this.Records = new List<Record>();
+
         }
 
         private List<Event> _events;
@@ -44,5 +47,7 @@ namespace PCF.REDCap
             get { return _users; }
             set { _users = value.ToList(); }
         }
+
+        public IEnumerable<Record> Records{ get; set; }
     }
 }

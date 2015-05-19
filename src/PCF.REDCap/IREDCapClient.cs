@@ -61,6 +61,9 @@ namespace PCF.REDCap
         Task<IEnumerable<Instrument>> GetInstrumentsAsync();
 
         Task<IEnumerable<Metadata>> GetMetadataAsync();
+
+        Task<IEnumerable<Record>> GetRecords(IProjectConfiguration config);
+
   
     }
 }
