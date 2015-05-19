@@ -123,7 +123,10 @@ namespace PCF.REDCap.Tests
         {
             var study = await GetStudy();
 
-            var lists = study.Metadata.Where(m => m.FieldType == "radio" || m.FieldType == "checkbox").OrderBy(f => f.FieldName);
+            var lists = study.Metadata
+                .Where(m => m.FieldChoices != null && m.FieldChoices.Count > 0)
+                .Where(m => m.FieldType != "calc" && m.FieldType != "slider")
+                .OrderBy(f => f.FieldName);
 
             var result = await this._converter.ConvertAsync(study);
 
