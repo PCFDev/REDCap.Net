@@ -1,0 +1,42 @@
+﻿@using Owin.Security.ActiveDirectoryLDAP
+@{
+    ViewBag.Title = "Login";
+}
+<div id="modal-container" class="_modal" style="display:block;overflow-y:auto">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content modal-content-inverse">
+            <div class="modal-header">
+                <h4 class="modal-title text-center text-light">Sign in to your account</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" method="POST" action="/signin-activedirectoryldap">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="State" value="@(Request.QueryString["State"])" />
+                    <div class="form-group">
+                        <label class="control-label sr-only" for="Username">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-user"></span>
+                            </span>
+                            <input type="text" class="form-control" name="Username" placeholder="Username" style="max-width: initial;" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label sr-only" for="Password">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-lock"></span>
+                            </span>
+                            <input type="password" class="form-control" name="Password" placeholder="Password" style="max-width: initial;" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 text-right">
+                            <button type="submit" class="btn btn-primary"><span class="fa fa-fw fa-key"></span> Sign in</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
