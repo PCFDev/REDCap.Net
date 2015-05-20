@@ -33,7 +33,7 @@ namespace PCF.REDCap.Tests
         {
             var study = await GetStudy();
 
-            var result = await this._converter.ConvertAsync(study);
+            var result = await _converter.ConvertAsync(study);
 
             Assert.IsNotNull(result);
 

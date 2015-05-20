@@ -126,7 +126,7 @@ namespace PCF.REDCap
             // BasicDefinitions Element (optional)
             // -- not porting, if even available
 
-            // MetaDataVersion Element (0 to many)
+            // MetaDataVersion Element (0 to many, always 1 for REDCap Study)
             odmStudy.MetaDataVersion.AddRange(MapMetadataVersion(study));
 
             return odmStudy;
@@ -146,23 +146,26 @@ namespace PCF.REDCap
             return globes;
         }
 
-        /// <summary></summary>
+        /// <summary>Creates the MetaDataVersion object</summary>
         /// <param name="study"></param>
-        /// <returns></returns>
+        /// <returns List of MetaDataVersion objects (always 1 object due to REDCap model)></returns>
         private List<ODMcomplexTypeDefinitionMetaDataVersion> MapMetadataVersion(Study study)
         {
             List<ODMcomplexTypeDefinitionMetaDataVersion> metas = new List<ODMcomplexTypeDefinitionMetaDataVersion>();
             ODMcomplexTypeDefinitionMetaDataVersion meta = new ODMcomplexTypeDefinitionMetaDataVersion();
 
-            //Creating a list of all distinct formdefs and itemgroupdefs, to be used for loading events
+            //Creating lists of formDefs, itemDefs, codeLists and itemGroupDefs to be loaded.
             List<ODMcomplexTypeDefinitionFormDef> forms = new List<ODMcomplexTypeDefinitionFormDef>();
             List<ODMcomplexTypeDefinitionItemGroupDef> groups = new List<ODMcomplexTypeDefinitionItemGroupDef>();
             List<ODMcomplexTypeDefinitionItemDef> itemDefs = new List<ODMcomplexTypeDefinitionItemDef>();
-            var currentForms = study.Events.SelectMany(e => e.Instruments).Distinct();
+            List<ODMcomplexTypeDefinitionCodeList> codeLists = new List<ODMcomplexTypeDefinitionCodeList>();
 
+            //Loading formDefs, itemGroupDefs,codeLists and itemDefs.
+            //itemDefs also takes codeLists and groups to add necessary references.
             forms = GetForms(study);
             groups = GetItemGroups(study);
-            itemDefs = GetItemDefs(study, groups);
+            codeLists = GetCodeList(study);
+            itemDefs = GetItemDefs(study, groups, codeLists);
 
             // Include Element (optional)
             // --not porting
@@ -171,7 +174,6 @@ namespace PCF.REDCap
             // StudyEventRef Element (0 to many)
             foreach (var eventItem in study.Events)//This is metadataversion children level
             {
-                //var eventRefs = new List<ODMcomplexTypeDefinitionStudyEventRef>();
                 var eventRef = new ODMcomplexTypeDefinitionStudyEventRef();
                 var eventDef = new ODMcomplexTypeDefinitionStudyEventDef();
 
@@ -184,17 +186,23 @@ namespace PCF.REDCap
 
 
                     //Finds form for this studyEventDef
-                    var form = forms.First(e => e.OID == "FM." + formItem.InstrumentName);
-                    var group = groups.First(e => e.OID == "IG." + formItem.InstrumentName);
+                    var form = forms.FirstOrDefault(e => e.OID == "FM." + formItem.InstrumentName);
+                    var group = groups.FirstOrDefault(e => e.OID == "IG." + formItem.InstrumentName);
 
-                    formRef.FormOID = form.OID;
-                    formRef.OrderNumber = (eventDef.FormRef.Count + 1).ToString();
-                    //formRef.CollectionExceptionConditionOID -- no current mapping
-                    formRef.Mandatory = YesOrNo.No;
+                    if (form != null)
+                    {
+                        formRef.FormOID = form.OID;
+                        formRef.OrderNumber = (eventDef.FormRef.Count + 1).ToString();
+                        formRef.Mandatory = YesOrNo.No;
+                        //formRef.CollectionExceptionConditionOID -- no current mapping
+                    }
 
-                    groupRef.ItemGroupOID = group.OID;
-                    groupRef.OrderNumber = "1";
-                    groupRef.Mandatory = YesOrNo.No;
+                    if (group != null)
+                    {
+                        groupRef.ItemGroupOID = group.OID;
+                        groupRef.OrderNumber = "1";
+                        groupRef.Mandatory = YesOrNo.No;
+                    }
 
                     form.ItemGroupRef.Add(groupRef);
                     eventDef.FormRef.Add(formRef);
@@ -205,7 +213,7 @@ namespace PCF.REDCap
                 eventRef.Mandatory = YesOrNo.Yes;
                 // studyRef.CollectionExceptionConditionOID -- no current mapping
 
-                meta.CodeList = GetCodeList(study);
+                meta.CodeList = codeLists;
                 meta.ItemDef = itemDefs;
                 meta.ItemGroupDef = groups;
                 meta.FormDef = forms;
@@ -217,7 +225,6 @@ namespace PCF.REDCap
             metas.Add(meta);
 
             // Alias Element (0 to many) -- no current mapping
-            // End Protocol Element-------------------------------
 
             return metas;
         }
@@ -256,7 +263,8 @@ namespace PCF.REDCap
             return groups;
         }
 
-        private List<ODMcomplexTypeDefinitionItemDef> GetItemDefs(Study study, List<ODMcomplexTypeDefinitionItemGroupDef> groups)
+        private List<ODMcomplexTypeDefinitionItemDef> GetItemDefs(Study study,
+                                                List<ODMcomplexTypeDefinitionItemGroupDef> groups, List<ODMcomplexTypeDefinitionCodeList> codeLists)
         {
             List<ODMcomplexTypeDefinitionItemDef> itemDefs = new List<ODMcomplexTypeDefinitionItemDef>();
             var currentForms = study.Events.SelectMany(e => e.Instruments).Distinct();
@@ -266,10 +274,12 @@ namespace PCF.REDCap
                 var itemDef = new ODMcomplexTypeDefinitionItemDef();
                 var itemDescription = new ODMcomplexTypeDefinitionDescription();
                 var translatedText = new ODMcomplexTypeDefinitionTranslatedText();
-                var codeLists = new List<ODMcomplexTypeDefinitionCodeList>();
                 var codeListRef = new ODMcomplexTypeDefinitionCodeListRef();
                 var itemRef = new ODMcomplexTypeDefinitionItemRef();
                 var group = groups.First(e => e.Name == item.FormName);
+
+                var codeList = codeLists.FirstOrDefault(e => e.Name == item.FieldName);
+                itemDef.CodeListRef.CodeListOID = (codeList != null) ? codeList.OID : null;
 
                 translatedText.lang = "en";
                 translatedText.Value = item.FieldLabel;
@@ -281,14 +291,11 @@ namespace PCF.REDCap
                 itemDef.Comment = item.FieldNote;
                 itemDef.Description = itemDescription;
 
-                itemDef.CodeListRef = codeListRef;
-
                 itemRef.ItemOID = itemDef.OID;
                 itemRef.Mandatory = (item.IsRequired == true) ? YesOrNo.Yes : YesOrNo.No;
-
                 itemRef.OrderNumber = (group.ItemRef.Count + 1).ToString();
-                group.ItemRef.Add(itemRef);
 
+                group.ItemRef.Add(itemRef);
                 itemDefs.Add(itemDef);
             }
 
@@ -389,6 +396,8 @@ namespace PCF.REDCap
             return codes;
         }
 
+        #endregion
+
         /*
         //Stubs. Not Complete!
         private ODMcomplexTypeDefinitionReferenceData MapReferenceDataObject(Study study)
@@ -425,6 +434,5 @@ namespace PCF.REDCap
             throw new NotImplementedException();
         }
         */
-        #endregion
     }
 }
