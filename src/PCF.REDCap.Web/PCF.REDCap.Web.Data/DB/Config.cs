@@ -9,9 +9,11 @@ namespace PCF.REDCap.Web.Data.DB
     {
         public int Id { get; private set; }
         public bool Enabled { get; set; }
+        //[Index("UQ_Url_Key", IsUnique = true, Order = 0)]//Size limits
         public string Key { get; set; }
         [Index("UQ_Name", IsUnique = true)]
         public string Name { get; set; }
+        //[Index("UQ_Url_Key", IsUnique = true, Order = 1)]//Size limits, reduce Url max length?
         public string Url { get; set; }
 
         public Uri Uri
