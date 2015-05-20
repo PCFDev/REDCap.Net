@@ -94,7 +94,6 @@
             self.act_Submit = function (form) {
                 $.post('api/v1/configs', $(form).serializeObject())//Get form data, ko model?
                 .done(function (response) {
-                    console.log(response);
                     self.ob_Configs.push(response);
                     $('#modal-add').modal('hide');
                 });
