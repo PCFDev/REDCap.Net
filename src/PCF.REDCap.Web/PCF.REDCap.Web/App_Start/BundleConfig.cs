@@ -1,4 +1,5 @@
 ﻿using System.Web.Optimization;
+using PCF.REDCap.Web.Helpers;
 
 namespace PCF.REDCap.Web
 {
@@ -21,12 +22,13 @@ namespace PCF.REDCap.Web
             bundles.Add(new ScriptBundle("~/bundles/modernizr.js").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/bundles/combined.css").Include(
-                        "~/Content/bootstrap.css",
-                        "~/Content/theme.css",
-                        "~/content/fonts.css",
-                        "~/content/nprogress.css",
-                        "~/Content/custom.css"));
+            var cssTransform = new CssRewriteUrlTransformFixed();
+            bundles.Add(new StyleBundle("~/bundles/combined.css")
+                        .Include("~/Content/bootstrap.css", cssTransform)
+                        .Include("~/Content/theme.css", cssTransform)
+                        .Include("~/Content/fonts.css", cssTransform)
+                        .Include("~/Content/nprogress.css", cssTransform)
+                        .Include("~/Content/custom.css", cssTransform));
         }
     }
 }

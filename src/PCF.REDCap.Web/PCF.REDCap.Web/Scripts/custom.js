@@ -1,9 +1,10 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
+;
 (function (window, $, NProgress) {
     $(function () {
-        $('#logout').on('click', function (e) {
+        $("#logout").on("click", function (e) {
             e.preventDefault();
-            $.post('/api/v1/account/logout').done(function (response) {
+            $.post("/api/v1/account/logout").done(function (response) {
                 if (response.Success) {
                     document.location.reload();
                 }

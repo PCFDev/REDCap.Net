@@ -21,6 +21,7 @@ namespace PCF.REDCap.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            AntiForgeryConfig.SuppressXFrameOptionsHeader = true;
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;//Should we just set the identityprovider claim?
         }
 
