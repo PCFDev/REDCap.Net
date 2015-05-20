@@ -2,16 +2,22 @@
 
 interface Window {
     jQuery: JQueryStatic;
-    NProgress: any;//TODO: Proper typing
+    NProgress: any;// TODO: Proper typing
 }
 
-(function (window, $, NProgress) {
+interface JQueryStatic {
+    put: (url: string, data?: any, callback?: any, type?: string) => JQueryXHR;
+    patch: (url: string, data?: any, callback?: any, type?: string) => JQueryXHR;
+    delete: (url: string, data?: any, callback?: any, type?: string) => JQueryXHR;
+};
+
+(function (window: Window, $: JQueryStatic, NProgress: any) {// TODO: Proper $ type jQueryStatic, need to handle extension unless we change it. (probably should)
     $(function () {
-        $('#logout').on('click', function (e) {
+        $("#logout").on("click", function (e: JQueryEventObject) {
             e.preventDefault();
 
-            $.post('/api/v1/account/logout')
-            .done(function (response) {
+            $.post("/api/v1/account/logout")
+            .done(function (response: any) {
                 if (response.Success) {
                     document.location.reload();
                 }
@@ -19,7 +25,7 @@ interface Window {
         });
     });
 
-    $.put = function (url, data, callback, type) {
+    $.put = function (url: string, data?: any, callback?: any, type?: string): JQueryXHR {// TODO: Proper types
         // Shift arguments if data argument was omitted
         if ($.isFunction(data)) {
             type = type || callback;
@@ -36,7 +42,7 @@ interface Window {
         });
     };
 
-    $.patch = function (url, data, callback, type) {
+    $.patch = function (url: string, data?: any, callback?: any, type?: string): JQueryXHR {// TODO: Proper types
         // Shift arguments if data argument was omitted
         if ($.isFunction(data)) {
             type = type || callback;
@@ -53,7 +59,7 @@ interface Window {
         });
     };
 
-    $.delete = function (url, data, callback, type) {
+    $.delete = function (url: string, data?: any, callback?: any, type?: string): JQueryXHR {// TODO: Proper types
         // Shift arguments if data argument was omitted
         if ($.isFunction(data)) {
             type = type || callback;
@@ -71,10 +77,10 @@ interface Window {
     };
 
     $(document)
-    .ajaxStart(function () {
+    .ajaxStart(function (): void {
         NProgress.start();
     })
-    .ajaxStop(function () {
+    .ajaxStop(function (): void {
         NProgress.done();
     });
 
