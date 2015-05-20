@@ -156,7 +156,7 @@ namespace PCF.REDCap.Tests
 
         }
 
-
+        [TestMethod]
         public async Task Convert_Records_To_ClinicalData()
         {
             //https://github.com/CTMM-TraIT/trait_odm_to_i2b2/blob/master/src/main/java/com/recomdata/redcap/odm/Redcap2ODM.java
@@ -164,30 +164,54 @@ namespace PCF.REDCap.Tests
 
             var odm = new ODM();
 
-            var clinicalData = new ODMcomplexTypeDefinitionClinicalData();
-
-            var subjectData = new ODMcomplexTypeDefinitionSubjectData();
-
-            var studyEventData = new ODMcomplexTypeDefinitionStudyEventData();
-
-            studyEventData.TransactionType = TransactionType.Upsert;
-
-            var formData = new ODMcomplexTypeDefinitionFormData();
-
-            var itemGroupData = new ODMcomplexTypeDefinitionItemGroupData();
-
-            itemGroupData.Items.Add(new object());
 
 
-            formData.ItemGroupData.Add(itemGroupData);
+            foreach (var item in study.Records)
+            {
+                var e = study.Events.FirstOrDefault(ev => ev.UniqueEventName == item.EventName);
+                var meta = study.Metadata.FirstOrDefault(m => m.FieldName == item.Concept);
 
-            studyEventData.FormData.Add(formData);
+                var x = new
+                {
+                    subjectID = item.PatientId,
+                    armName = e.Arm.Name,
+                    eventName = e.UniqueEventName,
+                    formName = meta.FormName,
+                    name = item.Concept,
+                    value = item.ConceptValue
 
-            subjectData.StudyEventData.Add(studyEventData);
+                };
 
-            clinicalData.SubjectData.Add(subjectData);
+                //Lines 336-398 in Redcap2ODM.java
+                
 
-            odm.ClinicalData.Add(clinicalData);
+                var clinicalData = new ODMcomplexTypeDefinitionClinicalData();
+
+                var subjectData = new ODMcomplexTypeDefinitionSubjectData();
+
+                var studyEventData = new ODMcomplexTypeDefinitionStudyEventData();
+
+                var formData = new ODMcomplexTypeDefinitionFormData();
+
+                var itemGroupData = new ODMcomplexTypeDefinitionItemGroupData();
+
+
+                studyEventData.TransactionType = TransactionType.Upsert;
+
+                itemGroupData.Items.Add(new object());
+
+                formData.ItemGroupData.Add(itemGroupData);
+
+                studyEventData.FormData.Add(formData);
+
+                subjectData.StudyEventData.Add(studyEventData);
+
+                clinicalData.SubjectData.Add(subjectData);
+
+                odm.ClinicalData.Add(clinicalData);
+
+
+            }
 
         }
 
