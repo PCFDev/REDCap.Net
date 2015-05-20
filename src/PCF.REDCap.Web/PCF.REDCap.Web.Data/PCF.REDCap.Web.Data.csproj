@@ -66,6 +66,10 @@
     <Compile Include="Migrations\201505191851123_Initial.Designer.cs">
       <DependentUpon>201505191851123_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505201930005_UniqueNames.cs" />
+    <Compile Include="Migrations\201505201930005_UniqueNames.Designer.cs">
+      <DependentUpon>201505201930005_UniqueNames.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ConfigRepository.cs" />
@@ -86,6 +90,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201505191851123_Initial.resx">
       <DependentUpon>201505191851123_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505201930005_UniqueNames.resx">
+      <DependentUpon>201505201930005_UniqueNames.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -64,8 +64,16 @@ namespace PCF.REDCap.Web.Models.API.View.Config
         public PostViewModel(IConfig config)
         {
             Id = config.Id;
+            Name = config.Name;
+            Url = config.Uri.AbsoluteUri;
+            Key = config.Key;
+            Enabled = config.Enabled;
         }
 
+        public bool Enabled { get; set; }
         public int Id { get; set; }
+        public string Key { get; set; }
+        public string Name { get; set; }
+        public string Url { get; set; }
     }
 }

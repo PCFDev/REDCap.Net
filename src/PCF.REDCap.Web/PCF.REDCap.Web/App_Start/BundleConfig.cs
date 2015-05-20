@@ -15,6 +15,7 @@ namespace PCF.REDCap.Web
                         "~/Scripts/knockout-{version}.js",
                         "~/Scripts/nprogress.js",
                         "~/Scripts/respond.js",
+                        "~/Scripts/jquery.serialize-object.js",
                         "~/Scripts/custom.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
