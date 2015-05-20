@@ -179,6 +179,7 @@ namespace PCF.REDCap
 
                 eventDef.Name = eventItem.Arm.Name + ":" + eventItem.EventName;
                 eventDef.OID = "SE." + eventItem.Arm.Name + ":" + eventItem.EventName;
+
                 foreach (var formItem in eventItem.Instruments)
                 {
                     var formRef = new ODMcomplexTypeDefinitionFormRef();
@@ -229,6 +230,12 @@ namespace PCF.REDCap
             return metas;
         }
 
+
+        /// <summary>
+        /// Returns List of formDef objects from study
+        /// </summary>
+        /// <param name="study"></param>
+        /// <returns></returns>
         private List<ODMcomplexTypeDefinitionFormDef> GetForms(Study study)
         {
             List<ODMcomplexTypeDefinitionFormDef> forms = new List<ODMcomplexTypeDefinitionFormDef>();
@@ -246,12 +253,18 @@ namespace PCF.REDCap
             return forms;
         }
 
+
+        /// <summary>
+        /// Returns List of itemGroupDef objects from study
+        /// </summary>
+        /// <param name="study"></param>
+        /// <returns></returns>
         private List<ODMcomplexTypeDefinitionItemGroupDef> GetItemGroups(Study study)
         {
             List<ODMcomplexTypeDefinitionItemGroupDef> groups = new List<ODMcomplexTypeDefinitionItemGroupDef>();
-            var currentForms = study.Events.SelectMany(e => e.Instruments).Distinct();
+            var currentGroups = study.Events.SelectMany(e => e.Instruments).Distinct();
 
-            foreach (var item in currentForms)
+            foreach (var item in currentGroups)
             {
                 ODMcomplexTypeDefinitionItemGroupDef group = new ODMcomplexTypeDefinitionItemGroupDef();
                 group.OID = "IG." + item.InstrumentName;
@@ -263,21 +276,30 @@ namespace PCF.REDCap
             return groups;
         }
 
+
+        /// <summary>
+        /// Returns List of itemDefs from study. 
+        /// Adds itemRef to matching itemGroupDef in List groups.
+        /// Loads codeListRef into itemDef using List codeLists.
+        /// </summary>
+        /// <param name="study"></param>
+        /// <param name="groups"></param>
+        /// <param name="codeLists"></param>
+        /// <returns></returns>
         private List<ODMcomplexTypeDefinitionItemDef> GetItemDefs(Study study,
                                                 List<ODMcomplexTypeDefinitionItemGroupDef> groups, List<ODMcomplexTypeDefinitionCodeList> codeLists)
         {
             List<ODMcomplexTypeDefinitionItemDef> itemDefs = new List<ODMcomplexTypeDefinitionItemDef>();
-            var currentForms = study.Events.SelectMany(e => e.Instruments).Distinct();
 
             foreach (var item in study.Metadata)
             {
                 var itemDef = new ODMcomplexTypeDefinitionItemDef();
                 var itemDescription = new ODMcomplexTypeDefinitionDescription();
                 var translatedText = new ODMcomplexTypeDefinitionTranslatedText();
-                var codeListRef = new ODMcomplexTypeDefinitionCodeListRef();
                 var itemRef = new ODMcomplexTypeDefinitionItemRef();
                 var group = groups.First(e => e.Name == item.FormName);
 
+                //Loading codeListRef. If no codelist is generated (i.e. item has no list), codeListRef is set to null.
                 var codeList = codeLists.FirstOrDefault(e => e.Name == item.FieldName);
                 itemDef.CodeListRef.CodeListOID = (codeList != null) ? codeList.OID : null;
 
@@ -302,6 +324,12 @@ namespace PCF.REDCap
             return itemDefs;
         }
 
+
+        /// <summary>
+        /// Returns DataType of itemDef based on studyItem
+        /// </summary>
+        /// <param name="studyItem"></param>
+        /// <returns></returns>
         private DataType GetItemType(Metadata studyItem)
         {
             var itemType = new DataType();
@@ -339,6 +367,12 @@ namespace PCF.REDCap
             return itemType;
         }
 
+
+        /// <summary>
+        /// Returns List of codeList objects from study
+        /// </summary>
+        /// <param name="study"></param>
+        /// <returns></returns>
         private List<ODMcomplexTypeDefinitionCodeList> GetCodeList(Study study)
         {
             List<ODMcomplexTypeDefinitionCodeList> codes = new List<ODMcomplexTypeDefinitionCodeList>();
