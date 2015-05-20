@@ -436,9 +436,9 @@ namespace PCF.REDCap
             return codes;
         }
 
-        #endregion #region Clinical Data
+        #endregion
 
-        #region ClinicalData element construction
+        #region CLINICALDATA element construction
 
         private ODMcomplexTypeDefinitionClinicalData MapClinicalDataObject(Study study, ODMcomplexTypeDefinitionStudy odmStudy)
         {
@@ -550,6 +550,7 @@ namespace PCF.REDCap
 
         #endregion
 
+        #region REFERENCEDATA element construction
         /*
         //Stubs. Not Complete!
         private ODMcomplexTypeDefinitionReferenceData MapReferenceDataObject(Study study)
@@ -571,6 +572,6 @@ namespace PCF.REDCap
 
        
         */
-       
+        #endregion
     }
 }
