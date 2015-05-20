@@ -61,7 +61,7 @@ namespace PCF.REDCap.Web.Controllers.API
                 if (config != null)
                 {
                     var url = new Uri(Url.Link("API/Configs", new { id = config.Id }));
-                    return Request.CreateRedirectResponse(HttpStatusCode.Created, url, new PostViewModel(config) { Success = true });
+                    return Request.CreateRedirectResponse(HttpStatusCode.Created, url, new PutViewModel(config) { Success = true });
                 }
                 ModelState.AddModelError("", "Error saving config.");
             }
@@ -80,7 +80,7 @@ namespace PCF.REDCap.Web.Controllers.API
             {
                 config = Repositories.Instance.Config.Update(config.Id, model.GetDTO(config));
                 if (config != null)
-                    return Request.CreateResponse(HttpStatusCode.OK, new PatchViewModel() { Success = true });
+                    return Request.CreateResponse(HttpStatusCode.OK, new PatchViewModel(config) { Success = true });
                 ModelState.AddModelError("", "Error saving config.");
             }
             return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ModelState);//TODO: Proper error response models
