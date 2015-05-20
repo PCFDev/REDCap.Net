@@ -239,3 +239,4 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+/src/PCF.REDCap.Web/.vs/config/applicationhost.config
