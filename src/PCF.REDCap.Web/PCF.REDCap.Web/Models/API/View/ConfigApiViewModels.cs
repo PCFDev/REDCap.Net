@@ -5,13 +5,11 @@ using PCF.REDCap.Web.Data.API.DB;
 
 namespace PCF.REDCap.Web.Models.API.View.Config
 {
-    public class DeleteViewModel : BaseViewModel
-    {
-    }
+    #region Base Models
 
-    public class GetIdViewModel : BaseViewModel
+    public class BaseConfigViewModel : BaseViewModel
     {
-        public GetIdViewModel(IConfig config)
+        public BaseConfigViewModel(IConfig config)
         {
             Id = config.Id;
             Name = config.Name;
@@ -25,6 +23,20 @@ namespace PCF.REDCap.Web.Models.API.View.Config
         public string Key { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
+    }
+
+    #endregion Base Models
+
+    public class DeleteViewModel : BaseViewModel
+    {
+    }
+
+    public class GetIdViewModel : BaseConfigViewModel
+    {
+        public GetIdViewModel(IConfig config)
+            : base(config)
+        {
+        }
     }
 
     public class GetViewModel : BaseViewModel
@@ -55,17 +67,27 @@ namespace PCF.REDCap.Web.Models.API.View.Config
         }
     }
 
-    public class PatchViewModel : BaseViewModel
+    public class PatchViewModel : BaseConfigViewModel
     {
+        public PatchViewModel(IConfig config)
+            : base(config)
+        {
+        }
     }
 
-    public class PostViewModel : BaseViewModel
+    public class PostViewModel : BaseConfigViewModel
     {
         public PostViewModel(IConfig config)
+            : base(config)
         {
-            Id = config.Id;
         }
+    }
 
-        public int Id { get; set; }
+    public class PutViewModel : BaseConfigViewModel
+    {
+        public PutViewModel(IConfig config)
+            : base(config)
+        {
+        }
     }
 }

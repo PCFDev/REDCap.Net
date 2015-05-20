@@ -10,6 +10,7 @@ namespace PCF.REDCap.Web.Data.DB
         public int Id { get; private set; }
         public bool Enabled { get; set; }
         public string Key { get; set; }
+        [Index("UQ_Name", IsUnique = true)]
         public string Name { get; set; }
         public string Url { get; set; }
 

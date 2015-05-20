@@ -11,6 +11,16 @@
             });
         });
     });
+    //$.ajaxSetup({
+    //    statusCode: {
+    //        201: function (data: any, textStatus: string, jqXHR: JQueryXHR): void {
+    //            var location = jqXHR.getResponseHeader('location');
+    //            if (location !== null) {
+    //                //Perform sub-request? Not sure this is possible, it would either need to be sync or have a way to replace the deferred object.
+    //            }
+    //        }
+    //    }
+    //});
     $.put = function (url, data, callback, type) {
         // Shift arguments if data argument was omitted
         if ($.isFunction(data)) {
