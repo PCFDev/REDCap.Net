@@ -10,6 +10,7 @@ using PCF.OdmXml;
 using PCF.REDCap;
 using System;
 using System.Linq;
+using System.Diagnostics;
 
 namespace PCF.REDCap
 {
@@ -34,7 +35,11 @@ namespace PCF.REDCap
             //odm.ReferenceData.Add(MapReferenceDataObject(study));
 
             // ClinicalData element
-            //odm.ClinicalData.Add(MapClinicalDataObject(study));
+
+            foreach (var odmStudy in odm.Study)
+            {
+                odm.ClinicalData.Add(MapClinicalDataObject(study, odmStudy));
+            }
 
             // Association element
             // -- no current mapping
@@ -45,6 +50,7 @@ namespace PCF.REDCap
             return odm;
         }
 
+   
         #region ADMINDATA element construction
         /// <summary>Creates the ODM AdminData object and flushes out its User object(s).</summary>
         /// <param name="study">The PCF REDCap model study to convert.</param>
@@ -430,6 +436,118 @@ namespace PCF.REDCap
             return codes;
         }
 
+        #endregion #region Clinical Data
+
+        #region ClinicalData element construction
+
+        private ODMcomplexTypeDefinitionClinicalData MapClinicalDataObject(Study study, ODMcomplexTypeDefinitionStudy odmStudy)
+        {
+
+            var clinicalData = new ODMcomplexTypeDefinitionClinicalData()
+            {
+                StudyOID = odmStudy.OID,
+                MetaDataVersionOID = odmStudy.MetaDataVersion.First().OID
+            };
+
+            foreach (var record in study.Records)
+            {
+
+                var currentItem = new
+                {
+                    record = record,
+                    studyEvent = study.Events.FirstOrDefault(e => e.UniqueEventName == record.EventName),
+                    field = study.Metadata.FirstOrDefault(m => m.FieldName == record.Concept)
+                };
+
+
+
+
+                if (currentItem.field != null && currentItem.studyEvent != null)
+                {
+
+
+                    var currentSubjectData = clinicalData.SubjectData.FirstOrDefault(s => s.SubjectKey == currentItem.record.PatientId);
+
+                    if (currentSubjectData == null)
+                    {
+
+                        currentSubjectData = new ODMcomplexTypeDefinitionSubjectData();
+
+                        currentSubjectData.SubjectKey = currentItem.record.PatientId;
+
+                        clinicalData.SubjectData.Add(currentSubjectData);
+                    }
+
+
+
+                    var studyEventOID = "SE." + currentItem.studyEvent.Arm.Name + ":" + currentItem.studyEvent.UniqueEventName;
+
+
+
+                    var currentStudyEventData = currentSubjectData.StudyEventData.FirstOrDefault(e => e.StudyEventOID == studyEventOID);
+
+                    if (currentStudyEventData == null)
+                    {
+                        currentStudyEventData = new ODMcomplexTypeDefinitionStudyEventData();
+                        currentStudyEventData.StudyEventOID = studyEventOID;
+                        currentSubjectData.StudyEventData.Add(currentStudyEventData);
+                    }
+
+
+
+                    var formOID = "FM." + currentItem.field.FormName;
+                    var currentFormData = currentStudyEventData.FormData.FirstOrDefault(f => f.FormOID == formOID);
+
+
+                    ODMcomplexTypeDefinitionItemGroupData currentItemGroupData = null;
+
+                    if (currentFormData == null)
+                    {
+                        currentFormData = new ODMcomplexTypeDefinitionFormData();
+                        currentFormData.FormOID = formOID;
+                        currentStudyEventData.FormData.Add(currentFormData);
+
+
+                        var itemGroupOID = "IG." + currentItem.field.FormName;
+                        currentItemGroupData = new ODMcomplexTypeDefinitionItemGroupData();
+                        currentItemGroupData.ItemGroupOID = itemGroupOID;
+                        currentFormData.ItemGroupData.Add(currentItemGroupData);
+                    }
+                    else
+                    {
+                        currentItemGroupData = currentFormData.ItemGroupData.First();
+                    }
+
+
+                    var itemOID = "IT." + currentItem.record.Concept; // field.name;
+
+                    //TODO: generate type specific items, so that metadata is not required to convert to i2b2 observations
+                    //			switch (ODMUtil.getItem(odmStudy, itemOID).getDataType()) {
+                    //			case FLOAT:
+                    //				ODMcomplexTypeDefinitionItemDataFloat itemData = new ODMcomplexTypeDefinitionItemDataFloat();
+                    //				currentItemGroupData.getItemDataStarGroup().add(itemData);
+                    //			}
+
+                    ODMcomplexTypeDefinitionItemData itemData = new ODMcomplexTypeDefinitionItemData();
+                    itemData.ItemOID = itemOID;
+                    itemData.Value = currentItem.record.ConceptValue;
+
+                    currentItemGroupData.Items.Add(itemData); //.getItemDataGroup().add(itemData);
+
+
+                }
+                else
+                {
+
+                    Debug.WriteLine("Missing Data:" + currentItem.record.Concept + " - " + currentItem.record.EventName);
+
+                }
+
+            }
+
+            return clinicalData;
+        }
+
         #endregion
 
         /*
@@ -451,22 +569,8 @@ namespace PCF.REDCap
             throw new NotImplementedException();
         }
 
-        //Stubs. Not Complete!
-        private ODMcomplexTypeDefinitionClinicalData MapClinicalDataObject(Study study)
-        {
-            ODMcomplexTypeDefinitionStudy odmStudy = new ODMcomplexTypeDefinitionStudy();
-
-            // GlobalVariables Element (required)
-            odmStudy.GlobalVariables = MapGlobalVariables(study);
-
-            // BasicDefinitions Element (optional)
-            // -- not porting, if even available
-
-            // MetaDataVersion Element (0 to many)
-            odmStudy.MetaDataVersion.AddRange(MapMetadataVersion(study));
-
-            throw new NotImplementedException();
-        }
+       
         */
+       
     }
 }

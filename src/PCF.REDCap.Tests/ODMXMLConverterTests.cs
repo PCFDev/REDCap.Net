@@ -6,6 +6,7 @@ using PCF.REDCap.i2b2Importer;
 using System.Threading.Tasks;
 using System.Linq;
 using PCF.OdmXml;
+using System.Diagnostics;
 
 namespace PCF.REDCap.Tests
 {
@@ -156,65 +157,33 @@ namespace PCF.REDCap.Tests
 
         }
 
+
+
         [TestMethod]
-        public async Task Convert_Records_To_ClinicalData()
+        public async Task Convert_Records_To_ClinicalData_TestCounts()
         {
-            //https://github.com/CTMM-TraIT/trait_odm_to_i2b2/blob/master/src/main/java/com/recomdata/redcap/odm/Redcap2ODM.java
             var study = await GetStudy();
 
-            var odm = new ODM();
+            var odm = await _converter.ConvertAsync(study);
+
+            var itemDataTest = from o in odm.ClinicalData
+                               from c in o.SubjectData
+                               from s in c.StudyEventData
+                               from f in s.FormData
+                               from i in f.ItemGroupData
+                               from d in i.Items
+                               select d;
+
+            var recordsWithFields = from r in study.Records
+                                    join m in study.Metadata on r.Concept equals m.FieldName
+                                    select r;
 
 
-
-            foreach (var item in study.Records)
-            {
-                var e = study.Events.FirstOrDefault(ev => ev.UniqueEventName == item.EventName);
-                var meta = study.Metadata.FirstOrDefault(m => m.FieldName == item.Concept);
-
-                var x = new
-                {
-                    subjectID = item.PatientId,
-                    armName = e.Arm.Name,
-                    eventName = e.UniqueEventName,
-                    formName = meta.FormName,
-                    name = item.Concept,
-                    value = item.ConceptValue
-
-                };
-
-                //Lines 336-398 in Redcap2ODM.java
-                
-
-                var clinicalData = new ODMcomplexTypeDefinitionClinicalData();
-
-                var subjectData = new ODMcomplexTypeDefinitionSubjectData();
-
-                var studyEventData = new ODMcomplexTypeDefinitionStudyEventData();
-
-                var formData = new ODMcomplexTypeDefinitionFormData();
-
-                var itemGroupData = new ODMcomplexTypeDefinitionItemGroupData();
+            Assert.AreEqual(recordsWithFields.Count(), itemDataTest.Count());
 
 
-                studyEventData.TransactionType = TransactionType.Upsert;
-
-                itemGroupData.Items.Add(new object());
-
-                formData.ItemGroupData.Add(itemGroupData);
-
-                studyEventData.FormData.Add(formData);
-
-                subjectData.StudyEventData.Add(studyEventData);
-
-                clinicalData.SubjectData.Add(subjectData);
-
-                odm.ClinicalData.Add(clinicalData);
-
-
-            }
 
         }
-
 
     }
 }
