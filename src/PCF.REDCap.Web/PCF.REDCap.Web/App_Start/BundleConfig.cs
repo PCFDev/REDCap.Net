@@ -14,6 +14,7 @@ namespace PCF.REDCap.Web
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/knockout-{version}.js",
                         "~/Scripts/nprogress.js",
+                        "~/Scripts/toastr.js",
                         "~/Scripts/respond.js",
                         "~/Scripts/jquery.serialize-object.js",
                         "~/Scripts/custom.js"));
@@ -29,7 +30,8 @@ namespace PCF.REDCap.Web
                         //.Include("~/Content/theme.css", cssTransform)
                         .Include("~/Content/bootswatch.css", cssTransform)
                         .Include("~/Content/OpenSans.css", cssTransform)
-                        .Include("~/Content/nprogress.css", cssTransform)
+                        .Include("~/Content/nprogress-custom.css", cssTransform)
+                        .Include("~/Content/toastr-custom.css", cssTransform)
                         .Include("~/Content/custom.css", cssTransform));
         }
     }

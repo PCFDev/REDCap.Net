@@ -245,8 +245,8 @@
     <Content Include="Content\fonts\OpenSans-Light.woff" />
     <Content Include="Content\fonts\OpenSans-Semibold.woff" />
     <Content Include="Content\fonts\OpenSans.woff" />
-    <Content Include="Content\nprogress.css.map">
-      <DependentUpon>nprogress.css</DependentUpon>
+    <Content Include="Content\nprogress-custom.css.map">
+      <DependentUpon>nprogress-custom.css</DependentUpon>
     </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
@@ -333,12 +333,12 @@
     <Content Include="Content\bootswatch.css.map">
       <DependentUpon>bootswatch.css</DependentUpon>
     </Content>
-    <None Include="Content\nprogress.less" />
-    <Content Include="Content\nprogress.css">
-      <DependentUpon>nprogress.less</DependentUpon>
+    <None Include="Content\nprogress-custom.less" />
+    <Content Include="Content\nprogress-custom.css">
+      <DependentUpon>nprogress-custom.less</DependentUpon>
     </Content>
-    <Content Include="Content\nprogress.min.css">
-      <DependentUpon>nprogress.css</DependentUpon>
+    <Content Include="Content\nprogress-custom.min.css">
+      <DependentUpon>nprogress-custom.css</DependentUpon>
     </Content>
     <Content Include="Content\OpenSans.css">
       <DependentUpon>OpenSans.less</DependentUpon>
@@ -356,16 +356,28 @@
     <Content Include="Content\theme.min.css">
       <DependentUpon>theme.css</DependentUpon>
     </Content>
+    <Content Include="Content\toastr-custom.css">
+      <DependentUpon>toastr-custom.less</DependentUpon>
+    </Content>
+    <Content Include="Content\toastr-custom.min.css">
+      <DependentUpon>toastr-custom.css</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
     <None Include="Content\custom.less" />
     <Content Include="App_Readme\NProgressjs_README.md" />
     <Content Include="App_Readme\NProgressjs_LICENSE" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="SecureConnections.config" />
     <Content Include="Content\theme.less" />
     <Content Include="Content\theme.css.map">
       <DependentUpon>theme.css</DependentUpon>
     </Content>
     <Content Include="Content\variables.less" />
+    <Content Include="Content\toastr-custom.less" />
+    <Content Include="Content\toastr-custom.css.map">
+      <DependentUpon>toastr-custom.css</DependentUpon>
+    </Content>
     <None Include="NWebsecConfig\HttpHeaderSecurityModuleConfig.xsd">
       <SubType>Designer</SubType>
     </None>
