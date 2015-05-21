@@ -515,7 +515,7 @@ namespace PCF.REDCap
                 }
                 else //should we attempt to inject missing metadata into odm object?
                 {
-                    Debug.WriteLine("Missing Data:" + currentItem.record.Concept + " - " + currentItem.record.EventName);
+                    Debug.WriteLine("Missing Data:" + record.Concept + " - " + record.EventName);
                 }
 
             }
