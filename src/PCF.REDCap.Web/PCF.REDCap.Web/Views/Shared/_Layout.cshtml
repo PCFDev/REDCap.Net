@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var authed = User != null && User.Identity != null && User.Identity.IsAuthenticated;
+}<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -8,8 +10,19 @@
     @Scripts.Render("~/bundles/modernizr.js")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
+            @if (authed)
+            {
+                <div class="_navbar-collapse _collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" id="logout">Logout</a></li>
+                    </ul>
+                    @*<span class="navbar-form navbar-right">
+                            <button type="button" class="btn btn-default" id="logout">Logout</button>
+                        </span>*@
+                </div>
+            }
         </div>
     </div>
     <div class="container body-content" id="body-content">

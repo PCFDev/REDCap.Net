@@ -226,6 +226,12 @@
     <Content Include="Content\bootstrap.min.css">
       <DependentUpon>bootstrap.css</DependentUpon>
     </Content>
+    <Content Include="Content\bootswatch.css">
+      <DependentUpon>bootswatch.less</DependentUpon>
+    </Content>
+    <Content Include="Content\bootswatch.min.css">
+      <DependentUpon>bootswatch.css</DependentUpon>
+    </Content>
     <Content Include="Content\custom.css">
       <DependentUpon>custom.less</DependentUpon>
     </Content>
@@ -323,6 +329,10 @@
     <Content Include="Content\custom.css.map">
       <DependentUpon>custom.css</DependentUpon>
     </Content>
+    <Content Include="Content\bootswatch.less" />
+    <Content Include="Content\bootswatch.css.map">
+      <DependentUpon>bootswatch.css</DependentUpon>
+    </Content>
     <None Include="Content\nprogress.less" />
     <Content Include="Content\nprogress.css">
       <DependentUpon>nprogress.less</DependentUpon>
@@ -355,9 +365,13 @@
     <Content Include="Content\theme.css.map">
       <DependentUpon>theme.css</DependentUpon>
     </Content>
+    <Content Include="Content\variables.less" />
     <None Include="NWebsecConfig\HttpHeaderSecurityModuleConfig.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Scripts\custom.min.js.map">
+      <DependentUpon>custom.min.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -379,6 +393,12 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <TypeScriptCompile Include="Scripts\custom.ts" />
+    <Content Include="Scripts\custom.js">
+      <DependentUpon>custom.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\custom.min.js">
+      <DependentUpon>custom.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
