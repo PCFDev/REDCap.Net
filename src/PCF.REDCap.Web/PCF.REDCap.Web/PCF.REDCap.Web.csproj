@@ -238,13 +238,13 @@
     <Content Include="Content\custom.min.css">
       <DependentUpon>custom.css</DependentUpon>
     </Content>
-    <Content Include="Content\fonts.css">
-      <DependentUpon>fonts.less</DependentUpon>
-    </Content>
-    <Content Include="Content\fonts.min.css">
-      <DependentUpon>fonts.css</DependentUpon>
-    </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\fonts\OpenSans-Bold.woff" />
+    <Content Include="Content\fonts\OpenSans-Extrabold.woff" />
+    <Content Include="Content\fonts\OpenSans-Italic.woff" />
+    <Content Include="Content\fonts\OpenSans-Light.woff" />
+    <Content Include="Content\fonts\OpenSans-Semibold.woff" />
+    <Content Include="Content\fonts\OpenSans.woff" />
     <Content Include="Content\nprogress.css.map">
       <DependentUpon>nprogress.css</DependentUpon>
     </Content>
@@ -340,6 +340,16 @@
     <Content Include="Content\nprogress.min.css">
       <DependentUpon>nprogress.css</DependentUpon>
     </Content>
+    <Content Include="Content\OpenSans.css">
+      <DependentUpon>OpenSans.less</DependentUpon>
+    </Content>
+    <Content Include="Content\OpenSans.css.map">
+      <DependentUpon>OpenSans.css</DependentUpon>
+    </Content>
+    <Content Include="Content\OpenSans.less" />
+    <Content Include="Content\OpenSans.min.css">
+      <DependentUpon>OpenSans.css</DependentUpon>
+    </Content>
     <Content Include="Content\theme.css">
       <DependentUpon>theme.less</DependentUpon>
     </Content>
@@ -348,16 +358,6 @@
     </Content>
     <Content Include="Global.asax" />
     <None Include="Content\custom.less" />
-    <Content Include="Content\fonts\OpenSans-Bold.woff" />
-    <Content Include="Content\fonts\OpenSans-Extrabold.woff" />
-    <Content Include="Content\fonts\OpenSans-Italic.woff" />
-    <Content Include="Content\fonts\OpenSans-Light.woff" />
-    <Content Include="Content\fonts\OpenSans-Semibold.woff" />
-    <Content Include="Content\fonts\OpenSans.woff" />
-    <Content Include="Content\fonts.less" />
-    <Content Include="Content\fonts.css.map">
-      <DependentUpon>fonts.css</DependentUpon>
-    </Content>
     <Content Include="App_Readme\NProgressjs_README.md" />
     <Content Include="App_Readme\NProgressjs_LICENSE" />
     <Content Include="SecureConnections.config" />
@@ -410,10 +410,9 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Config\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Shared\_LayoutAuthed.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup />

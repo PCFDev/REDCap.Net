@@ -28,7 +28,7 @@ namespace PCF.REDCap.Web
                         .Include("~/Content/bootstrap.css", cssTransform)
                         //.Include("~/Content/theme.css", cssTransform)
                         .Include("~/Content/bootswatch.css", cssTransform)
-                        .Include("~/Content/fonts.css", cssTransform)
+                        .Include("~/Content/OpenSans.css", cssTransform)
                         .Include("~/Content/nprogress.css", cssTransform)
                         .Include("~/Content/custom.css", cssTransform));
         }
