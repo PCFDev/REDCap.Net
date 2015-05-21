@@ -26,7 +26,8 @@ namespace PCF.REDCap.Web
             var cssTransform = new CssRewriteUrlTransformFixed();
             bundles.Add(new StyleBundle("~/bundles/combined.css")
                         .Include("~/Content/bootstrap.css", cssTransform)
-                        .Include("~/Content/theme.css", cssTransform)
+                        //.Include("~/Content/theme.css", cssTransform)
+                        .Include("~/Content/bootswatch.css", cssTransform)
                         .Include("~/Content/fonts.css", cssTransform)
                         .Include("~/Content/nprogress.css", cssTransform)
                         .Include("~/Content/custom.css", cssTransform));
