@@ -50,7 +50,7 @@ namespace PCF.REDCap
             return odm;
         }
 
-   
+
         #region ADMINDATA element construction
         /// <summary>Creates the ODM AdminData object and flushes out its User object(s).</summary>
         /// <param name="study">The PCF REDCap model study to convert.</param>
@@ -440,52 +440,42 @@ namespace PCF.REDCap
 
         #region CLINICALDATA element construction
 
+        /// <summary>
+        /// Creates the ClinicalData object for each study in odm
+        /// </summary>
+        /// <param name="study"></param>
+        /// <param name="odmStudy"></param>
+        /// <returns></returns>
         private ODMcomplexTypeDefinitionClinicalData MapClinicalDataObject(Study study, ODMcomplexTypeDefinitionStudy odmStudy)
         {
 
-            var clinicalData = new ODMcomplexTypeDefinitionClinicalData()
-            {
-                StudyOID = odmStudy.OID,
-                MetaDataVersionOID = odmStudy.MetaDataVersion.First().OID
-            };
+            var clinicalData = new ODMcomplexTypeDefinitionClinicalData();
+            clinicalData.StudyOID = odmStudy.OID;
+            clinicalData.MetaDataVersionOID = odmStudy.MetaDataVersion.First().OID;
 
+            //for each matching studyEvent and metadata record, create a new subjectData object to load
             foreach (var record in study.Records)
             {
+                var studyEvent = study.Events.FirstOrDefault(e => e.UniqueEventName == record.EventName);
+                var field = study.Metadata.FirstOrDefault(m => m.FieldName == record.Concept);
 
-                var currentItem = new
+                //field == null or studyEvent == null results in a bad subjectData object
+                if (field != null && studyEvent != null)
                 {
-                    record = record,
-                    studyEvent = study.Events.FirstOrDefault(e => e.UniqueEventName == record.EventName),
-                    field = study.Metadata.FirstOrDefault(m => m.FieldName == record.Concept)
-                };
-
-
-
-
-                if (currentItem.field != null && currentItem.studyEvent != null)
-                {
-
-
-                    var currentSubjectData = clinicalData.SubjectData.FirstOrDefault(s => s.SubjectKey == currentItem.record.PatientId);
+                    //check for an existing subjectData object for this patientId. If none, create new
+                    var currentSubjectData = clinicalData.SubjectData.FirstOrDefault(s => s.SubjectKey == record.PatientId);
 
                     if (currentSubjectData == null)
                     {
-
                         currentSubjectData = new ODMcomplexTypeDefinitionSubjectData();
-
-                        currentSubjectData.SubjectKey = currentItem.record.PatientId;
-
+                        currentSubjectData.SubjectKey = record.PatientId;
                         clinicalData.SubjectData.Add(currentSubjectData);
                     }
 
-
-
-                    var studyEventOID = "SE." + currentItem.studyEvent.Arm.Name + ":" + currentItem.studyEvent.UniqueEventName;
-
-
-
+                    var studyEventOID = "SE." + studyEvent.Arm.Name + ":" + studyEvent.UniqueEventName;
                     var currentStudyEventData = currentSubjectData.StudyEventData.FirstOrDefault(e => e.StudyEventOID == studyEventOID);
-
+                    
+                    //if currentStudyEventData is null, then this will be first studyEventData.
                     if (currentStudyEventData == null)
                     {
                         currentStudyEventData = new ODMcomplexTypeDefinitionStudyEventData();
@@ -493,12 +483,8 @@ namespace PCF.REDCap
                         currentSubjectData.StudyEventData.Add(currentStudyEventData);
                     }
 
-
-
-                    var formOID = "FM." + currentItem.field.FormName;
+                    var formOID = "FM." + field.FormName;
                     var currentFormData = currentStudyEventData.FormData.FirstOrDefault(f => f.FormOID == formOID);
-
-
                     ODMcomplexTypeDefinitionItemGroupData currentItemGroupData = null;
 
                     if (currentFormData == null)
@@ -507,8 +493,8 @@ namespace PCF.REDCap
                         currentFormData.FormOID = formOID;
                         currentStudyEventData.FormData.Add(currentFormData);
 
+                        var itemGroupOID = "IG." + field.FormName;
 
-                        var itemGroupOID = "IG." + currentItem.field.FormName;
                         currentItemGroupData = new ODMcomplexTypeDefinitionItemGroupData();
                         currentItemGroupData.ItemGroupOID = itemGroupOID;
                         currentFormData.ItemGroupData.Add(currentItemGroupData);
@@ -519,28 +505,17 @@ namespace PCF.REDCap
                     }
 
 
-                    var itemOID = "IT." + currentItem.record.Concept; // field.name;
-
-                    //TODO: generate type specific items, so that metadata is not required to convert to i2b2 observations
-                    //			switch (ODMUtil.getItem(odmStudy, itemOID).getDataType()) {
-                    //			case FLOAT:
-                    //				ODMcomplexTypeDefinitionItemDataFloat itemData = new ODMcomplexTypeDefinitionItemDataFloat();
-                    //				currentItemGroupData.getItemDataStarGroup().add(itemData);
-                    //			}
-
+                    var itemOID = "IT." + record.Concept;
                     ODMcomplexTypeDefinitionItemData itemData = new ODMcomplexTypeDefinitionItemData();
+
                     itemData.ItemOID = itemOID;
-                    itemData.Value = currentItem.record.ConceptValue;
+                    itemData.Value = record.ConceptValue;
 
-                    currentItemGroupData.Items.Add(itemData); //.getItemDataGroup().add(itemData);
-
-
+                    currentItemGroupData.Items.Add(itemData);
                 }
-                else
+                else //should we attempt to inject missing metadata into odm object?
                 {
-
                     Debug.WriteLine("Missing Data:" + currentItem.record.Concept + " - " + currentItem.record.EventName);
-
                 }
 
             }
