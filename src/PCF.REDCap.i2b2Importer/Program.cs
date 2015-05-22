@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ninject;
@@ -36,14 +37,9 @@ namespace PCF.REDCap.i2b2Importer
                     var study = new Study();
                     var odmStudy = new ODM();
 
-                    Console.WriteLine(study.StudyName);
-
-                    ////var importTask = 
-
                     Task.Run(async () =>
                     {
-                        //Study study = new Study() { StudyName = "Placeholder" };
-
+                        
                         Console.WriteLine(String.Format("Starting extraction of {0}", project.Name));
                         study = await client.GetStudyAsync(project);
 
@@ -70,11 +66,8 @@ namespace PCF.REDCap.i2b2Importer
                         }
                     });
 
-                    ////studyTasks.Add(importTask);
-                }
-
-
-                //Task.WaitAll(studyTasks.ToArray());
+                  
+                }                
 
             }
             catch (AggregateException aggEx)

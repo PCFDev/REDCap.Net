@@ -24,7 +24,7 @@ namespace PCF.REDCap
             var odm = new ODM();
 
             odm.ID = study.StudyName;
-            odm.SourceSystem = study.StudyName;
+            odm.SourceSystem = "REDCap";
 
             // Study element
             odm.Study.Add(MapStudyObject(study));
@@ -88,7 +88,7 @@ namespace PCF.REDCap
                 loopUser.LoginName = new ODMcomplexTypeDefinitionLoginName() { Value = user.UserName };
                 loopUser.DisplayName = new ODMcomplexTypeDefinitionDisplayName() { Value = user.FirstName };
                 loopUser.FullName = new ODMcomplexTypeDefinitionFullName() { Value = string.Format("{0} {1}", user.FirstName, user.LastName) };
-                loopUser.FirstName = new ODMcomplexTypeDefinitionFirstName() { Value = user.FirstName }; 
+                loopUser.FirstName = new ODMcomplexTypeDefinitionFirstName() { Value = user.FirstName };
                 loopUser.LastName = new ODMcomplexTypeDefinitionLastName() { Value = user.LastName };
                 // loopUser.Organization -- no current mapping
                 // loopuser.Address -- no current mapping
@@ -125,7 +125,9 @@ namespace PCF.REDCap
         /// <returns>An ODM Study object.</returns>
         private ODMcomplexTypeDefinitionStudy MapStudyObject(Study study)
         {
-            ODMcomplexTypeDefinitionStudy odmStudy = new ODMcomplexTypeDefinitionStudy();
+            var odmStudy = new ODMcomplexTypeDefinitionStudy();
+
+            odmStudy.OID = study.StudyName;
 
             // GlobalVariables Element (required)
             odmStudy.GlobalVariables = MapGlobalVariables(study);
@@ -144,7 +146,7 @@ namespace PCF.REDCap
         /// <returns>An ODM GlobalVariables object.</returns>
         private ODMcomplexTypeDefinitionGlobalVariables MapGlobalVariables(Study study)
         {
-            ODMcomplexTypeDefinitionGlobalVariables globes = new ODMcomplexTypeDefinitionGlobalVariables();
+            var globes = new ODMcomplexTypeDefinitionGlobalVariables();
 
             globes.StudyName.Value = study.StudyName;
             // globes.StudyDescription -- no current mapping
@@ -187,7 +189,7 @@ namespace PCF.REDCap
                 eventDef.Name = eventItem.Arm.Name + ":" + eventItem.EventName;
                 eventDef.OID = "SE." + eventItem.Arm.Name + ":" + eventItem.EventName;
 
-             
+
                 foreach (var formItem in eventItem.Instruments)
                 {
                     var formRef = new ODMcomplexTypeDefinitionFormRef();
@@ -213,7 +215,11 @@ namespace PCF.REDCap
                         groupRef.Mandatory = YesOrNo.No;
                     }
 
-                    form.ItemGroupRef.Add(groupRef);
+
+                    //HACK not sure why we need this trap...
+                    if(!form.ItemGroupRef.Any(g => g.ItemGroupOID == groupRef.ItemGroupOID))
+                        form.ItemGroupRef.Add(groupRef);
+
                     eventDef.FormRef.Add(formRef);
                 }
 
@@ -252,6 +258,17 @@ namespace PCF.REDCap
             foreach (var item in currentForms)
             {
                 ODMcomplexTypeDefinitionFormDef form = new ODMcomplexTypeDefinitionFormDef();
+
+                form.Description = new ODMcomplexTypeDefinitionDescription()
+                {
+                    TranslatedText = new List<ODMcomplexTypeDefinitionTranslatedText>(
+                        new ODMcomplexTypeDefinitionTranslatedText[]
+                        {
+                            new ODMcomplexTypeDefinitionTranslatedText() { Value = item.InstrumentLabel, lang ="en" }
+                        })
+                };
+
+
                 form.OID = "FM." + item.InstrumentName;
                 form.Name = item.InstrumentName;
                 form.Repeating = YesOrNo.No;
@@ -481,7 +498,7 @@ namespace PCF.REDCap
 
                     var studyEventOID = "SE." + studyEvent.Arm.Name + ":" + studyEvent.UniqueEventName;
                     var currentStudyEventData = currentSubjectData.StudyEventData.FirstOrDefault(e => e.StudyEventOID == studyEventOID);
-                    
+
                     //if currentStudyEventData is null, then this will be first studyEventData.
                     if (currentStudyEventData == null)
                     {
