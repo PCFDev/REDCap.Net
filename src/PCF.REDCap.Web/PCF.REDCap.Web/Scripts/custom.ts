@@ -39,7 +39,7 @@ interface IApp {
         $("#logout").on("click", function (e: JQueryEventObject): void {
             e.preventDefault();
 
-            $.post("/api/v1/account/logout")
+            App.Post("/api/v1/account/logout")
             .done(function (response: any): void {
                 if (response.Success) {
                     document.location.reload();

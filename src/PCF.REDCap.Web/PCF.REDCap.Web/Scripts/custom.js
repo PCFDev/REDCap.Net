@@ -11,7 +11,7 @@
     $(function () {
         $("#logout").on("click", function (e) {
             e.preventDefault();
-            $.post("/api/v1/account/logout").done(function (response) {
+            App.Post("/api/v1/account/logout").done(function (response) {
                 if (response.Success) {
                     document.location.reload();
                 }
