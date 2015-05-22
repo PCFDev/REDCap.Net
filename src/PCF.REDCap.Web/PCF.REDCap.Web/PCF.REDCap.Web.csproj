@@ -200,6 +200,7 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\ClaimAuthorizeAttribute.cs" />
+    <Compile Include="Attributes\ValidateAntiForgeryTokenHeaderAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\ConfigApiController.cs" />
     <Compile Include="Controllers\API\AccountApiController.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AntiForgeryHelpers.cs" />
     <Compile Include="Helpers\CssRewriteUrlTransformFixed.cs" />
     <Compile Include="Helpers\HttpRequestMessageHelpers.cs" />
     <Compile Include="Models\API\Input\ConfigApiInputModels.cs" />
