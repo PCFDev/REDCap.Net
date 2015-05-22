@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ninject;
 using Ninject.Extensions.Xml;
 using PCF.OdmXml.i2b2Importer;
+using PCF.OdmXml;
 
 namespace PCF.REDCap.i2b2Importer
 {
@@ -31,24 +32,49 @@ namespace PCF.REDCap.i2b2Importer
 
                 foreach (var project in projects)
                 {
-                    var importTask = Task.Run(async () =>
+
+                    var study = new Study();
+                    var odmStudy = new ODM();
+
+                    Console.WriteLine(study.StudyName);
+
+                    ////var importTask = 
+
+                    Task.Run(async () =>
                     {
+                        //Study study = new Study() { StudyName = "Placeholder" };
+
                         Console.WriteLine(String.Format("Starting extraction of {0}", project.Name));
-                        var study = await client.GetStudyAsync(project);
+                        study = await client.GetStudyAsync(project);
 
                         Console.WriteLine(String.Format("Starting conversion of {0}", project.Name));
-                        var odmStudy = await converter.ConvertAsync(study);
+                        odmStudy = await converter.ConvertAsync(study);
 
-                        Console.WriteLine(String.Format("Starting import of {0}", project.Name));                        
+                        Console.WriteLine(String.Format("Starting import of {0}", project.Name));
                         await importer.ImportAsync(odmStudy, new Dictionary<string, string>());
+                        Console.WriteLine(String.Format("Import of {0} completed", project.Name));
 
+                    })
+                    .ContinueWith(t =>
+                    {
+                        var aggEx = t.Exception;
+
+                        if (aggEx != null)
+                        {
+                            Console.WriteLine(aggEx.Flatten().Message);
+                            foreach (var ex in aggEx.InnerExceptions)
+                            {
+                                Console.WriteLine(ex.Message);
+                                Console.WriteLine(ex.StackTrace);
+                            }
+                        }
                     });
 
-                    studyTasks.Add(importTask);
+                    ////studyTasks.Add(importTask);
                 }
 
 
-                Task.WaitAll(studyTasks.ToArray());
+                //Task.WaitAll(studyTasks.ToArray());
 
             }
             catch (AggregateException aggEx)

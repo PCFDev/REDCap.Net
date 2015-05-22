@@ -8,7 +8,7 @@
         to="PCF.REDCap.OdmXmlConverter, PCF.REDCap" />
 
   <bind service=" PCF.OdmXml.i2b2Importer.IOdmImporter, PCF.OdmXml"
-        to="PCF.OdmXml.i2b2Importer.i2b2OdmImporter, PCF.OdmXml.i2b2Importer" />
+        to="PCF.OdmXml.i2b2Importer.I2b2OdmImporter, PCF.OdmXml.i2b2Importer" />
   
   
   <!-- TESTING  -->
