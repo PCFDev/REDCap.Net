@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Owin;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using PCF.REDCap.Web.Attributes;
 
 namespace PCF.REDCap.Web.Controllers.API
 {
@@ -24,7 +25,7 @@ namespace PCF.REDCap.Web.Controllers.API
             }
         }
 
-        [HttpPost]//, ValidateAntiForgeryHeader]
+        [HttpPost, ValidateAntiForgeryHeader]
         public HttpResponseMessage Logout()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using PCF.REDCap.Web.Helpers;
 
 namespace PCF.REDCap.Web.Controllers
 {
@@ -51,6 +53,25 @@ namespace PCF.REDCap.Web.Controllers
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Login");
+        }
+
+        [AllowAnonymous, HttpGet]
+        public ContentResult Token()
+        {
+            //We never want this cached, this may be overkill.
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.AppendCacheExtension("no-store, must-revalidate");
+            Response.AppendHeader("Expires", "-1");
+            Response.AppendHeader("Pragma", "no-cache");
+
+            var frameOptions = Response.Headers.Get("X-Frame-Options");
+            if (frameOptions == null || !frameOptions.Equals("SameOrigin", StringComparison.OrdinalIgnoreCase))
+                Response.Headers["X-Frame-Options"] = "SameOrigin";//Make sure it is set to SameOrigin.
+
+            var tokens = AntiForgeryHelpers.GetVerificationTokenContent(Request.Cookies);
+            if (tokens.Item1 != default(HttpCookie))
+                Response.SetCookie(tokens.Item1);
+            return Content(tokens.Item2, "text/html", Encoding.UTF8);
         }
     }
 }

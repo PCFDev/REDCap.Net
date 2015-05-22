@@ -92,7 +92,7 @@
             var self = this;
 
             self.act_Submit = function (form) {
-                $.post('api/v1/configs', $(form).serializeObject())//Get form data, ko model?
+                App.Post('api/v1/configs', $(form).serializeObject())//Get form data, ko model?
                 .done(function (response) {
                     self.ob_Configs.push(response);
                     $('#modal-add').modal('hide');
@@ -107,7 +107,7 @@
 
                     config.Toggle = function () {
                         var toggle = !config.ob_Enabled();
-                        $.patch('api/v1/configs/' + config.Id, { Enabled: toggle })
+                        App.Patch('api/v1/configs/' + config.Id, { Enabled: toggle })
                         .done(function () {
                             config.ob_Enabled(toggle);
                         });
@@ -119,7 +119,7 @@
 
                     config.Delete = function () {
                         if (confirm('Are you sure you want to delete this configuration?')) {
-                            $.delete('api/v1/configs/' + config.Id)
+                            App.Delete('api/v1/configs/' + config.Id)
                             .done(function () {
                                 self.ob_Configs.remove(config);
                             });
@@ -137,7 +137,7 @@
                 $(this).find('form')[0].reset();
             });
 
-            $.get('api/v1/configs')
+            App.Get('api/v1/configs')
             .done(function (response) {
                 ko.applyBindings(ViewModel(response), $('#body-content')[0]);
                 $('[data-toggle="tooltip"]').tooltip();

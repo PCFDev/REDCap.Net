@@ -17,6 +17,12 @@ namespace PCF.REDCap.Web
         private static void RegisterAccountRoutes(RouteCollection routes)
         {
             routes.MapRoute(
+                name: "Account/Token",
+                url: "token",
+                defaults: new { controller = "Account", action = "Token" }
+            );
+            
+            routes.MapRoute(
                 name: "Account/Login",
                 url: "login",
                 defaults: new { controller = "Account", action = "Login" }
