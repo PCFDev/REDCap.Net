@@ -24,6 +24,7 @@ namespace PCF.REDCap
             var odm = new ODM();
 
             odm.ID = study.StudyName;
+            odm.SourceSystem = study.StudyName;
 
             // Study element
             odm.Study.Add(MapStudyObject(study));
@@ -84,11 +85,11 @@ namespace PCF.REDCap
                         break;
                 }
 
-                loopUser.LoginName.Value = user.UserName;
-                loopUser.DisplayName.Value = user.FirstName;
-                loopUser.FullName.Value = string.Format("{0} {1}", user.FirstName, user.LastName);
-                loopUser.FirstName.Value = user.FirstName;
-                loopUser.LastName.Value = user.LastName;
+                loopUser.LoginName = new ODMcomplexTypeDefinitionLoginName() { Value = user.UserName };
+                loopUser.DisplayName = new ODMcomplexTypeDefinitionDisplayName() { Value = user.FirstName };
+                loopUser.FullName = new ODMcomplexTypeDefinitionFullName() { Value = string.Format("{0} {1}", user.FirstName, user.LastName) };
+                loopUser.FirstName = new ODMcomplexTypeDefinitionFirstName() { Value = user.FirstName }; 
+                loopUser.LastName = new ODMcomplexTypeDefinitionLastName() { Value = user.LastName };
                 // loopUser.Organization -- no current mapping
                 // loopuser.Address -- no current mapping
                 if (!string.IsNullOrEmpty(user.Email))
@@ -159,6 +160,7 @@ namespace PCF.REDCap
         {
             List<ODMcomplexTypeDefinitionMetaDataVersion> metas = new List<ODMcomplexTypeDefinitionMetaDataVersion>();
             ODMcomplexTypeDefinitionMetaDataVersion meta = new ODMcomplexTypeDefinitionMetaDataVersion();
+            meta.Protocol = new ODMcomplexTypeDefinitionProtocol();
 
             //Creating lists of formDefs, itemDefs, codeLists and itemGroupDefs to be loaded.
             List<ODMcomplexTypeDefinitionFormDef> forms = new List<ODMcomplexTypeDefinitionFormDef>();
@@ -172,7 +174,6 @@ namespace PCF.REDCap
             groups = GetItemGroups(study);
             codeLists = GetCodeList(study);
             itemDefs = GetItemDefs(study, groups, codeLists);
-
             // Include Element (optional)
             // --not porting
 
@@ -186,6 +187,7 @@ namespace PCF.REDCap
                 eventDef.Name = eventItem.Arm.Name + ":" + eventItem.EventName;
                 eventDef.OID = "SE." + eventItem.Arm.Name + ":" + eventItem.EventName;
 
+             
                 foreach (var formItem in eventItem.Instruments)
                 {
                     var formRef = new ODMcomplexTypeDefinitionFormRef();
@@ -307,7 +309,12 @@ namespace PCF.REDCap
 
                 //Loading codeListRef. If no codelist is generated (i.e. item has no list), codeListRef is set to null.
                 var codeList = codeLists.FirstOrDefault(e => e.Name == item.FieldName);
-                itemDef.CodeListRef.CodeListOID = (codeList != null) ? codeList.OID : null;
+
+                if (codeList != null)
+                {
+                    itemDef.CodeListRef = new ODMcomplexTypeDefinitionCodeListRef();
+                    itemDef.CodeListRef.CodeListOID = codeList.OID;
+                }
 
                 translatedText.lang = "en";
                 translatedText.Value = item.FieldLabel;
