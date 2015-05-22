@@ -238,15 +238,15 @@
     <Content Include="Content\custom.min.css">
       <DependentUpon>custom.css</DependentUpon>
     </Content>
-    <Content Include="Content\fonts.css">
-      <DependentUpon>fonts.less</DependentUpon>
-    </Content>
-    <Content Include="Content\fonts.min.css">
-      <DependentUpon>fonts.css</DependentUpon>
-    </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\nprogress.css.map">
-      <DependentUpon>nprogress.css</DependentUpon>
+    <Content Include="Content\fonts\OpenSans-Bold.woff" />
+    <Content Include="Content\fonts\OpenSans-Extrabold.woff" />
+    <Content Include="Content\fonts\OpenSans-Italic.woff" />
+    <Content Include="Content\fonts\OpenSans-Light.woff" />
+    <Content Include="Content\fonts\OpenSans-Semibold.woff" />
+    <Content Include="Content\fonts\OpenSans.woff" />
+    <Content Include="Content\nprogress-custom.css.map">
+      <DependentUpon>nprogress-custom.css</DependentUpon>
     </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
@@ -333,12 +333,22 @@
     <Content Include="Content\bootswatch.css.map">
       <DependentUpon>bootswatch.css</DependentUpon>
     </Content>
-    <None Include="Content\nprogress.less" />
-    <Content Include="Content\nprogress.css">
-      <DependentUpon>nprogress.less</DependentUpon>
+    <None Include="Content\nprogress-custom.less" />
+    <Content Include="Content\nprogress-custom.css">
+      <DependentUpon>nprogress-custom.less</DependentUpon>
     </Content>
-    <Content Include="Content\nprogress.min.css">
-      <DependentUpon>nprogress.css</DependentUpon>
+    <Content Include="Content\nprogress-custom.min.css">
+      <DependentUpon>nprogress-custom.css</DependentUpon>
+    </Content>
+    <Content Include="Content\OpenSans.css">
+      <DependentUpon>OpenSans.less</DependentUpon>
+    </Content>
+    <Content Include="Content\OpenSans.css.map">
+      <DependentUpon>OpenSans.css</DependentUpon>
+    </Content>
+    <Content Include="Content\OpenSans.less" />
+    <Content Include="Content\OpenSans.min.css">
+      <DependentUpon>OpenSans.css</DependentUpon>
     </Content>
     <Content Include="Content\theme.css">
       <DependentUpon>theme.less</DependentUpon>
@@ -346,26 +356,28 @@
     <Content Include="Content\theme.min.css">
       <DependentUpon>theme.css</DependentUpon>
     </Content>
+    <Content Include="Content\toastr-custom.css">
+      <DependentUpon>toastr-custom.less</DependentUpon>
+    </Content>
+    <Content Include="Content\toastr-custom.min.css">
+      <DependentUpon>toastr-custom.css</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
     <None Include="Content\custom.less" />
-    <Content Include="Content\fonts\OpenSans-Bold.woff" />
-    <Content Include="Content\fonts\OpenSans-Extrabold.woff" />
-    <Content Include="Content\fonts\OpenSans-Italic.woff" />
-    <Content Include="Content\fonts\OpenSans-Light.woff" />
-    <Content Include="Content\fonts\OpenSans-Semibold.woff" />
-    <Content Include="Content\fonts\OpenSans.woff" />
-    <Content Include="Content\fonts.less" />
-    <Content Include="Content\fonts.css.map">
-      <DependentUpon>fonts.css</DependentUpon>
-    </Content>
     <Content Include="App_Readme\NProgressjs_README.md" />
     <Content Include="App_Readme\NProgressjs_LICENSE" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="SecureConnections.config" />
     <Content Include="Content\theme.less" />
     <Content Include="Content\theme.css.map">
       <DependentUpon>theme.css</DependentUpon>
     </Content>
     <Content Include="Content\variables.less" />
+    <Content Include="Content\toastr-custom.less" />
+    <Content Include="Content\toastr-custom.css.map">
+      <DependentUpon>toastr-custom.css</DependentUpon>
+    </Content>
     <None Include="NWebsecConfig\HttpHeaderSecurityModuleConfig.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -410,10 +422,9 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Config\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Shared\_LayoutAuthed.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup />

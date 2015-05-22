@@ -1,4 +1,6 @@
-﻿body {
+﻿@import "variables.less";
+
+body {
     //font-family: 'Open Sans', Helvetica, Arial, sans-serif;
     padding-top: 50px;
     padding-bottom: 20px;
@@ -8,6 +10,10 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.glyphicon {
+    top: 2px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -22,7 +28,7 @@ th.text-fit {
 }
 
 .text-mono {
-    font-family: "Courier New", Courier, monospace;
+    font-family: @font-family-monospace;
 }
 
 @media (max-width: 767px)
