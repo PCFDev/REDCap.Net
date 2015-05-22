@@ -30,8 +30,10 @@ namespace PCF.REDCap.Web.Controllers
             if (loginInfo == null || loginInfo.ExternalIdentity == null || !loginInfo.ExternalIdentity.IsAuthenticated)
                 return RedirectToAction("Login");
 
+            var claims = loginInfo.ExternalIdentity.Claims.Where(_ => _.Type != ClaimTypes.GroupSid || _.Value == "S-1-5-21-620581126-1294811165-624655392-31026");
+
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-            AuthenticationManager.SignIn(new ClaimsIdentity(loginInfo.ExternalIdentity.Claims, DefaultAuthenticationTypes.ApplicationCookie));
+            AuthenticationManager.SignIn(new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie));
 
             var redirectUrl = Url.IsLocalUrl(returnUrl) ? returnUrl : "/";
             return Redirect(redirectUrl);
