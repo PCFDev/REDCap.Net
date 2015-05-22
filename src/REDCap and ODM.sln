@@ -1,0 +1,71 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{61D4BF50-4230-4C2B-A320-0E0B7ED69793}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CA9F3140-F252-4C74-850F-361A224EBD97}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		..\docs\MainCodeMap.dgml = ..\docs\MainCodeMap.dgml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap", "PCF.REDCap\PCF.REDCap.csproj", "{23587CF1-9F19-4100-9758-2C923E48C305}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.i2b2Importer", "PCF.REDCap.i2b2Importer\PCF.REDCap.i2b2Importer.csproj", "{0B8153D8-C87C-49F3-9A66-761BB90A64BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.Tests", "PCF.REDCap.Tests\PCF.REDCap.Tests.csproj", "{AECEE594-D68E-4872-891A-9196F4297C9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.REDCap.i2b2Importer.Mock", "PCF.REDCap.i2b2Importer.Mock\PCF.REDCap.i2b2Importer.Mock.csproj", "{268F3BA3-7A0C-47C9-84E2-025F11DBB8C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.OdmXml", "..\..\..\..\..\..\Code\Repos\OdmXml.Net\PCF.OdmXml\PCF.OdmXml.csproj", "{58921975-3409-45CE-AC73-F09CA961B74D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.OdmXml.i2b2Importer.Data", "..\..\..\..\..\..\Code\Repos\OdmXml.Net\PCF.OdmXml.i2b2Importer.Data\PCF.OdmXml.i2b2Importer.Data.csproj", "{F402A878-8ECE-4695-A4E5-B6E2D8468BB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCF.OdmXml.i2b2Importer", "..\..\..\..\..\..\Code\Repos\OdmXml.Net\PCF.OdmXml.i2b2Importer\PCF.OdmXml.i2b2Importer.csproj", "{211EB8F1-79D9-43E8-B373-3E15FE56B77E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{23587CF1-9F19-4100-9758-2C923E48C305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23587CF1-9F19-4100-9758-2C923E48C305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23587CF1-9F19-4100-9758-2C923E48C305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23587CF1-9F19-4100-9758-2C923E48C305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B8153D8-C87C-49F3-9A66-761BB90A64BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B8153D8-C87C-49F3-9A66-761BB90A64BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B8153D8-C87C-49F3-9A66-761BB90A64BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B8153D8-C87C-49F3-9A66-761BB90A64BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AECEE594-D68E-4872-891A-9196F4297C9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AECEE594-D68E-4872-891A-9196F4297C9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AECEE594-D68E-4872-891A-9196F4297C9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AECEE594-D68E-4872-891A-9196F4297C9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{268F3BA3-7A0C-47C9-84E2-025F11DBB8C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{268F3BA3-7A0C-47C9-84E2-025F11DBB8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{268F3BA3-7A0C-47C9-84E2-025F11DBB8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{268F3BA3-7A0C-47C9-84E2-025F11DBB8C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58921975-3409-45CE-AC73-F09CA961B74D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58921975-3409-45CE-AC73-F09CA961B74D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58921975-3409-45CE-AC73-F09CA961B74D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58921975-3409-45CE-AC73-F09CA961B74D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F402A878-8ECE-4695-A4E5-B6E2D8468BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F402A878-8ECE-4695-A4E5-B6E2D8468BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F402A878-8ECE-4695-A4E5-B6E2D8468BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F402A878-8ECE-4695-A4E5-B6E2D8468BB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{211EB8F1-79D9-43E8-B373-3E15FE56B77E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{211EB8F1-79D9-43E8-B373-3E15FE56B77E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{211EB8F1-79D9-43E8-B373-3E15FE56B77E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{211EB8F1-79D9-43E8-B373-3E15FE56B77E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -68,17 +68,6 @@
       <HintPath>..\packages\Ninject.Extensions.Xml.3.2.0.0\lib\net45-full\Ninject.Extensions.Xml.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PCF.OdmXml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\PCF.OdmXml.dll</HintPath>
-    </Reference>
-    <Reference Include="PCF.OdmXml.i2b2Importer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\PCF.OdmXml.i2b2Importer.dll</HintPath>
-    </Reference>
-    <Reference Include="PCF.OdmXml.i2b2Importer.Data">
-      <HintPath>..\..\lib\PCF.OdmXml.i2b2Importer.Data.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -113,6 +102,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\Code\Repos\OdmXml.Net\PCF.OdmXml.i2b2Importer.Data\PCF.OdmXml.i2b2Importer.Data.csproj">
+      <Project>{f402a878-8ece-4695-a4e5-b6e2d8468bb8}</Project>
+      <Name>PCF.OdmXml.i2b2Importer.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\..\Code\Repos\OdmXml.Net\PCF.OdmXml.i2b2Importer\PCF.OdmXml.i2b2Importer.csproj">
+      <Project>{211eb8f1-79d9-43e8-b373-3e15fe56b77e}</Project>
+      <Name>PCF.OdmXml.i2b2Importer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\..\Code\Repos\OdmXml.Net\PCF.OdmXml\PCF.OdmXml.csproj">
+      <Project>{58921975-3409-45ce-ac73-f09ca961b74d}</Project>
+      <Name>PCF.OdmXml</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PCF.REDCap.i2b2Importer.Mock\PCF.REDCap.i2b2Importer.Mock.csproj">
       <Project>{268f3ba3-7a0c-47c9-84e2-025f11dbb8c0}</Project>
       <Name>PCF.REDCap.i2b2Importer.Mock</Name>
