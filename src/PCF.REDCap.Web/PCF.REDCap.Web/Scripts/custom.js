@@ -1,4 +1,9 @@
+/* tslint:disable:max-line-length */
+/* tslint:disable:comment-format */
 /// <reference path="typings/jquery/jquery.d.ts" />
+/// <reference path="typings/bootstrap/bootstrap.d.ts" />
+/// <reference path="typings/nprogress/NProgress.d.ts" />
+/// <reference path="typings/toastr/toastr.d.ts" />
 ;
 ;
 (function (window, $, NProgress, toastr) {
@@ -13,33 +18,34 @@
             });
         });
     });
-    //App.Object = function () {
+    //#region Misc
+    //App.Object = function (): any {
     //    return $.isFunction(Object.create)
     //        ? Object.create(null)
     //        : {};
     //};
     App.Nonce = function () {
+        /* tslint:disable:no-bitwise */
         return parseInt(new Date().getTime().toString() + ((Math.random() * 1e5) | 0), 10).toString(36);
+        /* tslint:enable:no-bitwise */
     };
-    //$.ajaxSetup({
-    //    statusCode: {
-    //        201: function (data: any, textStatus: string, jqXHR: JQueryXHR): void {
-    //            var location = jqXHR.getResponseHeader("location");
-    //            if (location !== null) {
-    //                //Perform sub-request? Not sure this is possible, it would either need to be sync or have a way to replace the deferred object.
-    //            }
-    //        }
-    //    }
-    //});
+    //#endregion Misc
     //#region Error Handlers
-    var handle401 = function (jqXHR, messageHandler) {
+    function handle201(data, textStatus, jqXHR) {
+        //TODO: Can we fetch the sub-location if there is one?
+        //var location: string = jqXHR.getResponseHeader("location");
+        //if (location !== null) {
+        //    //Perform sub-request? Not sure this is possible, it would either need to be sync or have a way to replace the deferred object.
+        //}
+    }
+    function handle401(jqXHR, messageHandler) {
         if ($.isFunction(messageHandler)) {
             var response = jqXHR.responseJSON || {};
             var message = response.Message || "An unknown authorization error has occured.";
             messageHandler(message);
         }
-    };
-    var handle400 = function (jqXHR, errorThrown, messageHandler) {
+    }
+    function handle400(jqXHR, errorThrown, messageHandler) {
         if ($.isFunction(messageHandler)) {
             var response = jqXHR.responseJSON || {};
             var state = response.ModelState || {};
@@ -52,9 +58,11 @@
             var message = errors.join("<br>") || errorThrown;
             messageHandler(message);
         }
-    };
-    var handle404 = handle400;
-    var handle500 = function (jqXHR, messageHandler) {
+    }
+    function handle404(jqXHR, errorThrown, messageHandler) {
+        handle400(jqXHR, errorThrown, messageHandler);
+    }
+    function handle500(jqXHR, messageHandler) {
         if ($.isFunction(messageHandler)) {
             var response = jqXHR.responseJSON || {};
             var message = response.Message || "An unknown error has occured.";
@@ -65,11 +73,11 @@
                 messageHandler(message);
             }
         }
-    };
+    }
     //#endregion Error Handlers
     //#region Ajax Handlers
     var tokenCache = {};
-    var getToken = function (url, selector, timeout) {
+    function getToken(url, selector, timeout) {
         var promise = tokenCache[url];
         if (promise) {
             return promise;
@@ -81,7 +89,7 @@
         if ($.active++ === 0) {
             $.event.trigger("ajaxStart");
         }
-        var $iframe = $('<iframe src="' + src + '" style="height: 0; width: 0; border: 0; padding: 0; margin: 0; position: absolute; top: 0; left: 0;">').on("load", function () {
+        var $iframe = $("<iframe src='" + src + "' style='height: 0; width: 0; border: 0; padding: 0; margin: 0; position: absolute; top: 0; left: 0;'>").on("load", function () {
             var token = $(this).contents().find(input).val();
             if (token) {
                 dfd.resolve(token);
@@ -106,8 +114,9 @@
             }
         });
         return promise;
-    };
-    var getTokenMethod = function (verb) {
+    }
+    ;
+    function getTokenMethod(verb) {
         return function (url, data, settings) {
             var dfd = $.Deferred();
             getToken("/token").always(function (token) {
@@ -120,7 +129,8 @@
             });
             return dfd.promise();
         };
-    };
+    }
+    ;
     App.Ajax = function (url, settings) {
         var defaults = {
             type: "POST",
@@ -128,8 +138,7 @@
             dataType: "json",
             messageHandler: toastr.error,
             statusCode: {
-                201: function (jqXHR, textStatus, errorThrown) {
-                },
+                201: handle201,
                 400: function (jqXHR, textStatus, errorThrown) {
                     handle400(jqXHR, errorThrown, this.messageHandler);
                 },
@@ -141,8 +150,8 @@
                 },
                 500: function (jqXHR, textStatus, errorThrown) {
                     handle500(jqXHR, this.messageHandler);
-                },
-            },
+                }
+            }
         };
         var opts = $.extend({}, defaults, settings);
         return $.ajax(url, opts);
@@ -157,10 +166,10 @@
     App.Put = getTokenMethod("PUT");
     //#endregion Ajax Handlers
     $(document).ajaxStart(function () {
-        $('html').addClass('busy');
+        $("html").addClass("busy");
         NProgress.start();
     }).ajaxStop(function () {
-        $('html').removeClass('busy');
+        $("html").removeClass("busy");
         NProgress.done();
     });
     window.App = App;
