@@ -86,7 +86,7 @@ interface IApp {
             "<td class=\"break-block text-mono\" data-bind=\"text: Key\"></td>" +
             "<td class=\"break-inline\"><button type=\"button\" class=\"btn btn-xs btn-block\" data-bind=\"click: Toggle, css: ob_Enabled() ? 'btn-success' : 'btn-danger', text: ob_Enabled() ? 'enabled' : 'disabled'\"></button></td>" +
             "<td class=\"break-block text-nowrap\">" +
-                //"<button type=\"button\" class=\"btn btn-xs btn-warning\" title=\"Edit\" data-toggle=\"tooltip\" data-placement=\"left\" data-bind=\"click: Edit\"><span class="glyphicon glyphicon-edit"></span></button>" +
+                //"<button type=\"button\" class=\"btn btn-xs btn-warning\" title=\"Edit\" data-toggle=\"tooltip\" data-placement=\"left\" data-bind=\"click: Edit\"><span class=\"glyphicon glyphicon-edit\"></span></button>" +
                 "<button type=\"button\" class=\"btn btn-xs btn-danger\" title=\"Delete\" data-toggle=\"tooltip\" data-placement=\"right\" data-bind=\"click: Delete\"><span class=\"glyphicon glyphicon-remove\"></span></button>" +
             "</td>" +
         "</tr>";
