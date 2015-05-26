@@ -18,6 +18,7 @@ namespace PCF.REDCap.Web.App_Start
                 CookieName = "Session",
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 //LoginPath = new PathString("/login"),
+                ExpireTimeSpan = TimeSpan.FromHours(1),
                 Provider = new CookieAuthenticationProvider
                 {
                     //TODO: Can we somehow access the domains from options or generate this from options instead of needing the list in both places?
