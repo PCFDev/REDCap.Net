@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -44,18 +45,24 @@ namespace PCF.REDCap.Web.Attributes
                 actionContext.ModelState.AddModelError(String.Empty, String.Format(CookieNotPresentMessage, CookieName));
             else
             {
-                var headerToken = headers.GetValues(HeaderName).FirstOrDefault();
-                if (String.IsNullOrWhiteSpace(headerToken))
+                IEnumerable<string> values;
+                if (!headers.TryGetValues(HeaderName, out values))
                     actionContext.ModelState.AddModelError(String.Empty, String.Format(HeaderNotPresentMessage, HeaderName));
                 else
                 {
-                    try
+                    var headerToken = values.FirstOrDefault();
+                    if (String.IsNullOrWhiteSpace(headerToken))
+                        actionContext.ModelState.AddModelError(String.Empty, String.Format(HeaderNotPresentMessage, HeaderName));
+                    else
                     {
-                        AntiForgery.Validate(cookieToken, headerToken);//How many times can a token be re-used? Is there any sort of mechanism to prevent re-use?
-                    }
-                    catch (System.Web.Mvc.HttpAntiForgeryException)
-                    {
-                        actionContext.ModelState.AddModelError(String.Empty, String.Format(NotValidMessage, HeaderName));
+                        try
+                        {
+                            AntiForgery.Validate(cookieToken, headerToken);//How many times can a token be re-used? Is there any sort of mechanism to prevent re-use?
+                        }
+                        catch (System.Web.Mvc.HttpAntiForgeryException)
+                        {
+                            actionContext.ModelState.AddModelError(String.Empty, String.Format(NotValidMessage, HeaderName));
+                        }
                     }
                 }
             }
