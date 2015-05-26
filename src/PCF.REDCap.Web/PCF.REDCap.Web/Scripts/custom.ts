@@ -152,7 +152,7 @@ interface IApp {
 
     App.Modal = <IModal>function (template: string, settings?: any): JQuery {
         var html = ko.templates[template];
-        if (template === null)
+        if (html === null)
             return $();
 
         //Deferred?

@@ -47,7 +47,7 @@
     //#region Modals
     App.Modal = function (template, settings) {
         var html = ko.templates[template];
-        if (template === null)
+        if (html === null)
             return $();
         //Deferred?
         var defaults = {
