@@ -13,6 +13,7 @@ namespace PCF.REDCap.Web
                         //"~/Scripts/jquery.validate*",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/knockout-{version}.js",
+                        "~/Scripts/stringTemplateEngine.js",
                         "~/Scripts/nprogress.js",
                         "~/Scripts/toastr.js",
                         "~/Scripts/respond.js",
