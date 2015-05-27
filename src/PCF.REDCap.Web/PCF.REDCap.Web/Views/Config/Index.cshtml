@@ -14,18 +14,20 @@
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <table class="table table-hover table-striped table-condensed" id="table-configs">
-            <thead>
-                <tr>
-                    <th class="break-block">Name</th>
-                    <th class="text-nowrap break-block">Api Url</th>
-                    <th class="text-nowrap break-block">Api Key</th>
-                    <th class="text-center text-fit break-inline">Status</th>
-                    <th class="text-fit break-inline">Actions</th>
-                </tr>
-            </thead>
-            <tbody data-bind="template: { name: 'config-row', foreach: comp_Configs }"></tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-condensed" id="table-configs">
+                <thead>
+                    <tr>
+                        <th class="break-block">Name</th>
+                        <th class="text-nowrap break-block">Api Url</th>
+                        <th class="text-nowrap break-block">Api Key</th>
+                        <th class="text-center text-fit break-inline">Status</th>
+                        <th class="text-fit break-inline">Actions</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="template: { name: 'config-row', foreach: comp_Configs }"></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
