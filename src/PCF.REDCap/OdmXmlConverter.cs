@@ -11,6 +11,7 @@ using PCF.REDCap;
 using System;
 using System.Linq;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace PCF.REDCap
 {
@@ -334,7 +335,9 @@ namespace PCF.REDCap
                 }
 
                 translatedText.lang = "en";
-                translatedText.Value = item.FieldLabel;
+                string pattern = "(<b|<strong|<i|<em|<font|</b|</i|</em|</strong|</font).*?>";
+                var rgx = new Regex(pattern);
+                translatedText.Value = rgx.Replace(item.FieldLabel, ""); ;
                 itemDescription.TranslatedText.Add(translatedText);
 
                 itemDef.OID = "IT." + item.FieldName;
